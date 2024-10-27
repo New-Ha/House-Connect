@@ -18,7 +18,8 @@ type BadgeComponentProps = {
 const badgeType: { type: BadgeType; defaultClassName: string }[] = [
   {
     type: 'Fill',
-    defaultClassName: 'group flex items-center text-bg bg-brown ',
+    defaultClassName:
+      'group flex items-center text-bg bg-brown border border-brown ',
   },
   {
     type: 'Outline',

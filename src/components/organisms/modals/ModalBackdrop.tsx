@@ -5,6 +5,7 @@ import { useResetRecoilState } from 'recoil';
 import Container from '@/components/atoms/Container';
 import { ModalType } from '@/types/modal.type';
 import { ModalSelector } from '@/stores/globalModal.store';
+import cn from '@/libs/cn';
 
 type ModalContainerType = {
   className?: string;
@@ -36,7 +37,10 @@ export default function ModalBackdrop({
   return (
     <Container.FlexRow
       onClick={onClickOutsideCloseModal}
-      className={`fixed left-0 top-0 z-50 h-[100vh] w-[100vw] cursor-pointer items-center justify-center bg-[#6D6D6D]/50 ${className}`}
+      className={cn(
+        'fixed left-0 top-0 z-50 h-[100vh] w-[100vw] cursor-pointer items-center justify-center px-6 bg-[#6D6D6D]/50',
+        className,
+      )}
     >
       {children}
     </Container.FlexRow>

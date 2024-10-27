@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+
 import { routePaths } from '@/constants/route';
 import { supabase } from '@/libs/supabaseClient';
 import { SignUpProfileType } from '@/types/signUp.type';
@@ -68,6 +69,10 @@ const useSignUpProfile = () => {
         supabase.from('user_lifestyle').upsert([userLifeStyle]),
         supabase.from('user_looking_house').upsert([userLookingHouse]),
         supabase.from('user_mate_style').upsert([userMateStyle]),
+        supabase
+          .from('user')
+          .update({ is_set_profile: true })
+          .eq('id', user.id),
       ]);
 
       responses.forEach(response => {

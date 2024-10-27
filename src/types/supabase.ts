@@ -35,6 +35,7 @@ export type Database = {
       }
       house: {
         Row: {
+          address: string | null
           bookmark: number
           created_at: string
           deposit_price: number
@@ -59,6 +60,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          address?: string | null
           bookmark: number
           created_at?: string
           deposit_price: number
@@ -83,6 +85,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          address?: string | null
           bookmark?: number
           created_at?: string
           deposit_price?: number
@@ -107,13 +110,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "house_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "house_user_id_fkey1"
             columns: ["user_id"]
@@ -177,13 +173,6 @@ export type Database = {
             referencedRelation: "house"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "house_commet_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
         ]
       }
       house_reply: {
@@ -217,13 +206,6 @@ export type Database = {
             columns: ["comment_id"]
             isOneToOne: false
             referencedRelation: "house_comment"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "house_reply_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
@@ -266,13 +248,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_from_user_fkey"
-            columns: ["send_by"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "messages_send_by_fkey"
             columns: ["send_by"]
             isOneToOne: false
@@ -289,6 +264,7 @@ export type Database = {
           email: string | null
           gender: number
           id: string
+          is_set_profile: boolean | null
           name: string
           nickname: string | null
           status: number
@@ -301,6 +277,7 @@ export type Database = {
           email?: string | null
           gender?: number
           id: string
+          is_set_profile?: boolean | null
           name: string
           nickname?: string | null
           status?: number
@@ -313,20 +290,13 @@ export type Database = {
           email?: string | null
           gender?: number
           id?: string
+          is_set_profile?: boolean | null
           name?: string
           nickname?: string | null
           status?: number
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_activity: {
         Row: {
@@ -356,15 +326,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "public_user_activity_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_alarm: {
         Row: {
@@ -397,15 +359,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_alarm_users_id_fk"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_alarm_setting: {
         Row: {
@@ -441,15 +395,7 @@ export type Database = {
           lounge_alarm_2?: boolean
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_alarm_setting_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_block: {
         Row: {
@@ -473,15 +419,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_block_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_bookmark: {
         Row: {
@@ -511,13 +449,6 @@ export type Database = {
             columns: ["house_id"]
             isOneToOne: false
             referencedRelation: "house"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_bookmark_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -580,22 +511,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_friend_friend_id_fkey"
-            columns: ["friend_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_friend_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_house_status: {
         Row: {
@@ -619,15 +535,7 @@ export type Database = {
           id?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_house_status_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_lifestyle: {
         Row: {
@@ -655,13 +563,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "user_lifestyle_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "user_lifestyle_id_fkey1"
             columns: ["id"]
@@ -707,13 +608,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "user_looking_house_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "user_looking_house_id_fkey1"
             columns: ["id"]
             isOneToOne: true
@@ -752,13 +646,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "user_mate_style_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "user_mate_style_id_fkey1"
             columns: ["id"]
             isOneToOne: true
@@ -789,22 +676,7 @@ export type Database = {
           to_id?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_send_friend_from_id_fkey"
-            columns: ["from_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_send_friend_to_id_fkey"
-            columns: ["to_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       user_theme: {
         Row: {
@@ -831,21 +703,44 @@ export type Database = {
           theme?: number
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "user_theme_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      filter_houses_by_term: {
+        Args: {
+          term_start: number
+          term_end: number
+        }
+        Returns: {
+          address: string | null
+          bookmark: number
+          created_at: string
+          deposit_price: number
+          describe: string
+          district: string
+          floor: number
+          house_appeal: string[]
+          house_img: string[]
+          house_size: number
+          house_type: number
+          id: string
+          manage_price: number
+          monthly_price: number
+          post_title: string
+          region: string
+          rental_type: number
+          representative_img: string
+          room_num: number
+          temporary: number
+          term: number[]
+          updated_at: string
+          user_id: string
+        }[]
+      }
       get_messages_group_by_date: {
         Args: {
           input_chat_room_id: string
@@ -942,4 +837,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

@@ -1,13 +1,15 @@
-/* eslint-disable consistent-return */
 import {
-  infiniteQueryOptions,
+  QueryFunctionContext,
+  useInfiniteQuery,
   useMutation,
   useQueries,
   useQuery,
   UseQueryResult,
 } from '@tanstack/react-query';
-import { FileObject } from '@supabase/storage-js';
 import { useNavigate } from 'react-router-dom';
+/* eslint-disable consistent-return */
+import { FileObject } from '@supabase/storage-js';
+
 import { routePaths } from '@/constants/route';
 import {
   createToast,
@@ -16,13 +18,14 @@ import {
   successToast,
 } from '@/libs/toast';
 import { supabase } from '@/libs/supabaseClient';
-import { HouseFormType } from '@/types/house.type';
+import { HouseFormType, HouseListFilterType } from '@/types/house.type';
 import {
   UserLifeStyleType,
   UserMateStyleType,
 } from '@/components/pages/HouseRegister';
 import USER_KEYS from '@/constants/queryKeys/user';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
+import { Keys } from '@/types/common.type';
 
 // fetch functions
 export const fetchTemporaryHouseId = async (
@@ -367,22 +370,172 @@ export const useDeleteHousePost = () => {
 };
 
 // houseList hooks
-export const useHouseList = () =>
-  infiniteQueryOptions({
-    queryKey: ['house', 'list', 'recent'],
-    queryFn: async ({ pageParam }) =>
-      supabase
-        .from('house')
-        .select(
-          'id, representative_img, region, house_appeal, house_type, rental_type, region, district, term, deposit_price, monthly_price',
-          { count: 'exact' },
-        )
-        // 임시 저장 제외
-        .eq('temporary', 1)
-        .range(pageParam * 12, (pageParam + 1) * 11),
+type HouseListQueryKeyType = ReturnType<typeof HOUSE_KEYS.HOUSE_LIST>;
+
+const fetchHouseList = async ({
+  pageParam = 0,
+  queryKey,
+}: QueryFunctionContext<HouseListQueryKeyType, number>) => {
+  const HOUSE_PER_PAGE = 10;
+  const [, , filterState] = queryKey;
+  const filterPayload = filterState as HouseListFilterType;
+
+  let fetchHouseListQuery = supabase
+    .from('house')
+    .select(
+      `id,
+      house_type,
+      rental_type,
+      region,
+      district,
+      term,
+      deposit_price,
+      monthly_price,
+      representative_img,
+      house_appeal,
+      user_id,
+      user_mate_style!inner(mate_gender, mate_number)`, // ! supabase default join은 left join으로 inner로 명시해주어야 inner join이 가능
+    )
+    .eq('temporary', 1);
+
+  const filterCondition: {
+    [K in keyof HouseListFilterType]: {
+      filterCallback: (
+        query: typeof fetchHouseListQuery,
+        filterValue: HouseListFilterType[K],
+      ) => typeof fetchHouseListQuery;
+    };
+  } = {
+    house_type: {
+      filterCallback: (query, houseType) => {
+        if (houseType !== undefined && houseType !== null) {
+          query.eq('house_type', houseType);
+        }
+
+        return query;
+      },
+    },
+    rental_type: {
+      filterCallback: (query, rentalType) => {
+        if (rentalType !== undefined && rentalType !== null) {
+          query.eq('rental_type', rentalType);
+        }
+
+        return query;
+      },
+    },
+    regions: {
+      filterCallback: (query, regions) => {
+        if (regions !== undefined && regions !== null) {
+          query.in('address', regions);
+        }
+
+        return query;
+      },
+    },
+    term: {
+      filterCallback: (query, term) => {
+        let copyQuery = query;
+
+        if (term !== undefined && term !== null) {
+          const [termStart, termEnd] = term;
+          if (termStart >= 0) {
+            copyQuery = copyQuery.filter('term->>0', 'gte', termStart);
+          }
+          if (termEnd <= 24) {
+            copyQuery = copyQuery.filter('term->>1', 'lte', termEnd);
+          }
+        }
+
+        return copyQuery;
+      },
+    },
+    deposit_price: {
+      filterCallback: (query, depositPrice) => {
+        let copyQuery = query;
+
+        if (depositPrice !== undefined && depositPrice !== null) {
+          if (depositPrice[0] >= 0) {
+            copyQuery = copyQuery.gte('deposit_price', depositPrice[0]);
+          }
+          if (depositPrice[1] <= 10000) {
+            copyQuery = copyQuery.lte('deposit_price', depositPrice[1]);
+          }
+        }
+
+        return copyQuery;
+      },
+    },
+    monthly_rental_price: {
+      filterCallback: (query, monthlyRentalPrice) => {
+        let copyQuery = query;
+
+        if (monthlyRentalPrice !== undefined && monthlyRentalPrice !== null) {
+          if (monthlyRentalPrice[0] >= 0) {
+            copyQuery = copyQuery.gte('monthly_price', monthlyRentalPrice[0]);
+          }
+          if (monthlyRentalPrice[1] <= 500) {
+            copyQuery = copyQuery.lte('monthly_price', monthlyRentalPrice[1]);
+          }
+        }
+
+        return copyQuery;
+      },
+    },
+    mate_gender: {
+      filterCallback: (query, mateGender) => {
+        if (mateGender !== undefined && mateGender !== null) {
+          query.eq('user_mate_style.mate_gender', mateGender);
+        }
+
+        return query;
+      },
+    },
+    mate_number: {
+      filterCallback: (query, mateNumber) => {
+        if (mateNumber !== undefined && mateNumber !== null) {
+          query.eq('user_mate_style.mate_gender', mateNumber);
+        }
+
+        return query;
+      },
+    },
+  };
+
+  (Object.keys(filterPayload) as Keys<typeof filterPayload>).forEach(
+    filterType => {
+      if (
+        filterPayload[filterType] !== undefined &&
+        filterPayload[filterType] !== null
+      ) {
+        fetchHouseListQuery = filterCondition[filterType]?.filterCallback(
+          fetchHouseListQuery,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          filterPayload[filterType] as any,
+        ) as typeof fetchHouseListQuery;
+      }
+    },
+  );
+
+  const { data, error } = await fetchHouseListQuery.range(
+    pageParam * HOUSE_PER_PAGE,
+    (pageParam + 1) * HOUSE_PER_PAGE - 1,
+  );
+
+  if (error) throw new Error(error.message);
+
+  return {
+    data,
+    nextPage: pageParam + 1,
+    hasMore: data.length > 0 && data.length % HOUSE_PER_PAGE === 0,
+  };
+};
+
+export const useInfiniteHouseList = (filterPayload: HouseListFilterType) =>
+  useInfiniteQuery({
+    queryKey: HOUSE_KEYS.HOUSE_LIST(filterPayload),
+    queryFn: fetchHouseList,
     initialPageParam: 0,
-    getNextPageParam: (lastPage, _allPages, lastPageParam) =>
-      (lastPage.count as number) - (lastPageParam + 1) * 12 > 0
-        ? lastPageParam + 1
-        : undefined,
+    getNextPageParam: lastPage =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
   });

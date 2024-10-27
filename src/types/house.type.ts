@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+import { SignUpProfileForm } from '@/types/signUp.type';
+import { Tables } from '@/types/supabase';
+
 export const HouseForm = z.object({
   house_img: z
     .array(z.string())
@@ -23,7 +26,13 @@ export const HouseForm = z.object({
    * - 3: 단독주택
    * - undefined: 지정되지 않음(초기값)
    */
-  house_type: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  house_type: z.preprocess(
+    val => {
+      const numVal = Number(val);
+      return [0, 1, 2, 3].includes(numVal) ? numVal : undefined;
+    },
+    z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  ),
   /**
    * ### 집 대여 유형
    * - 0: 상관없음
@@ -32,12 +41,14 @@ export const HouseForm = z.object({
    * - 3: 반 전세
    * - undefined: 지정되지 않음(초기값)
    */
-  rental_type: z.union([
-    z.literal(0),
-    z.literal(1),
-    z.literal(2),
-    z.literal(3),
-  ]),
+  rental_type: z.preprocess(
+    val => {
+      const numVal = Number(val);
+      return [0, 1, 2, 3].includes(numVal) ? numVal : undefined;
+    },
+    z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]),
+  ),
+
   house_size: z.number({
     invalid_type_error: '공유 주거의 넓이(평 단위)를 숫자로 입력해주세요.',
   }),
@@ -91,16 +102,42 @@ export const HouseForm = z.object({
 });
 
 export type HouseFormType = z.infer<typeof HouseForm>;
-const HouseCard = HouseForm.pick({
-  representative_img: true,
+
+export type HouseCardType = Pick<
+  Tables<'house'>,
+  | 'representative_img'
+  | 'region'
+  | 'district'
+  | 'house_appeal'
+  | 'house_type'
+  | 'rental_type'
+  | 'term'
+  | 'deposit_price'
+  | 'monthly_price'
+  | 'user_id'
+> & { id: string };
+
+export type HouseListPerPage = {
+  data: HouseCardType[];
+  hasMore: boolean;
+  nextPage: number;
+};
+
+export const HouseListFilterForm = HouseForm.pick({
   house_type: true,
   rental_type: true,
-  deposit_price: true,
-  monthly_price: true,
-  house_appeal: true,
-  region: true,
-  district: true,
   term: true,
-}).required();
+})
+  .merge(
+    // TODO: SignUpProfileForm에서 가져오는 것이 아닌 refactoring 이후 common house에서 가져올 것
+    SignUpProfileForm.innerType().innerType().pick({
+      regions: true,
+      deposit_price: true,
+      monthly_rental_price: true,
+      mate_number: true,
+      mate_gender: true,
+    }),
+  )
+  .partial();
 
-export type HouseCardType = z.infer<typeof HouseCard> & { id: string };
+export type HouseListFilterType = z.infer<typeof HouseListFilterForm>;
