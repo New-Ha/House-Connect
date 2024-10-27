@@ -101,6 +101,7 @@ export type UserType = UserAdditionalType & {
   name: string;
   nickname: string | null;
   status: number;
+  is_set_profile?: boolean | undefined;
 };
 
 // * 로그인 후 LocalStorage 타입

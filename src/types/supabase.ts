@@ -264,6 +264,7 @@ export type Database = {
           email: string | null
           gender: number
           id: string
+          is_set_profile: boolean | null
           name: string
           nickname: string | null
           status: number
@@ -276,6 +277,7 @@ export type Database = {
           email?: string | null
           gender?: number
           id: string
+          is_set_profile?: boolean | null
           name: string
           nickname?: string | null
           status?: number
@@ -288,6 +290,7 @@ export type Database = {
           email?: string | null
           gender?: number
           id?: string
+          is_set_profile?: boolean | null
           name?: string
           nickname?: string | null
           status?: number

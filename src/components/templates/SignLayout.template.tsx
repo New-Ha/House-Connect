@@ -32,9 +32,28 @@ export default function SignLayoutTemplate() {
 
   useEffect(() => {
     let timeoutId: number;
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const { data } = supabase.auth.onAuthStateChange(async _event => {
       if (session) {
-        timeoutId = window.setTimeout(() => {
+        timeoutId = window.setTimeout(async () => {
+          const { data, error } = await supabase
+            .from('user')
+            .select('is_set_profile')
+            .eq('id', session?.user.id)
+            .maybeSingle();
+
+          if (data) {
+            if (data.is_set_profile) {
+              return navigate(routePaths.root);
+            }
+
+            return navigate(routePaths.signUpProfileIntro);
+          }
+
+          if (error) {
+            navigate(routePaths.root);
+          }
+
           const { birth, gender, nickname } = session.user.user_metadata;
 
           if (!birth || !gender || !nickname) {
@@ -44,12 +63,10 @@ export default function SignLayoutTemplate() {
               autoClose: 3000,
             });
 
-            navigate(routePaths.signUpInfo);
+            return navigate(routePaths.signUpInfo);
           }
-          // 성공적으로 user추가정보(birth, gender, nickname)를 update했을 때
-          else {
-            navigate(routePaths.signUpProfileIntro);
-          }
+
+          return navigate(routePaths.root);
         }, 0);
       }
     });
