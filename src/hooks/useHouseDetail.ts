@@ -134,7 +134,8 @@ export const houseDetailQuery = (
         .single(),
     enabled: !!houseId,
     initialData: () =>
-      queryClient.getQueryData(HOUSE_KEYS.HOUSE_DETAIL(houseId)),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      queryClient.getQueryData(HOUSE_KEYS.HOUSE_DETAIL(houseId)) as any,
   });
 
 export const houseBookmarkQuery = (
@@ -155,5 +156,6 @@ export const houseBookmarkQuery = (
     initialData: () =>
       queryClient.getQueryData(
         HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(userId, houseId),
-      ),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) as any,
   });

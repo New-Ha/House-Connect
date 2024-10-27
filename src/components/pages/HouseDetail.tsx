@@ -38,8 +38,8 @@ function HouseDetail() {
     <>
       {houseData && (
         <HouseDetailTemplate
-          houseData={houseData?.data as unknown as HouseData}
-          bookmark={bookmark?.data as unknown as boolean}
+          houseData={houseData?.data as HouseData}
+          bookmark={bookmark?.data as boolean}
           houseId={houseId as string}
         />
       )}
