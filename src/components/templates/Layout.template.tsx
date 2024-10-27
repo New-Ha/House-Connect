@@ -36,7 +36,7 @@ export default function LayoutTemplate() {
         className={cn(isSignPath && 'bg-bg laptop:bg-transparent')}
       />
       {isHouseListPath ? (
-        <Container.FlexCol className="w-full bg-bg-orange pb-[6rem]">
+        <Container.FlexCol className="min-h-screen w-full bg-bg-orange">
           <HouseListTopSection />
           <Container.FlexRow className="bg-bg-orange">
             <main

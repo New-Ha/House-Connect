@@ -69,6 +69,7 @@ import EditAvatar from '@/assets/icons/edit_avatar.svg?react';
 import DownArrow from '@/assets/icons/down-arrow.svg?react';
 import Filter from '@/assets/icons/filter.svg?react';
 import Add from '@/assets/icons/add.svg?react';
+import Reset from '@/assets/icons/reset.svg?react';
 import { IconType } from '@/types/icon.type';
 import cn from '@/libs/cn';
 
@@ -404,6 +405,9 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   ),
   add: ({ className, ...others }) => (
     <Add className={cn('size-[12px]', className)} {...others} />
+  ),
+  reset: ({ className, ...others }) => (
+    <Reset className={cn('w-[14px] h-auto', className)} {...others} />
   ),
 };
 

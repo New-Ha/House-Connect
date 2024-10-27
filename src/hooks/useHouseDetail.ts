@@ -1,4 +1,5 @@
 import {
+  QueryClient,
   queryOptions,
   useMutation,
   useQueryClient,
@@ -8,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { routePaths } from '@/constants/route';
 import { supabase } from '@/libs/supabaseClient';
 import { createToast, errorToast, successToast } from '@/libs/toast';
-import { UserType } from '@/types/auth.type';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 
 type BookMarkType = {
@@ -118,7 +118,10 @@ export const useDeleteHouseDetail = () => {
   return { deleteHouseDetailPage };
 };
 
-export const houseDetailQuery = (houseId: string | undefined) =>
+export const houseDetailQuery = (
+  queryClient: QueryClient,
+  houseId: string | undefined,
+) =>
   queryOptions({
     queryKey: HOUSE_KEYS.HOUSE_DETAIL(houseId),
     queryFn: async () =>
@@ -130,20 +133,29 @@ export const houseDetailQuery = (houseId: string | undefined) =>
         .eq('id', houseId ?? '')
         .single(),
     enabled: !!houseId,
+    initialData: () =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      queryClient.getQueryData(HOUSE_KEYS.HOUSE_DETAIL(houseId)) as any,
   });
 
-export const useHouseBookMark = (
-  user: UserType | null,
+export const houseBookmarkQuery = (
+  queryClient: QueryClient,
+  userId: string | undefined,
   houseId: string | undefined,
 ) =>
   queryOptions({
-    queryKey: HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(user?.id, houseId),
+    queryKey: HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(userId, houseId),
     queryFn: async () =>
       supabase
         .from('user_bookmark')
         .select('*')
-        .eq('user_id', user?.id ?? '')
+        .eq('user_id', userId ?? '')
         .eq('house_id', houseId ?? '')
-        .single(),
-    enabled: !!user && !!houseId,
+        .maybeSingle(),
+    enabled: !!userId && !!houseId,
+    initialData: () =>
+      queryClient.getQueryData(
+        HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(userId, houseId),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ) as any,
   });

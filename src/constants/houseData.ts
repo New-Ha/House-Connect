@@ -2,7 +2,7 @@ import { HouseFormType } from '@/types/house.type';
 import { IconType } from '@/types/icon.type';
 import { SignUpProfileFormType } from '@/types/signUp.type';
 
-const floorDisplayData: {
+export const floorDisplayData: {
   displayValue: string;
   stateValue: HouseFormType['floor'];
 }[] = [
@@ -20,7 +20,7 @@ const floorDisplayData: {
   },
 ];
 
-const matesGenderDisplayData: {
+export const matesGenderDisplayData: {
   displayValue: string;
   stateValue: SignUpProfileFormType['mate_gender'];
   iconType: IconType;
@@ -42,7 +42,7 @@ const matesGenderDisplayData: {
   },
 ];
 
-const registPetDisplayData: {
+export const registPetDisplayData: {
   displayValue: string;
   stateValue: SignUpProfileFormType['pet'];
   iconType: IconType;
@@ -63,4 +63,10 @@ const registPetDisplayData: {
     iconType: 'pet-circle',
   },
 ];
-export { floorDisplayData, matesGenderDisplayData, registPetDisplayData };
+
+export const rentalTypeDisplay = {
+  0: '상관없음',
+  1: '월세',
+  2: '반전세',
+  3: '전세',
+};

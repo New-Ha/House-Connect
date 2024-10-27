@@ -1,17 +1,19 @@
+import { useRecoilState } from 'recoil';
+
 import HouseListTemplate from '@/components/templates/House/HouseList/HouseList.template';
 import { useInfiniteHouseList } from '@/hooks/useHouse';
-import { HouseCardType } from '@/types/house.type';
+import HouseListFilterAtomState from '@/stores/house.store';
 
 export default function HouseList() {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteHouseList();
+  const [filterState] = useRecoilState(HouseListFilterAtomState);
+  const infiniteHouseListResult = useInfiniteHouseList(filterState);
 
   return (
     <HouseListTemplate
       houseList={
-        (data?.pages.flatMap(page => page.data) as HouseCardType[]) || []
+        infiniteHouseListResult.data?.pages.flatMap(page => page.data) || []
       }
-      hasNextPage={hasNextPage}
-      fetchNextPage={fetchNextPage}
+      {...infiniteHouseListResult}
     />
   );
 }

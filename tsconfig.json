@@ -42,7 +42,8 @@
     "vite.config.ts",
     "tailwind.config.ts",
     "postcss.config.js",
-    "src/types/svg.d.ts"
+    "src/types/svg.d.ts",
+    "plugins/**/*.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,11 +1,11 @@
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import HouseDetailTemplate, {
   HouseData,
 } from '@/components/templates/House/HouseDetail/HouseDetailTemplate';
-import { useHouseBookMark, houseDetailQuery } from '@/hooks/useHouseDetail';
+import { houseBookmarkQuery, houseDetailQuery } from '@/hooks/useHouseDetail';
 import { UserAtom } from '@/stores/auth.store';
 import CommentTemplate from '@/components/templates/CommentTemplate';
 import { houseCommentQuery } from '@/hooks/useCommentReply';
@@ -15,9 +15,14 @@ import Loading from '@/components/pages/Loading';
 function HouseDetail() {
   const { houseId } = useParams();
   const user = useRecoilValue(UserAtom);
+  const queryClient = useQueryClient();
   const data = useQueries({
-    queries: [houseDetailQuery(houseId), useHouseBookMark(user, houseId)],
+    queries: [
+      houseDetailQuery(queryClient, houseId),
+      houseBookmarkQuery(queryClient, user?.id, houseId),
+    ],
   });
+
   const isPending = data.some(result => result.isFetching);
 
   const { data: comments } = useQuery(houseCommentQuery(houseId));
@@ -33,8 +38,8 @@ function HouseDetail() {
     <>
       {houseData && (
         <HouseDetailTemplate
-          houseData={houseData.data as unknown as HouseData}
-          bookmark={bookmark?.data as unknown as boolean}
+          houseData={houseData?.data as HouseData}
+          bookmark={bookmark?.data as boolean}
           houseId={houseId as string}
         />
       )}

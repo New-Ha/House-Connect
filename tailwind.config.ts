@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
-import plugin from 'tailwindcss/plugin';
+
+import { inputSliderUtilities, scrollbarUtilities } from './plugins';
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -75,20 +76,8 @@ export default {
       },
     },
   },
-  plugins: [
-    plugin(({ addVariant }) => {
-      addVariant('slider-thumb', [
-        '&::-webkit-slider-thumb', // chrome, safari, edge
-        '&::-moz-range-thumb', // firefox
-        '&::-ms-thumb', // IE
-      ]);
-      addVariant('slider-track', [
-        '&::-webkit-slider-runnable-track', // chrome, safari, edge
-        '&::-moz-range-track', // firefox
-        '&::-ms-track', // IE
-      ]);
-    }),
-  ],
+
+  plugins: [inputSliderUtilities, scrollbarUtilities],
   safelist: [
     {
       pattern:

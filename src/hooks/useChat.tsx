@@ -127,7 +127,6 @@ export const fetchUnReadMessageCount = async (
     .single();
 
   if (lastReadDateError) {
-    console.log('asdfasdfasdfasdf❌❌❌❌');
     throw new SupabaseCustomError(lastReadDateError, lastReadDateStatus);
   }
 

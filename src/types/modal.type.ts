@@ -7,7 +7,8 @@ export type ModalType =
   | 'RoommateApplicationStatus'
   | 'RoommateApply'
   | 'Continue'
-  | 'ProfileModify';
+  | 'ProfileModify'
+  | 'HouseListFilter';
 
 export type ModalStateByType = {
   Alert: AlertModalState;
@@ -17,6 +18,7 @@ export type ModalStateByType = {
   RoommateApply: RoommateApplyState;
   Continue: ContinuationModalState;
   ProfileModify: ProfileModifyModalState;
+  HouseListFilter: HouseListFilterModalState;
 };
 
 export type AlertModalState = {
@@ -81,8 +83,14 @@ export type ContinuationModalState = {
   cancelButtonContent: string;
   continueButtonContent: string;
 };
+
 export type ProfileModifyModalState = {
   isOpen: boolean;
   type: 'ProfileModify';
   userInfo: SignUpProfileType | null;
+};
+
+export type HouseListFilterModalState = {
+  isOpen: boolean;
+  type: 'HouseListFilter';
 };
