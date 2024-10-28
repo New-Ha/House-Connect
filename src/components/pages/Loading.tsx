@@ -7,17 +7,21 @@ import Typography from '@/components/atoms/Typography';
 import cn from '@/libs/cn';
 
 type LoadingType = {
+  className?: string;
   delayTime?: number;
   setIsDelaying?: React.Dispatch<React.SetStateAction<boolean>>;
+  callback?: () => void;
   text?: string;
   textStyle?: string;
 };
 
 export default function Loading({
+  className,
   delayTime,
   setIsDelaying,
   text,
   textStyle,
+  callback,
 }: LoadingType) {
   useEffect(() => {
     let sleep: number | undefined;
@@ -25,6 +29,9 @@ export default function Loading({
     if (delayTime && setIsDelaying) {
       sleep = window.setTimeout(() => {
         setIsDelaying(false);
+        if (callback) {
+          callback();
+        }
       }, delayTime);
     }
 
@@ -34,8 +41,12 @@ export default function Loading({
   }, []);
 
   return (
-    // ! TODO: Loading Page Figma나오면 작업 들어가기
-    <Container.FlexCol className="flex h-screen items-center justify-center gap-[4.25rem]">
+    <Container.FlexCol
+      className={cn(
+        'flex h-screen items-center justify-center gap-[4.25rem] bg-bg',
+        className,
+      )}
+    >
       <Img
         src={loadingHouse}
         className="h-[18rem] w-[15.375rem]"
@@ -52,8 +63,10 @@ export default function Loading({
 }
 
 Loading.defaultProps = {
+  className: '',
   delayTime: 0,
   setIsDelaying: false,
   text: 'Loading...',
   textStyle: '',
+  callback: () => {},
 };
