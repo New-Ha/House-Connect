@@ -70,7 +70,10 @@ export type IconType =
   | 'down-arrow'
   | 'filter'
   | 'add'
-  | 'reset';
+  | 'reset'
+  | 'character-404'
+  | 'character-comming-soon'
+  | 'character-unknown';
 
 export type CustomIconType = {
   fill?: ColorType;

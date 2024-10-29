@@ -34,7 +34,6 @@ import FillHeart from '@/assets/icons/fill-heart.svg?react';
 import Share from '@/assets/icons/share.svg?react';
 import MiniSmoke from '@/assets/icons/mini-smoke.svg?react';
 import MiniNoneSmoke from '@/assets/icons/mini-none-smoke.svg?react';
-import PetHeart from '@/assets/icons/mini-pet-lover.svg?react';
 import PetHate from '@/assets/icons/mini-none-pet-lover.svg?react';
 import PetCircle from '@/assets/icons/mini-dont-mind-pet.svg?react';
 import IconGenderFree from '@/assets/icons/ph_gender-intersex.svg?react';
@@ -58,7 +57,7 @@ import IconMale from '@/assets/icons/icon-male.svg?react';
 import IconFemale from '@/assets/icons/icon-female.svg?react';
 import OpenTriangle from '@/assets/icons/open-triangle.svg?react';
 import CloseTriangle from '@/assets/icons/close-triangle.svg?react';
-import PetHart from '@/assets/icons/pet_hart.svg?react';
+import PetHeart from '@/assets/icons/pet_heart.svg?react';
 import MiniHeart from '@/assets/icons/mini-heart.svg?react';
 import PagePrev from '@/assets/icons/page-prev.svg?react';
 import PageNext from '@/assets/icons/page-next.svg?react';
@@ -70,6 +69,9 @@ import DownArrow from '@/assets/icons/down-arrow.svg?react';
 import Filter from '@/assets/icons/filter.svg?react';
 import Add from '@/assets/icons/add.svg?react';
 import Reset from '@/assets/icons/reset.svg?react';
+import Character404 from '@/assets/icons/character-404.svg?react';
+import CharacterCommingSoon from '@/assets/icons/character-comming-soon.svg?react';
+import CharacterUnknown from '@/assets/icons/character-unknown.svg?react';
 import { IconType } from '@/types/icon.type';
 import cn from '@/libs/cn';
 
@@ -325,9 +327,6 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   'close-triangle': ({ className, ...others }) => (
     <CloseTriangle className={(cn('w-[1.25rem]'), className)} {...others} />
   ),
-  'pet-hart': ({ className, ...others }) => (
-    <PetHart className={(cn('w-[1.125rem] h-auto'), className)} {...others} />
-  ),
   'pet-circle': ({ className, ...others }) => (
     <PetCircle
       className={(cn('w-[1.125rem] h-[1.125rem]'), className)}
@@ -401,13 +400,31 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
     <DownArrow className={cn('w-[3rem]', className)} {...others} />
   ),
   filter: ({ className, ...others }) => (
-    <Filter className={cn('w-[12px] h-auto', className)} {...others} />
+    <Filter className={cn('w-[0.75rem]', className)} {...others} />
   ),
   add: ({ className, ...others }) => (
-    <Add className={cn('size-[12px]', className)} {...others} />
+    <Add className={cn('size-[0.75rem]', className)} {...others} />
   ),
   reset: ({ className, ...others }) => (
-    <Reset className={cn('w-[14px] h-auto', className)} {...others} />
+    <Reset className={cn('w-[0.875rem]', className)} {...others} />
+  ),
+  'character-404': ({ className, ...others }) => (
+    <Character404
+      className={cn('w-[36.875rem] h-[30.8125rem]', className)}
+      {...others}
+    />
+  ),
+  'character-comming-soon': ({ className, ...others }) => (
+    <CharacterCommingSoon
+      className={cn('w-[23rem] h-[20.625rem]', className)}
+      {...others}
+    />
+  ),
+  'character-unknown': ({ className, ...others }) => (
+    <CharacterUnknown
+      className={cn('w-[26.5rem] h-[19.75rem]', className)}
+      {...others}
+    />
   ),
 };
 
