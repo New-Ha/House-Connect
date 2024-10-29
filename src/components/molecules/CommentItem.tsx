@@ -56,6 +56,7 @@ export default function CommentItem(props: CommentItemProps) {
       });
     }
   };
+
   return (
     <>
       <Container.FlexCol className="gap-7 py-7">
@@ -86,7 +87,7 @@ export default function CommentItem(props: CommentItemProps) {
                   setIsEditing(false);
                 }}
               >
-                <Typography.P2>답변</Typography.P2>
+                {user && <Typography.P2>답변</Typography.P2>}
               </Button.Ghost>
             )}
 
