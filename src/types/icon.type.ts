@@ -45,7 +45,6 @@ export type IconType =
   | 'back'
   | 'open-triangle'
   | 'close-triangle'
-  | 'pet-hart'
   | 'dont-mind-people'
   | 'done'
   | 'mini-heart'
@@ -70,10 +69,7 @@ export type IconType =
   | 'down-arrow'
   | 'filter'
   | 'add'
-  | 'reset'
-  | 'character-404'
-  | 'character-comming-soon'
-  | 'character-unknown';
+  | 'reset';
 
 export type CustomIconType = {
   fill?: ColorType;

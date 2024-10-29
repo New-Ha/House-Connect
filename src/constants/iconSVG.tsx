@@ -69,9 +69,6 @@ import DownArrow from '@/assets/icons/down-arrow.svg?react';
 import Filter from '@/assets/icons/filter.svg?react';
 import Add from '@/assets/icons/add.svg?react';
 import Reset from '@/assets/icons/reset.svg?react';
-import Character404 from '@/assets/icons/character-404.svg?react';
-import CharacterCommingSoon from '@/assets/icons/character-comming-soon.svg?react';
-import CharacterUnknown from '@/assets/icons/character-unknown.svg?react';
 import { IconType } from '@/types/icon.type';
 import cn from '@/libs/cn';
 
@@ -407,24 +404,6 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   ),
   reset: ({ className, ...others }) => (
     <Reset className={cn('w-[0.875rem]', className)} {...others} />
-  ),
-  'character-404': ({ className, ...others }) => (
-    <Character404
-      className={cn('w-[36.875rem] h-[30.8125rem]', className)}
-      {...others}
-    />
-  ),
-  'character-comming-soon': ({ className, ...others }) => (
-    <CharacterCommingSoon
-      className={cn('w-[23rem] h-[20.625rem]', className)}
-      {...others}
-    />
-  ),
-  'character-unknown': ({ className, ...others }) => (
-    <CharacterUnknown
-      className={cn('w-[26.5rem] h-[19.75rem]', className)}
-      {...others}
-    />
   ),
 };
 
