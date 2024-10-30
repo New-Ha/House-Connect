@@ -1,6 +1,4 @@
 import {
-  useQueries,
-  useQuery,
   useQueryClient,
   useSuspenseQueries,
   useSuspenseQuery,
@@ -53,10 +51,9 @@ function HouseDetail() {
   const { data: houseData } = houseDetail;
   const { data: bookmark } = houseBookmark;
 
-  console.log('houseData =>', houseData);
-  console.log('bookmark =>', bookmark);
-
   return (
+    // FIXME: A component suspended while responding to synchronous input. This will cause the UI to be replaced with a loading indicator. 
+    // To fix, updates that suspend should be wrapped with startTransition.
     <ErrorBoundary fallbackRender={ErrorFallback}>
       <Suspense fallback={<Loading text="Loading..." />}>
         {isLoadingDelaying && (
