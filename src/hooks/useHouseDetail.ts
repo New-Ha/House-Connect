@@ -10,6 +10,7 @@ import { routePaths } from '@/constants/route';
 import { supabase } from '@/libs/supabaseClient';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 type BookMarkType = {
   userId: string;
@@ -124,15 +125,21 @@ export const houseDetailQuery = (
 ) =>
   queryOptions({
     queryKey: HOUSE_KEYS.HOUSE_DETAIL(houseId),
-    queryFn: async () =>
-      supabase
+    queryFn: async () => {
+      if (!houseId) return null;
+
+      const { data, error, status } = await supabase
         .from('house')
         .select(
           `*, user(id, name, avatar, gender), user_lifestyle(smoking, pet, appeals), user_mate_style(mate_gender, mate_number, mate_appeals, prefer_mate_age)`,
         )
         .eq('id', houseId ?? '')
-        .single(),
-    enabled: !!houseId,
+        .single();
+      if (error) {
+        throw new SupabaseCustomError(error, status);
+      }
+      return data;
+    },
     initialData: () =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       queryClient.getQueryData(HOUSE_KEYS.HOUSE_DETAIL(houseId)) as any,
@@ -145,14 +152,24 @@ export const houseBookmarkQuery = (
 ) =>
   queryOptions({
     queryKey: HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(userId, houseId),
-    queryFn: async () =>
-      supabase
+    queryFn: async () => {
+      // ! 원래 useQuery의 enabled 옵션을 대체하는 if문
+      // ! useQuery -> useSuspenseQuery로 변경하면서 enabled 옵션을 사용하지 못 함
+      if (!userId || !houseId) return null;
+
+      const { data, error, status } = await supabase
         .from('user_bookmark')
         .select('*')
-        .eq('user_id', userId ?? '')
-        .eq('house_id', houseId ?? '')
-        .maybeSingle(),
-    enabled: !!userId && !!houseId,
+        .eq('user_id', userId)
+        .eq('house_id', houseId)
+        .maybeSingle();
+
+      if (error) {
+        throw new SupabaseCustomError(error, status);
+      }
+
+      return data;
+    },
     initialData: () =>
       queryClient.getQueryData(
         HOUSE_KEYS.HOUSE_DETAIL_BOOKMARK(userId, houseId),

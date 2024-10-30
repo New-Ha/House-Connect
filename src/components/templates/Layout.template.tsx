@@ -9,7 +9,7 @@ import HouseListTopSection from '@/components/templates/House/HouseList/HouseLis
 
 export default function LayoutTemplate() {
   // * supabase authListener를 등록함과 동시에 isLogin상태를 가져오기 위함
-  const [session] = useAuthState();
+  const [session, isInitializingSession] = useAuthState();
   const location = useLocation();
   const isSignPath = isRoutePathMatched(location.pathname, [
     'sign',
@@ -28,6 +28,11 @@ export default function LayoutTemplate() {
   const isHouseListPath =
     isRoutePathMatched(location.pathname, 'house') ||
     isRoutePathMatched(location.pathname, 'root');
+
+  // TODO: loading page로 대체 
+  if (isInitializingSession) {
+    return <h1>사용자 확인 중...</h1>;
+  }
 
   return (
     <>
