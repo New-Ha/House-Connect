@@ -1,11 +1,7 @@
-import {
-  useQueryClient,
-  useSuspenseQueries,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { useState, Suspense } from 'react';
+import { Suspense, useState, ComponentType } from 'react';
 import { FallbackProps, ErrorBoundary } from 'react-error-boundary';
 
 import HouseDetailTemplate, {
@@ -18,10 +14,11 @@ import { houseCommentQuery } from '@/hooks/useCommentReply';
 import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/Loading';
 import { routePaths } from '@/constants/route';
+import Container from '@/components/atoms/Container';
 import Error404 from '@/components/pages/maintenance/Error404';
 import SupabaseCustomError from '@/libs/supabaseCustomError';
 
-export function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+export function ErrorFallback({ error }: FallbackProps) {
   const { statusCode } = error as SupabaseCustomError;
 
   if (statusCode >= 400 && statusCode < 500) {
@@ -42,42 +39,55 @@ function HouseDetail() {
     queries: [
       houseDetailQuery(queryClient, houseId),
       houseBookmarkQuery(queryClient, user?.id, houseId),
+      houseCommentQuery(houseId),
     ],
   });
 
-  const { data: comments } = useSuspenseQuery(houseCommentQuery(houseId));
-
-  const [houseDetail, houseBookmark] = data;
-  const { data: houseData } = houseDetail;
-  const { data: bookmark } = houseBookmark;
+  const [
+    { data: houseDetailData },
+    { data: houseBookmarkData },
+    {
+      data: { data: commentsData, count: commentsCount },
+    },
+  ] = data;
 
   return (
-    // FIXME: A component suspended while responding to synchronous input. This will cause the UI to be replaced with a loading indicator. 
-    // To fix, updates that suspend should be wrapped with startTransition.
-    <ErrorBoundary fallbackRender={ErrorFallback}>
-      <Suspense fallback={<Loading text="Loading..." />}>
-        {isLoadingDelaying && (
-          <Loading
-            className="absolute left-0 top-0 z-50 h-[100vh] w-[100vw]"
-            delayTime={2000}
-            setIsDelaying={setIsLoadingDelaying}
-            text="로그인이 필요한 서비스입니다"
-            callback={() => navigate(routePaths.signIn)}
-          />
-        )}
-        <HouseDetailTemplate
-          houseData={houseData?.data as HouseData}
-          bookmark={bookmark?.data as boolean}
-          houseId={houseId as string}
-          setIsLoadingDelaying={setIsLoadingDelaying}
+    <Container className="relative size-full">
+      {isLoadingDelaying && (
+        <Loading
+          className="absolute left-0 top-0 z-50 h-[100vh] w-[100vw]"
+          delayTime={2000}
+          setIsDelaying={setIsLoadingDelaying}
+          text="로그인이 필요한 서비스입니다"
+          callback={() => navigate(routePaths.signIn)}
         />
-        <CommentTemplate
-          comments={comments?.data as unknown as CommentType[]}
-          commentsCount={comments?.count as unknown as string}
-        />
-      </Suspense>
-    </ErrorBoundary>
+      )}
+      <HouseDetailTemplate
+        houseData={houseDetailData as HouseData}
+        bookmark={houseBookmarkData}
+        houseId={houseId as string}
+        setIsLoadingDelaying={setIsLoadingDelaying}
+      />
+      <CommentTemplate
+        comments={commentsData as unknown as CommentType[]}
+        commentsCount={commentsCount?.toString() || '0'}
+      />
+    </Container>
   );
 }
 
-export default HouseDetail;
+function WithSuspenseAndErrorBoundary<T>(InnerSuspenseComponent: ComponentType<T>) {
+  // eslint-disable-next-line react/display-name
+  return function (props: T & JSX.IntrinsicAttributes) {
+    return (
+      <ErrorBoundary fallbackRender={ErrorFallback}>
+        <Suspense fallback={<Loading text="Loading..." />}>
+          <InnerSuspenseComponent {...props} />
+        </Suspense>
+      </ErrorBoundary>
+    );
+  };
+}
+
+const SuspendedHouseDetail = WithSuspenseAndErrorBoundary(HouseDetail);
+export default SuspendedHouseDetail;
