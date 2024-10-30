@@ -45,7 +45,6 @@ export type IconType =
   | 'back'
   | 'open-triangle'
   | 'close-triangle'
-  | 'pet-hart'
   | 'dont-mind-people'
   | 'done'
   | 'mini-heart'

@@ -34,7 +34,6 @@ import FillHeart from '@/assets/icons/fill-heart.svg?react';
 import Share from '@/assets/icons/share.svg?react';
 import MiniSmoke from '@/assets/icons/mini-smoke.svg?react';
 import MiniNoneSmoke from '@/assets/icons/mini-none-smoke.svg?react';
-import PetHeart from '@/assets/icons/mini-pet-lover.svg?react';
 import PetHate from '@/assets/icons/mini-none-pet-lover.svg?react';
 import PetCircle from '@/assets/icons/mini-dont-mind-pet.svg?react';
 import IconGenderFree from '@/assets/icons/ph_gender-intersex.svg?react';
@@ -58,7 +57,7 @@ import IconMale from '@/assets/icons/icon-male.svg?react';
 import IconFemale from '@/assets/icons/icon-female.svg?react';
 import OpenTriangle from '@/assets/icons/open-triangle.svg?react';
 import CloseTriangle from '@/assets/icons/close-triangle.svg?react';
-import PetHart from '@/assets/icons/pet_hart.svg?react';
+import PetHeart from '@/assets/icons/pet_heart.svg?react';
 import MiniHeart from '@/assets/icons/mini-heart.svg?react';
 import PagePrev from '@/assets/icons/page-prev.svg?react';
 import PageNext from '@/assets/icons/page-next.svg?react';
@@ -325,9 +324,6 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   'close-triangle': ({ className, ...others }) => (
     <CloseTriangle className={(cn('w-[1.25rem]'), className)} {...others} />
   ),
-  'pet-hart': ({ className, ...others }) => (
-    <PetHart className={(cn('w-[1.125rem] h-auto'), className)} {...others} />
-  ),
   'pet-circle': ({ className, ...others }) => (
     <PetCircle
       className={(cn('w-[1.125rem] h-[1.125rem]'), className)}
@@ -401,13 +397,13 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
     <DownArrow className={cn('w-[3rem]', className)} {...others} />
   ),
   filter: ({ className, ...others }) => (
-    <Filter className={cn('w-[12px] h-auto', className)} {...others} />
+    <Filter className={cn('w-[0.75rem]', className)} {...others} />
   ),
   add: ({ className, ...others }) => (
-    <Add className={cn('size-[12px]', className)} {...others} />
+    <Add className={cn('size-[0.75rem]', className)} {...others} />
   ),
   reset: ({ className, ...others }) => (
-    <Reset className={cn('w-[14px] h-auto', className)} {...others} />
+    <Reset className={cn('w-[0.875rem]', className)} {...others} />
   ),
 };
 

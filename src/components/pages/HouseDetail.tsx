@@ -1,4 +1,4 @@
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
@@ -13,6 +13,8 @@ import { houseCommentQuery } from '@/hooks/useCommentReply';
 import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/Loading';
 import { routePaths } from '@/constants/route';
+import Container from '@/components/atoms/Container';
+import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
 
 function HouseDetail() {
   const { houseId } = useParams();
@@ -20,26 +22,23 @@ function HouseDetail() {
   const navigate = useNavigate();
   const user = useRecoilValue(UserAtom);
   const queryClient = useQueryClient();
-  const data = useQueries({
+  const data = useSuspenseQueries({
     queries: [
       houseDetailQuery(queryClient, houseId),
       houseBookmarkQuery(queryClient, user?.id, houseId),
+      houseCommentQuery(houseId),
     ],
+    combine: results => results.map(result => result.data),
   });
 
-  const isPending = data.some(result => result.isFetching);
-
-  const { data: comments } = useQuery(houseCommentQuery(houseId));
-
-  const [houseDetail, houseBookmark] = data;
-  const { data: houseData } = houseDetail;
-  const { data: bookmark } = houseBookmark;
-
-  if (isPending)
-    return <Loading text="Loading..." textStyle="tracking-widest" />;
+  const [
+    houseDetailData,
+    houseBookmarkData,
+    { data: commentsData, count: commentsCount },
+  ] = data;
 
   return (
-    <>
+    <Container className="relative size-full">
       {isLoadingDelaying && (
         <Loading
           className="absolute left-0 top-0 z-50 h-[100vh] w-[100vw]"
@@ -49,20 +48,19 @@ function HouseDetail() {
           callback={() => navigate(routePaths.signIn)}
         />
       )}
-      {houseData && (
-        <HouseDetailTemplate
-          houseData={houseData?.data as HouseData}
-          bookmark={bookmark?.data as boolean}
-          houseId={houseId as string}
-          setIsLoadingDelaying={setIsLoadingDelaying}
-        />
-      )}
-      <CommentTemplate
-        comments={comments?.data as unknown as CommentType[]}
-        commentsCount={comments?.count as unknown as string}
+      <HouseDetailTemplate
+        houseData={houseDetailData as HouseData}
+        bookmark={houseBookmarkData}
+        houseId={houseId as string}
+        setIsLoadingDelaying={setIsLoadingDelaying}
       />
-    </>
+      <CommentTemplate
+        comments={commentsData as unknown as CommentType[]}
+        commentsCount={commentsCount?.toString() || '0'}
+      />
+    </Container>
   );
 }
 
-export default HouseDetail;
+const SuspendedHouseDetail = WithSuspenseAndErrorBoundary(HouseDetail);
+export default SuspendedHouseDetail;

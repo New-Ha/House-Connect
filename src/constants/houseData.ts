@@ -50,7 +50,7 @@ export const registPetDisplayData: {
   {
     displayValue: '반려동물 키워요',
     stateValue: 1,
-    iconType: 'pet-hart',
+    iconType: 'pet-heart',
   },
   {
     displayValue: '반려동물 NO',

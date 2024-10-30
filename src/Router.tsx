@@ -32,6 +32,8 @@ import MyActivity from '@/components/pages/MyActivity';
 import MyAccount from '@/components/pages/MyAccount';
 import MyBookmark from '@/components/pages/MyBookmark';
 import { routePaths } from '@/constants/route';
+import Error404 from '@/components/pages/maintenance/Error404';
+import CommingSoon from '@/components/pages/maintenance/CommingSoon';
 
 type RouteType = RouteObject & {
   shouldProtected?: boolean;
@@ -92,11 +94,7 @@ const routes: RouteType[] = [
       {
         path: routePaths.lounge,
         shouldProtected: true,
-        element: (
-          <div className="flex size-full items-center justify-center bg-black text-3xl text-white">
-            lounge page
-          </div>
-        ),
+        element: <CommingSoon />,
       },
       {
         path: routePaths.house,
@@ -176,6 +174,11 @@ const routes: RouteType[] = [
           { path: routePaths.myAlarm, element: <h1>준비중...</h1> },
           { path: routePaths.myTheme, element: <h1>준비중...</h1> },
         ],
+      },
+      {
+        path: routePaths.notFound,
+        shouldProtected: false,
+        element: <Error404 />,
       },
     ],
   },

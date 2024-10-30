@@ -28,6 +28,7 @@ const routePaths = {
   myMate: '/mypage/mate',
   myAlarm: '/mypage/alarm',
   myTheme: '/mypage/theme',
+  notFound: '*',
 } as const;
 
 const routeHeaderInfo: {
@@ -185,6 +186,11 @@ const routeHeaderInfo: {
     userMenu: true,
   },
   myTheme: {
+    logo: true,
+    gnb: true,
+    userMenu: true,
+  },
+  notFound: {
     logo: true,
     gnb: true,
     userMenu: true,
