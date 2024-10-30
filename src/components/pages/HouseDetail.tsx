@@ -1,8 +1,7 @@
 import { useQueryClient, useSuspenseQueries } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { Suspense, useState, ComponentType } from 'react';
-import { FallbackProps, ErrorBoundary } from 'react-error-boundary';
+import { useState } from 'react';
 
 import HouseDetailTemplate, {
   HouseData,
@@ -15,19 +14,7 @@ import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/Loading';
 import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
-import Error404 from '@/components/pages/maintenance/Error404';
-import SupabaseCustomError from '@/libs/supabaseCustomError';
-
-export function ErrorFallback({ error }: FallbackProps) {
-  const { statusCode } = error as SupabaseCustomError;
-
-  if (statusCode >= 400 && statusCode < 500) {
-    return <Error404 />;
-  }
-
-  // TODO: unknown error page로 대체
-  return <h1 className="text-8xl text-brown">알 수 없는 오류</h1>;
-}
+import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
 
 function HouseDetail() {
   const { houseId } = useParams();
@@ -41,14 +28,13 @@ function HouseDetail() {
       houseBookmarkQuery(queryClient, user?.id, houseId),
       houseCommentQuery(houseId),
     ],
+    combine: results => results.map(result => result.data),
   });
 
   const [
-    { data: houseDetailData },
-    { data: houseBookmarkData },
-    {
-      data: { data: commentsData, count: commentsCount },
-    },
+    houseDetailData,
+    houseBookmarkData,
+    { data: commentsData, count: commentsCount },
   ] = data;
 
   return (
@@ -74,19 +60,6 @@ function HouseDetail() {
       />
     </Container>
   );
-}
-
-function WithSuspenseAndErrorBoundary<T>(InnerSuspenseComponent: ComponentType<T>) {
-  // eslint-disable-next-line react/display-name
-  return function (props: T & JSX.IntrinsicAttributes) {
-    return (
-      <ErrorBoundary fallbackRender={ErrorFallback}>
-        <Suspense fallback={<Loading text="Loading..." />}>
-          <InnerSuspenseComponent {...props} />
-        </Suspense>
-      </ErrorBoundary>
-    );
-  };
 }
 
 const SuspendedHouseDetail = WithSuspenseAndErrorBoundary(HouseDetail);
