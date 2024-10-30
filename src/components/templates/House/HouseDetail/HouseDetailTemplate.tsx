@@ -53,8 +53,9 @@ export default function HouseDetailTemplate(props: {
   houseData: HouseData;
   bookmark: boolean;
   houseId: string;
+  setIsLoadingDelaying: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { houseData, bookmark, houseId } = props;
+  const { houseData, bookmark, houseId, setIsLoadingDelaying } = props;
   const user = useRecoilValue(UserAtom);
   const navigate = useNavigate();
 
@@ -98,6 +99,11 @@ export default function HouseDetailTemplate(props: {
   };
 
   const onClickCreateChat = async () => {
+    // * 비 로그인 유저가 chatting을 클릭할 시 loading page 이후 로그인 페이지로 이동시키기 위함
+    if (!user) {
+      setIsLoadingDelaying(true);
+    }
+
     if (houseData.user_id && user?.id) {
       const {
         data: isChatRoomExist,
