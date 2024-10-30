@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Container from '@/components/atoms/Container';
 import Img from '@/components/atoms/Img';
-import character404 from '@/assets/images/character-404.png';
+import character404Error from '@/assets/images/character-404.png';
 import cn from '@/libs/cn';
 import Typography from '@/components/atoms/Typography';
 import Button from '@/components/atoms/Button';
@@ -20,22 +20,22 @@ export default function Error404({ className, imageStyle }: Error404Props) {
     <Container.FlexRow className="size-full items-center justify-center">
       <Container.FlexCol
         className={cn(
-          'w-full gap-[3rem] max-w-[30rem]',
-          'laptop:flex-row laptop:max-w-full',
+          'w-full gap-[3rem] max-w-[30rem] items-center',
+          'laptop:flex-row laptop:max-w-full laptop:px-[6.75rem] laptop:justify-center',
           className,
         )}
       >
         <Img
-          src={character404}
+          src={character404Error}
           className={cn(
             'flex justify-center',
-            'laptop:w-[10rem] laptop:flex-1',
+            'tablet:max-w-[22.625rem] monitor:max-w-[26.5rem]',
             imageStyle,
           )}
           imageStyle="w-full object-fill "
           alt="404 error image"
         />
-        <Container.FlexCol className="items-center laptop:flex-1 laptop:justify-center">
+        <Container.FlexCol className="items-center laptop:max-w-[27.5rem] laptop:flex-1 laptop:justify-center">
           <Container.FlexCol className="mb-[1.54rem] text-center text-brown">
             <Typography.Head1
               lang="en"
@@ -52,7 +52,7 @@ export default function Error404({ className, imageStyle }: Error404Props) {
               존재하지 않는 주소를 입력하셨거나,
             </Typography.P1>
             <Typography.P1 className="text-[1.2rem] leading-[160%] laptop:text-[1rem]">
-              요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.{' '}
+              요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.
             </Typography.P1>
           </Container.FlexCol>
           <Button.Fill
