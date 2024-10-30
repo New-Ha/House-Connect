@@ -19,15 +19,23 @@ export default function Error404({ className, imageStyle }: Error404Props) {
   return (
     <Container.FlexRow className="size-full items-center justify-center">
       <Container.FlexCol
-        className={cn('w-full gap-[3rem] max-w-[30rem]', className)}
+        className={cn(
+          'w-full gap-[3rem] max-w-[30rem]',
+          'laptop:flex-row laptop:max-w-full',
+          className,
+        )}
       >
         <Img
           src={character404}
-          className={cn('flex justify-center', imageStyle)}
+          className={cn(
+            'flex justify-center',
+            'laptop:w-[10rem] laptop:flex-1',
+            imageStyle,
+          )}
           imageStyle="w-full object-fill "
           alt="404 error image"
         />
-        <Container.FlexCol className="items-center">
+        <Container.FlexCol className="items-center laptop:flex-1 laptop:justify-center">
           <Container.FlexCol className="mb-[1.54rem] text-center text-brown">
             <Typography.Head1
               lang="en"
@@ -40,10 +48,10 @@ export default function Error404({ className, imageStyle }: Error404Props) {
             </Typography.SubTitle1>
           </Container.FlexCol>
           <Container.FlexCol className="mb-[2.2rem] text-center text-brown">
-            <Typography.P1 className="text-[1.2rem] leading-[160%]">
+            <Typography.P1 className="text-[1.2rem] leading-[160%] laptop:text-[1rem]">
               존재하지 않는 주소를 입력하셨거나,
             </Typography.P1>
-            <Typography.P1 className="text-[1.2rem] leading-[160%]">
+            <Typography.P1 className="text-[1.2rem] leading-[160%] laptop:text-[1rem]">
               요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.{' '}
             </Typography.P1>
           </Container.FlexCol>
