@@ -14,7 +14,7 @@ import {
 import { MessageType } from '@/types/chat.type';
 import Typography from '@/components/atoms/Typography';
 import { CHAT_KEYS } from '@/constants/queryKeys';
-import Loading from '@/components/pages/Loading';
+import Loading from '@/components/pages/maintenance/Loading';
 import cn from '@/libs/cn';
 import { Tables } from '@/types/supabase';
 
@@ -33,7 +33,7 @@ export default function Chat() {
 
   const isChatTopRoute = /^\/chat\/?$/.test(location.pathname);
   const isChatRoomRoute = /^\/chat\/[a-zA-Z0-9_-]+$/.test(location.pathname);
-  
+
   useOpenChatChannel<MessageType>({
     channelName: `chatRoomList`,
     realtimeEventFilters: [

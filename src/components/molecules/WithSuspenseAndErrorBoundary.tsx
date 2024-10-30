@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import Loading from '@/components/pages/Loading';
+import Loading from '@/components/pages/maintenance/Loading';
 import ErrorFallback from '@/components/molecules/ErrorFallback';
 
 function WithSuspenseAndErrorBoundary<T>(

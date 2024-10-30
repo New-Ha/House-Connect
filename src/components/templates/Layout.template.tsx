@@ -6,6 +6,7 @@ import Header from '@/components/templates/Header';
 import isRoutePathMatched from '@/libs/isRoutePathMatched';
 import Container from '@/components/atoms/Container';
 import HouseListTopSection from '@/components/templates/House/HouseList/HouseListTopSection';
+import Loading from '@/components/pages/maintenance/Loading';
 
 export default function LayoutTemplate() {
   // * supabase authListener를 등록함과 동시에 isLogin상태를 가져오기 위함
@@ -29,9 +30,8 @@ export default function LayoutTemplate() {
     isRoutePathMatched(location.pathname, 'house') ||
     isRoutePathMatched(location.pathname, 'root');
 
-  // TODO: loading page로 대체 
   if (isInitializingSession) {
-    return <h1>사용자 확인 중...</h1>;
+    return <Loading text="Checking User..." />;
   }
 
   return (

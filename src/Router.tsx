@@ -17,7 +17,7 @@ import SignUp from '@/components/pages/SignUp';
 // import About from '@/components/pages/About';
 import SignUpProfileOutro from '@/components/pages/SignUpProfileOutro';
 import { IsInitializingSession, SessionAtom } from '@/stores/auth.store';
-import Loading from '@/components/pages/Loading';
+import Loading from '@/components/pages/maintenance/Loading';
 import SignPasswordReset from '@/components/pages/SignPasswordReset';
 import SignUpdatePassword from '@/components/pages/SignUpdatePassword';
 import SignUpEmail from '@/components/pages/SignUpEmail';
