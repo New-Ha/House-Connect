@@ -95,7 +95,9 @@ export default function HouseInfoCard({ houseData }: HouseInfoCardProps) {
       <Container.FlexCol className="gap-6">
         <Typography.SubTitle1>원하는 룸메이트</Typography.SubTitle1>
         <Container.FlexRow className="items-center gap-5">
-          <Typography.SubTitle3>기간</Typography.SubTitle3>
+          <Typography.SubTitle3 className="whitespace-nowrap">
+            기간
+          </Typography.SubTitle3>
           <Badge.Outline
             className="rounded-full px-4"
             focus={false}
@@ -106,8 +108,8 @@ export default function HouseInfoCard({ houseData }: HouseInfoCardProps) {
           </Badge.Outline>
         </Container.FlexRow>
         <Container.FlexCol className="gap-3">
-          <Container.FlexRow className="items-center gap-5">
-            <Typography.SubTitle3 className="whitespace-nowrap">
+          <Container.FlexRow className="items-start gap-5">
+            <Typography.SubTitle3 className="translate-y-[70%] whitespace-nowrap">
               특징
             </Typography.SubTitle3>
             <Container.FlexRow className="flex-wrap gap-2">

@@ -3,7 +3,7 @@ import Container from '@/components/atoms/Container';
 import Icon from '@/components/atoms/Icon';
 import Img from '@/components/atoms/Img';
 import Typography from '@/components/atoms/Typography';
-import { HouseImageProp} from '@/components/templates/House/HouseDetail/ImageCarouselModal';
+import { HouseImageProp } from '@/components/templates/House/HouseDetail/ImageCarouselModal';
 
 export default function HouseImageTemplate({
   houseId,
@@ -22,16 +22,17 @@ export default function HouseImageTemplate({
   };
 
   return (
-    <Container.FlexRow className="relative max-h-[27.75rem] gap-5 laptop:min-h-[22.1875rem] tablet:min-h-[16.25rem]">
+    <Container.FlexRow className="relative max-h-[27.75rem] gap-5 tablet:min-h-[16.25rem] laptop:min-h-[22.1875rem]">
       <Img
-        className="min-h-[18.125rem] min-w-[23.8125rem] flex-1 [&>img]:object-cover"
+        className="flex-1"
+        imageStyle="object-cover"
         src={`${HOUSE_STORAGE_URL}/${representativeImg}`}
       />
       <Button.Ghost
         onClick={() => setModal(true)}
-        className="absolute bottom-5 right-5 gap-1.5 rounded-3xl bg-white px-4 py-2 text-brown drop-shadow-md"
+        className="absolute bottom-4 right-4 gap-1.5 rounded-3xl bg-white px-4 py-2 text-brown drop-shadow-md mobile:px-5"
       >
-        <Typography.P1>{`1 / ${imgLen + 1}`}</Typography.P1>
+        <Typography.P1 className="text-[1rem] font-medium mobile:text-[1.25rem]">{`1 / ${imgLen + 1}`}</Typography.P1>
       </Button.Ghost>
       <Container.Grid className="relative hidden min-w-[10rem] flex-1 grid-cols-2 grid-rows-2 gap-5 tablet:grid">
         {houseImg.slice(0, 4).map((src, index) => (
@@ -51,9 +52,11 @@ export default function HouseImageTemplate({
         </Container.FlexCol>
         <Button.Outline
           onClick={() => setModal(true)}
-          className="absolute bottom-4 right-4 rounded-3xl border-white px-5  py-2 text-brown drop-shadow-md "
+          className="absolute bottom-3 right-3 rounded-3xl border-white px-5 py-2 text-brown  drop-shadow-md laptop:bottom-4 laptop:right-4 "
         >
-          <Typography.P2>사진 모두 보기</Typography.P2>
+          <Typography.P2 className="tablet:text-[0.75rem] laptop:text-[1.125rem]">
+            사진 모두 보기
+          </Typography.P2>
         </Button.Outline>
       </Container.Grid>
     </Container.FlexRow>

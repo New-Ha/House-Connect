@@ -196,7 +196,7 @@ export default function HouseDetailTemplate(props: {
         <Container.FlexCol className="gap-[3.25rem]">
           <Container.FlexCol className="gap-4">
             <Container.FlexRow className="items-center">
-              <Typography.Head3 className="text-pretty pr-3 text-[1.8461538462rem] text-brown tablet:text-Head2">
+              <Typography.Head3 className="pr-3 text-[1.8461538462rem] leading-[120%] text-brown tablet:text-Head2">
                 {houseData && houseData.post_title}
               </Typography.Head3>
               {houseOwner && (
@@ -223,11 +223,11 @@ export default function HouseDetailTemplate(props: {
               )}
             </Container.FlexRow>
             <Container.FlexRow className="gap-3">
-              <Typography.P2 className="text-brown1">
+              <Typography.P2 className="leading-[130%] text-brown1">
                 {`최근 등록일 ${getDataString(houseData.created_at)}`}
               </Typography.P2>
               <Divider.Row className="border-l-0" />
-              <Typography.P2 className="text-brown1">
+              <Typography.P2 className="leading-[130%] text-brown1">
                 {`최근 수정일 ${getDataString(houseData.updated_at)}`}
               </Typography.P2>
             </Container.FlexRow>
