@@ -28,7 +28,8 @@ import Visible from '@/assets/icons/visible.svg?react';
 import AlarmExist from '@/assets/icons/alarm-exist.svg?react';
 import AlarmNone from '@/assets/icons/alarm-none.svg?react';
 import Avatar from '@/assets/icons/avatar.svg?react';
-import Back from '@/assets/icons/back.svg?react';
+import PrevCircle from '@/assets/icons/prev-circle.svg?react';
+import NextCircle from '@/assets/icons/next-circle.svg?react';
 import Heart from '@/assets/icons/heart.svg?react';
 import FillHeart from '@/assets/icons/fill-heart.svg?react';
 import Share from '@/assets/icons/share.svg?react';
@@ -59,8 +60,6 @@ import OpenTriangle from '@/assets/icons/open-triangle.svg?react';
 import CloseTriangle from '@/assets/icons/close-triangle.svg?react';
 import PetHeart from '@/assets/icons/pet_heart.svg?react';
 import MiniHeart from '@/assets/icons/mini-heart.svg?react';
-import PagePrev from '@/assets/icons/page-prev.svg?react';
-import PageNext from '@/assets/icons/page-next.svg?react';
 import Search from '@/assets/icons/search.svg?react';
 import Edit from '@/assets/icons/edit.svg?react';
 import Delete from '@/assets/icons/delete.svg?react';
@@ -239,10 +238,18 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   next: ({ className, ...others }) => (
     <Next className={cn('w-[0.6875rem] h-[1.25rem]', className)} {...others} />
   ),
-  back: ({ className, ...others }) => (
-    <Back className={cn('w-[2.75rem] h-[2.75rem]', className)} {...others} />
+  'prev-circle': ({ className, ...others }) => (
+    <PrevCircle
+      className={cn('w-[2.75rem] h-[2.75rem]', className)}
+      {...others}
+    />
   ),
-
+  'next-circle': ({ className, ...others }) => (
+    <NextCircle
+      className={cn('w-[2.75rem] h-[2.75rem]', className)}
+      {...others}
+    />
+  ),
   'monthly-rental-price': ({ className, ...others }) => (
     <MonthlyRentalPrice
       className={cn('w-[2.5625rem] h-[2.25rem]', className)}
@@ -332,12 +339,6 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   ),
   'mini-heart': ({ className, ...others }) => (
     <MiniHeart className={cn('w-[1.3025rem] h-6', className)} {...others} />
-  ),
-  'page-prev': ({ className, ...others }) => (
-    <PagePrev className={cn('size-[1.2rem]', className)} {...others} />
-  ),
-  'page-next': ({ className, ...others }) => (
-    <PageNext className={cn('size-[1.2rem]', className)} {...others} />
   ),
   search: ({ className, ...others }) => (
     <Search className={cn('size-6', className)} {...others} />

@@ -29,7 +29,7 @@ export default function SignPasswordResetTemplate() {
     <>
       <IconButton.Ghost
         onClick={onClickPrevButton}
-        iconType="back"
+        iconType="prev-circle"
         iconClassName="mx-auto"
         className="size-[2.75rem] rounded-full"
       />

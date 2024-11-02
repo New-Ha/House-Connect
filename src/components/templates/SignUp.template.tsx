@@ -21,7 +21,7 @@ export default function SignUp() {
     <>
       <IconButton.Ghost
         onClick={onClickPrevButton}
-        iconType="back"
+        iconType="prev-circle"
         iconClassName="mx-auto"
         className="size-[2.75rem] cursor-pointer rounded-full"
       />

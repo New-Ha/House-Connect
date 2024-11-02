@@ -61,7 +61,7 @@ export default function Pagination(props: PagenationProps) {
   return (
     <Container.FlexRow className="items-center justify-center">
       <IconButton.Ghost
-        iconType="page-prev"
+        iconType="prev"
         className="size-10 justify-center"
         stroke={currentPage === 1 ? 'brown2' : 'brown'}
         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -85,7 +85,7 @@ export default function Pagination(props: PagenationProps) {
         ),
       )}
       <IconButton.Ghost
-        iconType="page-next"
+        iconType="next"
         className="size-10 justify-center"
         stroke={currentPage === totalPage ? 'brown2' : 'brown'}
         fill={currentPage === totalPage ? 'brown2' : 'brown'}
