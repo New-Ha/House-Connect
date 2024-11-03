@@ -28,14 +28,15 @@ export default {
         brown5: '#FFFEFB',
         brown6: '#F5EDE6',
         brown7: '#EEE2D8',
+        'dark-brown': '#241F1D',
         point: '#FF7759',
+        point1: '#FF5F3C',
         'hover-outline': '#FFFBF8',
         'active-fill': '#4C2A1C',
         'active-outline': '#F7E9DE',
         focus: '#EFCBA1',
         'bg-beige': '#FCF7E7',
         'bg-orange': '#FFD7C6',
-        point1: '#FF5F3C',
       },
       fontSize: {
         Head1: ['3rem', { fontWeight: 700 }],
@@ -74,6 +75,9 @@ export default {
         'avatar-active': 'rgba(0, 0, 0, 0.3) 0px 0px 4px 3px',
         badge: 'rgba(0, 0, 0, 0.16) 0px 0px 8px 0px',
       },
+      dropShadow: {
+        icon: '0px 0px 2px rgba(0, 0, 0, 0.5)',
+      }
     },
   },
 

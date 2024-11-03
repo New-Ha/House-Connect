@@ -1,11 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import Container from '@/components/atoms/Container';
+import cn from '@/libs/cn';
 
 type CarouselProps = {
   // eslint-disable-next-line react/require-default-props
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
   order: number;
 };
 export default function Carousel(props: CarouselProps) {
@@ -20,12 +21,13 @@ export default function Carousel(props: CarouselProps) {
   }, [containerRef]);
 
   const translateX = `-translate-x-[${order * 100}%]`;
+
   return (
     <Container.FlexRow
-      className={`w-full overflow-hidden overflow-y-scroll ${className}`}
+      className={cn('w-full overflow-hidden overflow-y-scroll', className)}
     >
       <Container.FlexRow
-        className={`w-full transition ${translateX}`}
+        className={cn('w-full transition', translateX)}
         ref={containerRef}
       >
         {children}
