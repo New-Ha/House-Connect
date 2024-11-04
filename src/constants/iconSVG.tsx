@@ -61,8 +61,8 @@ import CloseTriangle from '@/assets/icons/close-triangle.svg?react';
 import PetHeart from '@/assets/icons/pet_heart.svg?react';
 import MiniHeart from '@/assets/icons/mini-heart.svg?react';
 import Search from '@/assets/icons/search.svg?react';
-import Edit from '@/assets/icons/edit.svg?react';
-import Delete from '@/assets/icons/delete.svg?react';
+import Pencil from '@/assets/icons/pencil.svg?react';
+import Trash from '@/assets/icons/trash.svg?react';
 import EditAvatar from '@/assets/icons/edit_avatar.svg?react';
 import DownArrow from '@/assets/icons/down-arrow.svg?react';
 import Filter from '@/assets/icons/filter.svg?react';
@@ -382,11 +382,11 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   'pet-hate': ({ className, ...others }) => (
     <PetHate className={cn('size-[1.125rem]', className)} {...others} />
   ),
-  edit: ({ className, ...others }) => (
-    <Edit className={cn('size-[17px]', className)} {...others} />
+  pencil: ({ className, ...others }) => (
+    <Pencil className={cn('size-[17px]', className)} {...others} />
   ),
-  delete: ({ className, ...others }) => (
-    <Delete className={cn('size-[24px]', className)} {...others} />
+  trash: ({ className, ...others }) => (
+    <Trash className={cn('size-[24px]', className)} {...others} />
   ),
   'camera-off': ({ className, ...others }) => (
     <CameraOff className={cn('size-[4rem]', className)} {...others} />
