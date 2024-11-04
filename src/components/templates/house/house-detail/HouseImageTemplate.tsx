@@ -3,7 +3,7 @@ import Container from '@/components/atoms/Container';
 import Icon from '@/components/atoms/Icon';
 import Img from '@/components/atoms/Img';
 import Typography from '@/components/atoms/Typography';
-import { HouseImageProp } from '@/components/templates/House/HouseDetail/ImageCarouselModal';
+import { HouseImageProp } from '@/components/templates/house/house-detail/ImageCarouselModal';
 
 export default function HouseImageTemplate({
   houseId,
