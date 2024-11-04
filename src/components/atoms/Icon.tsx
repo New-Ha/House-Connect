@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { CustomIconType, IconType } from '@/types/icon.type';
-import IconSVG from '@/constants/iconSVG';
+import IconSVG from '@/components/atoms/iconSVG';
 import cn from '@/libs/cn';
 
 export type IconProps = CustomIconType & {

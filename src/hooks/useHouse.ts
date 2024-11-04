@@ -22,7 +22,7 @@ import { HouseFormType, HouseListFilterType } from '@/types/house.type';
 import {
   UserLifeStyleType,
   UserMateStyleType,
-} from '@/components/pages/HouseRegister';
+} from '@/components/pages/house/house-regist/HouseRegister';
 import USER_KEYS from '@/constants/queryKeys/user';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 import { Keys } from '@/types/common.type';

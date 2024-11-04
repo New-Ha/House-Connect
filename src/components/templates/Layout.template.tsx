@@ -5,7 +5,7 @@ import { useAuthState } from '@/hooks/useSign';
 import Header from '@/components/templates/Header';
 import isRoutePathMatched from '@/libs/isRoutePathMatched';
 import Container from '@/components/atoms/Container';
-import HouseListTopSection from '@/components/templates/House/HouseList/HouseListTopSection';
+import HouseListTopSection from '@/components/templates/house/house-list/HouseListTopSection';
 import Loading from '@/components/pages/maintenance/Loading';
 
 export default function LayoutTemplate() {
