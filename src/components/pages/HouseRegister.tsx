@@ -275,7 +275,7 @@ export default function HouseRegister() {
             onClickSaveTemporary={onClickSaveTemporary}
             carouselLength={carouselTemplates.length}
           />
-          <Container.FlexCol className="pb-12">
+          <Container.FlexCol className="pb-12 pt-4">
             <Container.FlexRow className="items-center gap-4 py-2">
               <Typography.Head2 className="text-brown">
                 하우스 등록

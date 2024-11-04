@@ -68,6 +68,7 @@ import DownArrow from '@/assets/icons/down-arrow.svg?react';
 import Filter from '@/assets/icons/filter.svg?react';
 import Add from '@/assets/icons/add.svg?react';
 import Reset from '@/assets/icons/reset.svg?react';
+import Home from '@/assets/icons/home.svg?react';
 import { IconType } from '@/types/icon.type';
 import cn from '@/libs/cn';
 
@@ -405,6 +406,9 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   ),
   reset: ({ className, ...others }) => (
     <Reset className={cn('w-[0.875rem]', className)} {...others} />
+  ),
+  home: ({ className, ...others }) => (
+    <Home className={cn('size-4', className)} {...others} />
   ),
 };
 

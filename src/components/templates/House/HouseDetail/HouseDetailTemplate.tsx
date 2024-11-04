@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@/components/atoms/Button';
 import Container from '@/components/atoms/Container';
 import Divider from '@/components/atoms/Divider';
-import Icon from '@/components/atoms/Icon';
 import Typography from '@/components/atoms/Typography';
 import IconButton from '@/components/molecules/IconButton';
 import { UserType } from '@/types/auth.type';
@@ -33,6 +32,7 @@ import UserInfoCard from '@/components/templates/House/HouseDetail/UserInfoCard'
 import { supabase } from '@/libs/supabaseClient';
 import SupabaseCustomError from '@/libs/supabaseCustomError';
 import { routePaths } from '@/constants/route';
+import cn from '@/libs/cn';
 
 // TODO: house.type HouseData(join된 column도 포함) 필요한 column만 pick해서 가져오기
 export type HouseData = Omit<HouseFormType, 'rental_type' | 'floor'> & {
@@ -49,13 +49,23 @@ type User = Pick<UserType, 'id' | 'name' | 'avatar'> & {
   gender: keyof typeof genderInfo;
 };
 
-export default function HouseDetailTemplate(props: {
+type HouseDetailTemplateProps = {
   houseData: HouseData;
   bookmark: boolean;
   houseId: string;
   setIsLoadingDelaying: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const { houseData, bookmark, houseId, setIsLoadingDelaying } = props;
+  className?: string;
+  houseOwner: boolean;
+};
+
+export default function HouseDetailTemplate({
+  houseData,
+  bookmark,
+  houseId,
+  setIsLoadingDelaying,
+  className,
+  houseOwner,
+}: HouseDetailTemplateProps) {
   const user = useRecoilValue(UserAtom);
   const navigate = useNavigate();
 
@@ -76,9 +86,10 @@ export default function HouseDetailTemplate(props: {
     });
   };
 
-  const onClickEditBtn = () => {
-    navigate(`/house/edit/${houseId}`);
+  const onClickEditBtn = (houseId: string) => {
+    navigate(routePaths.houseEdit(houseId));
   };
+
   const onClickDeleteBtn = () => {
     deleteHouseDetailPage(houseId, {
       onSuccess: () => {
@@ -86,12 +97,6 @@ export default function HouseDetailTemplate(props: {
       },
     });
   };
-
-  if (!houseData) {
-    return <div>데이터 없음..</div>;
-  }
-
-  const houseOwner = houseData.user_id === user?.id;
 
   const getDataString = (dateString: string) => {
     const date = new Date(dateString);
@@ -175,7 +180,7 @@ export default function HouseDetailTemplate(props: {
   };
 
   return (
-    <Container.FlexCol className="gap-8">
+    <Container.FlexCol className={cn('gap-8', className)}>
       {modal && (
         <ImageCarouselModal
           houseId={houseId}
@@ -202,22 +207,16 @@ export default function HouseDetailTemplate(props: {
               {houseOwner && (
                 <>
                   <Button.Ghost
-                    className="p-[0.5625rem] text-brown"
-                    onClick={onClickEditBtn}
+                    className="hidden p-[0.5625rem] text-brown s-tablet:flex"
+                    onClick={() => onClickEditBtn(houseId)}
                   >
-                    <Icon type="edit" className="block tablet:hidden" />
-                    <Typography.P3 className="hidden tablet:block">
-                      수정
-                    </Typography.P3>
+                    <Typography.P3>수정</Typography.P3>
                   </Button.Ghost>
                   <Button.Ghost
-                    className="p-[0.5625rem] text-brown"
+                    className="hidden p-[0.5625rem] text-brown s-tablet:flex"
                     onClick={onClickDeleteBtn}
                   >
-                    <Icon type="delete" className="block tablet:hidden" />
-                    <Typography.P3 className="hidden tablet:block ">
-                      삭제
-                    </Typography.P3>
+                    <Typography.P3>삭제</Typography.P3>
                   </Button.Ghost>
                 </>
               )}
@@ -285,3 +284,7 @@ export default function HouseDetailTemplate(props: {
     </Container.FlexCol>
   );
 }
+
+HouseDetailTemplate.defaultProps = {
+  className: '',
+};

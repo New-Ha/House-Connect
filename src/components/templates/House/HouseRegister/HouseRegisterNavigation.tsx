@@ -27,7 +27,6 @@ export default function HouseRegisterNavigation({
 }: NavigationProps) {
   const navigate = useNavigate();
   const [isOverSTabletBreakpoint] = useIsOverSTabletBreakpoint();
-  <h1>mobile navigation</h1>;
   const overSTabletCommonButtonStyle =
     'flex h-[3.5rem] w-[9.25rem] justify-center items-center rounded-[2rem] p-2';
   const underSTabletCommonButtonStyle =
@@ -38,7 +37,7 @@ export default function HouseRegisterNavigation({
   return (
     <Container.FlexRow
       className={cn(
-        'sticky top-0 z-10 w-full justify-between bg-bg pt-4 pb-8',
+        'sticky top-0 z-10 w-full justify-between bg-bg py-6',
         's-tablet:bottom-0 s-tablet:border-t-[1px] s-tablet:border-brown s-tablet:py-8',
       )}
     >

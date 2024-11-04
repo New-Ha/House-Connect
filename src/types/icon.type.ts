@@ -68,7 +68,8 @@ export type IconType =
   | 'down-arrow'
   | 'filter'
   | 'add'
-  | 'reset';
+  | 'reset'
+  | 'home';
 
 export type CustomIconType = {
   fill?: ColorType;

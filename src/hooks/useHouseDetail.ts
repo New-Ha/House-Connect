@@ -102,16 +102,16 @@ export const useDeleteHouseDetail = () => {
       }
     },
     onMutate: () =>
-      createToast('deleteHouseDetailPage', '하우스 디테일 페이지 삭제 중...'),
+      createToast('deleteHouseDetailPage', '하우스 삭제 중...'),
     onError: () =>
       errorToast(
         'deleteHouseDetailPage',
-        '하우스 디테일 페이지 삭제에 실패했습니다.',
+        '하우스 삭제에 실패했습니다.',
       ),
     onSuccess: () => {
       successToast(
         'deleteHouseDetailPage',
-        '하우스 디테일 페이지가 삭제되었습니다.',
+        '하우스가 삭제되었습니다.',
       );
       navigate(routePaths.house);
     },
