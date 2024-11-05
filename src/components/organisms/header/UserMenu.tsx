@@ -54,7 +54,14 @@ export default function UserMenu({
               <Avatar.XS src={user.avatar} isActive={isUserMenuActive} />
             </Button.Ghost>
           ) : (
-            <IconButton button="Ghost" iconType="avatar" />
+            <IconButton
+              button="Ghost"
+              iconType="avatar"
+              onClick={e => {
+                e.stopPropagation();
+                setDropView(!dropView);
+              }}
+            />
           )}
           {dropView && <UserDropdown setDropView={setDropView} user={user} />}
         </>
