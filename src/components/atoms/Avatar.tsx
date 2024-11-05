@@ -14,6 +14,7 @@ export type AvatarProps = ComponentProps<'img'> & { isActive?: boolean };
 export type AvatarSizeType = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 
 type AvatarComponentProps = {
+  // eslint-disable-next-line no-unused-vars
   [key in AvatarSizeType]: (props: AvatarProps) => ReactNode;
 };
 
@@ -59,9 +60,9 @@ AvatarSize.forEach(({ size, defaultClassName }) => {
     React.createElement('img', {
       className: cn(
         'shadow-avatar shrink-0 cursor-pointer rounded-full',
-        className,
         defaultClassName,
         isActive && 'shadow-avatar-active',
+        className,
       ),
       src: src?.startsWith('images/avatar/')
         ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/avatar/${src}`

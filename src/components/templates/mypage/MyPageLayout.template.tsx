@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
+
 import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
 import Link from '@/components/atoms/Link';
@@ -31,8 +32,8 @@ export default function MyPageLayoutTemplate() {
     { path: 'theme', name: '테마 설정' },
   ];
   return (
-    <Container.Grid className="grid-cols-[12.75rem_1fr] pt-[3.25rem]">
-      <aside className="flex flex-col gap-y-10 pt-[3.25rem]">
+    <Container.Grid className="grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
+      <aside className="flex-col gap-y-10 pt-8 tablet:flex">
         <Typography.SubTitle1 className="text-brown">
           마이 페이지
         </Typography.SubTitle1>
@@ -51,7 +52,7 @@ export default function MyPageLayoutTemplate() {
           ))}
         </Container.FlexCol>
       </aside>
-      <section className="pt-[3.25rem]">
+      <section className="pt-8">
         <Outlet />
       </section>
     </Container.Grid>
