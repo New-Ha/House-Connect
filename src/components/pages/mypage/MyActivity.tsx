@@ -1,16 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 
 import MyActivityTemplate from '@/components/templates/mypage/MyActivity.template';
 import { userInfoQuery, UserInfoType } from '@/hooks/useUserInfo';
 import { UserAtom } from '@/stores/auth.store';
+import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
 
-export default function MyActivity() {
+export function MyActivity() {
   const user = useRecoilValue(UserAtom);
-  // TODO: suspense and error-boundary 적용
-  const { data } = useQuery(userInfoQuery(user));
+  const { data } = useSuspenseQuery(userInfoQuery(user));
 
-  if (!data) return <h1>data가 없습니다.</h1>;
-
-  return <MyActivityTemplate user={data.data as unknown as UserInfoType} />;
+  return <MyActivityTemplate user={data as UserInfoType} />;
 }
+
+const SuspendedMyActivity = WithSuspenseAndErrorBoundary({
+  InnerSuspenseComponent: MyActivity,
+});
+
+export default SuspendedMyActivity;

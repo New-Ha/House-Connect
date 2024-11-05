@@ -6,6 +6,7 @@ import { RegionUnion, SignUpProfileType } from '@/types/signUp.type';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import useModal from '@/hooks/useModal';
 import USER_KEYS from '@/constants/queryKeys/user';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 export type UserInfoType = {
   avatar: string;
@@ -42,14 +43,21 @@ type UserMateStyleType = {
 export const userInfoQuery = (user: UserType | null) =>
   queryOptions({
     queryKey: USER_KEYS.USER_INFO(user?.id),
-    queryFn: async () =>
-      supabase
+    queryFn: async () => {
+      const { data, error, status } = await supabase
         .from('user')
         .select(
           'avatar, name, nickname,gender, user_lifestyle(appeals, pet, smoking), user_looking_house(deposit_price, monthly_rental_price, regions, rental_type, term, type), user_mate_style(mate_gender, mate_number, mate_appeals, prefer_mate_age)',
         )
         .eq('id', user?.id ?? '')
-        .single(),
+        .single();
+
+      if (error) {
+        throw new SupabaseCustomError(error, status);
+      }
+
+      return data;
+    },
     enabled: !!user,
   });
 

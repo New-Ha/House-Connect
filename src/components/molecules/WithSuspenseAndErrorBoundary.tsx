@@ -14,7 +14,7 @@ function WithSuspenseAndErrorBoundary<T>({
   // eslint-disable-next-line react/display-name
   return function (props: T & JSX.IntrinsicAttributes) {
     return (
-      <ErrorBoundary fallbackRender={props => <ErrorFallback {...props} />}>
+      <ErrorBoundary fallbackRender={ErrorFallback}>
         <Suspense fallback={SuspenseFallback || <Loading text="Loading..." />}>
           <InnerSuspenseComponent {...props} />
         </Suspense>
