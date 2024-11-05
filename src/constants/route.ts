@@ -164,31 +164,37 @@ const routeHeaderInfo: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   myBookmark: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   myAccount: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   myMate: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   myAlarm: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   myTheme: {
     logo: true,
     gnb: true,
     userMenu: true,
+    isHeaderExistUnderSTablet: true,
   },
   notFound: {
     logo: true,
