@@ -3,7 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-import HouseDetailTemplate, { HouseData } from '@/components/templates/house/house-detail/HouseDetailTemplate';
+import HouseDetailTemplate, {
+  HouseData,
+} from '@/components/templates/house/house-detail/HouseDetailTemplate';
 import {
   houseBookmarkQuery,
   houseDetailQuery,
@@ -116,5 +118,7 @@ function HouseDetail() {
   );
 }
 
-const SuspendedHouseDetail = WithSuspenseAndErrorBoundary(HouseDetail);
+const SuspendedHouseDetail = WithSuspenseAndErrorBoundary({
+  InnerSuspenseComponent: HouseDetail,
+});
 export default SuspendedHouseDetail;
