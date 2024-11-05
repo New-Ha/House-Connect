@@ -116,11 +116,14 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
 
   return (
     <Container.FlexCol className="gap-y-8">
-      <Container.FlexRow className="w-full gap-x-[1.54rem]">
+      <Container.FlexRow className="w-full items-center gap-x-[1.54rem]">
         <Container.FlexRow className="items-center justify-center">
-          <Avatar.XXL className="size-[4.615rem]" src={user.avatar} />
+          <Avatar.XXL
+            className="size-[4.615rem] tablet:size-[6rem]"
+            src={user.avatar}
+          />
         </Container.FlexRow>
-        <Container.FlexCol className="gap-y-[0.615rem]">
+        <Container.FlexCol className="gap-y-[0.615rem] tablet:gap-y-3">
           <Container.FlexRow className="items-center gap-x-3">
             <Typography.SubTitle1 className="text-[1.54rem] text-brown">
               {user.nickname}님
@@ -129,9 +132,10 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
               <BadgeButton.Outline
                 className="gap-x-[0.625rem] rounded-[1.875rem] px-4 py-[0.625rem]"
                 iconType="next"
+                stroke="brown"
                 iconClassName="h-[0.6875rem] w-[0.375rem]"
               >
-                계정 설정
+                <Typography.Span1>계정 설정</Typography.Span1>
               </BadgeButton.Outline>
             </Link>
           </Container.FlexRow>
@@ -150,8 +154,8 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
           <Typography.Span1 className="text-brown">수정</Typography.Span1>
         </Button.Outline>
       </Container.FlexRow>
-      <Container.Grid className="gap-[1.85rem] gap-x-5">
-        {/* 내가 찾던 집 */}
+      <Container.Grid className="gap-[1.85rem] gap-x-5 laptop:grid-cols-2">
+        {/* 내가 찾는 집 */}
         <Container.FlexCol className="flex-1 rounded-xl bg-brown6 p-[1.5rem]">
           <Container.FlexRow className="items-center gap-x-[1.25rem] pb-[2.46rem]">
             <Icon type="studio-officetel" className="size-[3.7rem]" />

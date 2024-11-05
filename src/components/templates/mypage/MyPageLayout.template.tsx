@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import Container from '@/components/atoms/Container';
@@ -17,6 +17,8 @@ function MyPageAside({
   isAsideDropdownOpen,
   setIsAsideDropdownOpen,
 }: MyPageAsideProps) {
+  const location = useLocation();
+
   return (
     <>
       {/* after tablet breakpoint aside */}
@@ -64,7 +66,7 @@ function MyPageAside({
           />
         )}
         <Typography.Head2 className="text-[1.077rem] font-semibold text-brown">
-          내 활동
+          {asideItems.find(({ path }) => path === location.pathname)?.name}
         </Typography.Head2>
       </Container.FlexCol>
     </>
@@ -75,12 +77,12 @@ export default function MyPageLayoutTemplate() {
   const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
 
   return (
-    <Container.Grid className="grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
+    <Container.Grid className="size-full grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
       <MyPageAside
         isAsideDropdownOpen={isAsideDropdownOpen}
         setIsAsideDropdownOpen={setIsAsideDropdownOpen}
       />
-      <section className="pt-8">
+      <section className="py-8">
         <Outlet />
       </section>
     </Container.Grid>
