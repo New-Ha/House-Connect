@@ -1,9 +1,5 @@
-import Typography from '@/components/atoms/Typography';
+import CommingSoon from '@/components/pages/maintenance/CommingSoon';
 
 export default function MyBookmarkArticleTemplate() {
-  return (
-    <Typography.Head1 className="mt-10 text-brown">
-      게시물 서비스 준비중 입니다.
-    </Typography.Head1>
-  );
+  return <CommingSoon />;
 }

@@ -26,27 +26,29 @@ export default function MyBookmarkTemplate(props: MyBookmarkTemplateProps) {
   const [currentTab, setCurrentTab] = useRecoilState(BookmarkCurrentTabAtom);
   const tabItem = ['하우스', '라운지', '게시물'];
   return (
-    <Container.FlexCol>
-      <Container.FlexRow>
-        {tabItem.map((item, index) => (
-          <Button.Ghost
-            key={item}
-            className={`h-14 w-[11.25rem] items-center justify-center border-b-brown text-brown2 ${currentTab === index ? 'border-b-3 text-brown' : ''}`}
-            onClick={() => {
-              setCurrentTab(index);
-              setCurrentPage(1);
-            }}
-          >
-            <Typography.SubTitle1>{item}</Typography.SubTitle1>
-          </Button.Ghost>
-        ))}
-      </Container.FlexRow>
-      {currentTab === 0 && <MyBookmarkHouseTemplate house={house} />}
-      {currentTab === 1 && <MyBookmarkLoungeTemplate />}
-      {currentTab === 2 && <MyBookmarkArticleTemplate />}
-      <Container className="mt-[7.5rem]">
+    <>
+      <Container.FlexCol className="h-full">
+        <Container.FlexRow>
+          {tabItem.map((item, index) => (
+            <Button.Ghost
+              key={item}
+              className={`h-14 w-[11.25rem] items-center justify-center border-b-brown text-brown2 ${currentTab === index ? 'border-b-3 text-brown' : ''}`}
+              onClick={() => {
+                setCurrentTab(index);
+                setCurrentPage(1);
+              }}
+            >
+              <Typography.SubTitle1>{item}</Typography.SubTitle1>
+            </Button.Ghost>
+          ))}
+        </Container.FlexRow>
+        {currentTab === 0 && <MyBookmarkHouseTemplate house={house} />}
+        {currentTab === 1 && <MyBookmarkLoungeTemplate />}
+        {currentTab === 2 && <MyBookmarkArticleTemplate />}
+      </Container.FlexCol>
+      <Container>
         <Pagination totalPage={houseCount} pageState={pageState} />
       </Container>
-    </Container.FlexCol>
+    </>
   );
 }

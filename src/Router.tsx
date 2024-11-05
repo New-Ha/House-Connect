@@ -170,9 +170,9 @@ const routes: RouteType[] = [
           { path: routePaths.myActivity, element: <MyActivity /> },
           { path: routePaths.myBookmark, element: <MyBookmark /> },
           { path: routePaths.myAccount, element: <MyAccount /> },
-          { path: routePaths.myMate, element: <h1>준비중...</h1> },
-          { path: routePaths.myAlarm, element: <h1>준비중...</h1> },
-          { path: routePaths.myTheme, element: <h1>준비중...</h1> },
+          { path: routePaths.myMate, element: <CommingSoon /> },
+          { path: routePaths.myAlarm, element: <CommingSoon /> },
+          { path: routePaths.myTheme, element: <CommingSoon /> },
         ],
       },
       {
