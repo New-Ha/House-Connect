@@ -1,57 +1,66 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+import { useState } from 'react';
 
-import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
-import Link from '@/components/atoms/Link';
 import Typography from '@/components/atoms/Typography';
-
-type MyPageSideBarItemProps = {
-  isActive: boolean;
-  path: string;
-  name: string;
-};
-
-function MyPageSideBarItem(props: MyPageSideBarItemProps) {
-  const { isActive, path, name } = props;
-  return (
-    <Link to={`${routePaths.myPage}/${path}`}>
-      <Typography.SubTitle3 className={isActive ? 'text-brown' : 'text-brown2'}>
-        {name}
-      </Typography.SubTitle3>
-    </Link>
-  );
-}
+import { asideItems } from '@/constants/mypage';
+import IconButton from '@/components/molecules/IconButton';
+import cn from '@/libs/cn';
+import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
 
 export default function MyPageLayoutTemplate() {
-  const location = useLocation();
-  const sidebarItems = [
-    { path: 'activity', name: '내 활동' },
-    { path: 'bookmark', name: '내 북마크' },
-    { path: 'mate', name: '메이트 관리' },
-    { path: 'alarm', name: '알림 설정' },
-    { path: 'theme', name: '테마 설정' },
-  ];
+  const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
+
   return (
     <Container.Grid className="grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
-      <aside className="flex-col gap-y-10 pt-8 tablet:flex">
+      {/* after tablet breakpoint aside */}
+      <aside className="hidden flex-col gap-y-10 pt-8 tablet:flex">
         <Typography.SubTitle1 className="text-brown">
           마이 페이지
         </Typography.SubTitle1>
         <Container.FlexCol className="gap-y-7">
-          {sidebarItems.map(sidebarItem => (
-            <MyPageSideBarItem
-              key={sidebarItem.name}
-              name={sidebarItem.name}
-              path={sidebarItem.path}
-              isActive={
-                location.pathname.endsWith(sidebarItem.path) ||
-                (location.pathname.endsWith('account') &&
-                  sidebarItem.path === 'activity')
+          {asideItems.map(({ path, name }) => (
+            <NavLink
+              key={`${path}-${name}`}
+              to={path}
+              className={({ isActive }) =>
+                isActive ? 'text-brown' : 'text-brown2'
               }
-            />
+            >
+              <Typography.SubTitle3>{name}</Typography.SubTitle3>
+            </NavLink>
           ))}
         </Container.FlexCol>
       </aside>
+      {/* under tablet breakpoint aside */}
+      <Container.FlexCol className="relative max-w-[12rem] tablet:hidden">
+        <IconButton.Ghost
+          className="gap-2 pb-6"
+          stroke="brown"
+          iconType="expand-arrow"
+          iconClassName={cn(
+            'w-[0.8rem] h-[1rem]',
+            isAsideDropdownOpen && 'rotate-180',
+          )}
+          onClick={e => {
+            e.stopPropagation();
+            setIsAsideDropdownOpen(prev => !prev);
+          }}
+        >
+          <Typography.Head1 className="text-[1.54rem] font-semibold text-brown">
+            마이 페이지
+          </Typography.Head1>
+        </IconButton.Ghost>
+        {isAsideDropdownOpen && (
+          <MyPageAsideDropdown
+            className="absolute top-[3rem]"
+            setDropView={setIsAsideDropdownOpen}
+          />
+        )}
+        <Typography.Head2 className="text-[1.077rem] font-semibold text-brown">
+          내 활동
+        </Typography.Head2>
+      </Container.FlexCol>
       <section className="pt-8">
         <Outlet />
       </section>
