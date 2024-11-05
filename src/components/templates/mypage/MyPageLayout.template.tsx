@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import Container from '@/components/atoms/Container';
 import Typography from '@/components/atoms/Typography';
@@ -8,11 +8,17 @@ import IconButton from '@/components/molecules/IconButton';
 import cn from '@/libs/cn';
 import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
 
-export default function MyPageLayoutTemplate() {
-  const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
+type MyPageAsideProps = {
+  isAsideDropdownOpen: boolean;
+  setIsAsideDropdownOpen: Dispatch<SetStateAction<boolean>>;
+};
 
+function MyPageAside({
+  isAsideDropdownOpen,
+  setIsAsideDropdownOpen,
+}: MyPageAsideProps) {
   return (
-    <Container.Grid className="grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
+    <>
       {/* after tablet breakpoint aside */}
       <aside className="hidden flex-col gap-y-10 pt-8 tablet:flex">
         <Typography.SubTitle1 className="text-brown">
@@ -61,6 +67,19 @@ export default function MyPageLayoutTemplate() {
           내 활동
         </Typography.Head2>
       </Container.FlexCol>
+    </>
+  );
+}
+
+export default function MyPageLayoutTemplate() {
+  const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
+
+  return (
+    <Container.Grid className="grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
+      <MyPageAside
+        isAsideDropdownOpen={isAsideDropdownOpen}
+        setIsAsideDropdownOpen={setIsAsideDropdownOpen}
+      />
       <section className="pt-8">
         <Outlet />
       </section>

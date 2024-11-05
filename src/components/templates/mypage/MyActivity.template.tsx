@@ -272,6 +272,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
         </Container.FlexCol>
       </Container.Grid>
       <Container.FlexCol>
+        {/* TODO: fetch 내가 쓴 댓글  */}
         <Container.FlexRow>
           {tabItem.map((item, index) => (
             <Button.Ghost
@@ -284,9 +285,6 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
           ))}
         </Container.FlexRow>
         <CommingSoon className="py-[3.7rem]" />
-        {/* <Typography.SubTitle1 className="bg-slate-500 pb-[1.5625rem] pl-5 pt-[2.3125rem] text-brown">
-          서비스 준비중 입니다.
-        </Typography.SubTitle1> */}
         <Divider.Col />
       </Container.FlexCol>
     </Container.FlexCol>
