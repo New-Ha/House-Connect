@@ -38,7 +38,7 @@ export default function Loading({
     return () => {
       if (sleep) clearTimeout(sleep);
     };
-  }, []);
+  }, [callback, delayTime, setIsDelaying]);
 
   return (
     <Container.FlexCol
