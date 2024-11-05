@@ -20,9 +20,9 @@ function MyPageAside({
   const location = useLocation();
 
   return (
-    <>
+    <Container>
       {/* after tablet breakpoint aside */}
-      <aside className="hidden flex-col gap-y-10 pt-8 tablet:flex">
+      <aside className="sticky top-[8.5rem] hidden flex-col gap-y-10 tablet:flex">
         <Typography.SubTitle1 className="text-brown">
           마이 페이지
         </Typography.SubTitle1>
@@ -41,7 +41,7 @@ function MyPageAside({
         </Container.FlexCol>
       </aside>
       {/* under tablet breakpoint aside */}
-      <Container.FlexCol className="relative max-w-[12rem] tablet:hidden">
+      <Container.FlexCol className="relative max-w-[12rem] pb-12 tablet:hidden">
         <IconButton.Ghost
           className="gap-2 pb-6"
           stroke="brown"
@@ -69,7 +69,7 @@ function MyPageAside({
           {asideItems.find(({ path }) => path === location.pathname)?.name}
         </Typography.Head2>
       </Container.FlexCol>
-    </>
+    </Container>
   );
 }
 
@@ -82,7 +82,7 @@ export default function MyPageLayoutTemplate() {
         isAsideDropdownOpen={isAsideDropdownOpen}
         setIsAsideDropdownOpen={setIsAsideDropdownOpen}
       />
-      <section className="py-8">
+      <section className="size-full pb-8">
         <Outlet />
       </section>
     </Container.Grid>
