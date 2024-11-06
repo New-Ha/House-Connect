@@ -10,7 +10,7 @@ import { BookmarkHouseFilterAtom } from '@/stores/bookmark.store';
 import HouseCard from '@/components/organisms/HouseCard';
 
 type MyBookmarkHouseTemplateProps = {
-  house: HouseBookmarkType[] | undefined;
+  house: HouseBookmarkType[];
 };
 
 function MyBookmarkHouseTemplate(props: MyBookmarkHouseTemplateProps) {
@@ -24,17 +24,19 @@ function MyBookmarkHouseTemplate(props: MyBookmarkHouseTemplateProps) {
   };
 
   return (
-    <div>
-      <Container className="relative">
-        <Icon className="absolute inset-y-4 left-4" type="search" />
-        <Input
-          className="placholder:text-brown2 mt-10 w-full border-none !bg-brown4 pl-14"
-          placeholder="위치 검색"
-          onKeyDown={onEnterSearchFilter}
-        />
+    <Container.FlexCol className="size-full">
+      <Container>
+        <Container className="relative bg-purple-200">
+          <Icon className="absolute inset-y-4 left-4" type="search" />
+          <Input
+            className="placholder:text-brown2 mt-10 w-full border-none !bg-brown4 pl-14"
+            placeholder="위치 검색"
+            onKeyDown={onEnterSearchFilter}
+          />
+        </Container>
       </Container>
-      <Container.Grid className="grid-cols-[320px_320px_320px] gap-x-[1.125rem] gap-y-10 pt-10">
-        {house?.length && house[0].house ? (
+      <Container.Grid className="flex-1 grid-cols-1 items-start gap-x-[1.125rem] gap-y-10 pt-10 s-tablet:grid-cols-2 laptop:grid-cols-3">
+        {house.length > 0 ? (
           house.map(({ house: houseData }) => (
             <HouseCard key={houseData.id} {...houseData} />
           ))
@@ -44,7 +46,7 @@ function MyBookmarkHouseTemplate(props: MyBookmarkHouseTemplateProps) {
           </Typography.Span1>
         )}
       </Container.Grid>
-    </div>
+    </Container.FlexCol>
   );
 }
 

@@ -30,7 +30,7 @@ export default function MyPageAsideDropdown({
     >
       {asideItems.map(({ name, path }) => (
         <li
-          className="list-none p-[1.23rem] hover:bg-brown6"
+          className="cursor-pointer list-none p-[1.23rem] hover:bg-brown6"
           key={path}
           onClick={() => setDropView(false)}
           aria-hidden

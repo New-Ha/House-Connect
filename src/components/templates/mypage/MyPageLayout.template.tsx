@@ -20,7 +20,7 @@ function MyPageAside({
   const location = useLocation();
 
   return (
-    <Container>
+    <Container className="h-full">
       {/* after tablet breakpoint aside */}
       <aside className="sticky top-[8.5rem] hidden flex-col gap-y-10 tablet:flex">
         <Typography.SubTitle1 className="text-brown">
@@ -77,7 +77,7 @@ export default function MyPageLayoutTemplate() {
   const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
 
   return (
-    <Container.Grid className="size-full grid-cols-1 tablet:grid-cols-[12.75rem_1fr]">
+    <Container.Grid className="size-full grid-cols-1 grid-rows-[auto_1fr] tablet:grid-cols-[12.75rem_1fr] tablet:grid-rows-1">
       <MyPageAside
         isAsideDropdownOpen={isAsideDropdownOpen}
         setIsAsideDropdownOpen={setIsAsideDropdownOpen}
