@@ -33,7 +33,6 @@ export const useMyBookmarkHouseList = (
 
       return data;
     },
-    // enabled: !!user,
     throwOnError: true,
   });
 export const useMyBookmarkHouseCount = (
