@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import MyActivityTemplate from '@/components/templates/mypage/MyActivity.template';
 import { userInfoQuery, UserInfoType } from '@/hooks/useUserInfo';
 import { UserAtom } from '@/stores/auth.store';
-import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
+import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
 
 export function MyActivity() {

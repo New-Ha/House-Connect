@@ -15,7 +15,7 @@ import {
   BookmarkPageAtom,
 } from '@/stores/bookmark.store';
 import HouseCard from '@/components/organisms/HouseCard';
-import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
+import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import { UserAtom } from '@/stores/auth.store';
 import Pagination from '@/components/organisms/Pagination';
 import Loading from '@/components/pages/maintenance/Loading';

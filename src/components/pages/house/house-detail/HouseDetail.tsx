@@ -19,7 +19,7 @@ import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/maintenance/Loading';
 import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
-import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
+import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import IconButton from '@/components/molecules/IconButton';
 
 function HouseDetail() {
