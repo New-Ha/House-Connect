@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 
 import { ComponentType, ReactNode, Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 
 import DefaultLoading from '@/components/pages/maintenance/Loading';
 import DefaultErrorFallback from '@/components/molecules/ErrorFallback';

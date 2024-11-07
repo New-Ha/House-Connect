@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import MyActivityTemplate from '@/components/templates/mypage/MyActivity.template';
 import { userInfoQuery, UserInfoType } from '@/hooks/useUserInfo';
 import { UserAtom } from '@/stores/auth.store';
-import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
+import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
 
 export function MyActivity() {
@@ -14,7 +14,7 @@ export function MyActivity() {
   return <MyActivityTemplate user={data as UserInfoType} />;
 }
 
-const SuspendedMyActivity = WithSuspenseAndErrorBoundary({
+const SuspendedMyActivity = WithSuspense({
   InnerSuspenseComponent: MyActivity,
   SuspenseFallback: <Loading className="size-full" />,
 });

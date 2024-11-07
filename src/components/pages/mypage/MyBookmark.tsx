@@ -7,8 +7,10 @@ import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHou
 import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounge.template';
 import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkArticle.template';
 import cn from '@/libs/cn';
+import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
+import Loading from '@/components/pages/maintenance/Loading';
 
-export default function MyBookmark() {
+function MyBookmark() {
   const [currentTab, setCurrentTab] = useState(0);
   const tabItem = ['하우스', '라운지', '게시물'];
 
@@ -38,3 +40,10 @@ export default function MyBookmark() {
     </Container.FlexCol>
   );
 }
+
+const SuspendedMyBookmark = WithSuspense({
+  InnerSuspenseComponent: MyBookmark,
+  SuspenseFallback: <Loading className="size-full" />,
+});
+
+export default SuspendedMyBookmark;

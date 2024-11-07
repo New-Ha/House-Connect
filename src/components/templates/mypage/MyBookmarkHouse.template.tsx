@@ -15,12 +15,12 @@ import {
   BookmarkPageAtom,
 } from '@/stores/bookmark.store';
 import HouseCard from '@/components/organisms/HouseCard';
-import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
+import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import { UserAtom } from '@/stores/auth.store';
 import Pagination from '@/components/organisms/Pagination';
 import Loading from '@/components/pages/maintenance/Loading';
 
-type HousesType = HouseBookmarkType[] | undefined
+type HousesType = HouseBookmarkType[] | undefined;
 
 function MyBookmarkHouseTemplate() {
   const user = useRecoilValue(UserAtom);
@@ -46,7 +46,7 @@ function MyBookmarkHouseTemplate() {
           <Container className="relative">
             <Icon className="absolute inset-y-4 left-4" type="search" />
             <Input
-              className="placholder:text-brown2 mt-10 w-full border-none !bg-brown4 pl-14"
+              className="mt-10 w-full border-none !bg-brown4 pl-14 placeholder:text-brown2"
               placeholder="위치 검색"
               onKeyDown={onEnterSearchFilter}
             />
@@ -72,7 +72,7 @@ function MyBookmarkHouseTemplate() {
   );
 }
 
-const SuspendedMyBookmarkHouseTemplate = WithSuspenseAndErrorBoundary({
+const SuspendedMyBookmarkHouseTemplate = WithSuspense({
   InnerSuspenseComponent: MyBookmarkHouseTemplate,
   SuspenseFallback: <Loading className="size-full" />,
 });

@@ -7,6 +7,7 @@ import { asideItems } from '@/constants/mypage';
 import IconButton from '@/components/molecules/IconButton';
 import cn from '@/libs/cn';
 import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
+import { WithErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 
 type MyPageAsideProps = {
   isAsideDropdownOpen: boolean;
@@ -73,7 +74,7 @@ function MyPageAside({
   );
 }
 
-export default function MyPageLayoutTemplate() {
+function MyPageLayoutTemplate() {
   const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
 
   return (
@@ -82,9 +83,16 @@ export default function MyPageLayoutTemplate() {
         isAsideDropdownOpen={isAsideDropdownOpen}
         setIsAsideDropdownOpen={setIsAsideDropdownOpen}
       />
+
       <section className="size-full pb-8">
         <Outlet />
       </section>
     </Container.Grid>
   );
 }
+
+const WrapWithErrorboundaryMyActivity = WithErrorBoundary({
+  InnerErrorBoundaryComponent: MyPageLayoutTemplate,
+});
+
+export default WrapWithErrorboundaryMyActivity;
