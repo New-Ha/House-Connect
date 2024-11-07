@@ -1,34 +1,31 @@
-import { KeyboardEvent } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { KeyboardEvent, useEffect, useRef } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  useSuspenseInfiniteQuery,
+} from '@tanstack/react-query';
+import { ClipLoader } from 'react-spinners';
 
 import {
   HouseBookmarkType,
-  useMyBookmarkHouseList,
+  useInfiniteMyBookmarkHouseList,
 } from '@/hooks/useMyBookmark';
 import Container from '@/components/atoms/Container';
 import Typography from '@/components/atoms/Typography';
 import Icon from '@/components/atoms/Icon';
 import Input from '@/components/atoms/Input';
-import {
-  BookmarkHouseFilterAtom,
-  BookmarkPageAtom,
-} from '@/stores/bookmark.store';
+import { BookmarkHouseFilterAtom } from '@/stores/bookmark.store';
 import HouseCard from '@/components/organisms/HouseCard';
 import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import { UserAtom } from '@/stores/auth.store';
-import Pagination from '@/components/organisms/Pagination';
 import Loading from '@/components/pages/maintenance/Loading';
+import useIsOverSTabletBreakpoint from '@/hooks/useIsOverSTabletBreakpoint';
 
 type HousesType = HouseBookmarkType[] | undefined;
 
 function MyBookmarkHouseTemplate() {
   const user = useRecoilValue(UserAtom);
-  const pageState = useRecoilState(BookmarkPageAtom);
   const houseFilter = useRecoilValue(BookmarkHouseFilterAtom);
-  const { data } = useSuspenseQuery(
-    useMyBookmarkHouseList(user, pageState[0], houseFilter),
-  );
+  const observerTargetElement = useRef<HTMLDivElement>(null);
   const setHouseFilter = useSetRecoilState(BookmarkHouseFilterAtom);
   const onEnterSearchFilter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
@@ -36,8 +33,38 @@ function MyBookmarkHouseTemplate() {
       setHouseFilter(e.currentTarget.value);
     }
   };
+  const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
 
-  const houses = data as HousesType;
+  const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
+    useInfiniteMyBookmarkHouseList(user, houseFilter),
+  );
+
+  const houses = data?.pages.flatMap(page => page) as HousesType;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+          if (entry.isIntersecting) fetchNextPage();
+        });
+      },
+      {
+        root: null,
+        rootMargin: '10px',
+        threshold: 0,
+      },
+    );
+    if (observerTargetElement.current)
+      observer.observe(observerTargetElement.current);
+
+    const copyObserverTargetElement = observerTargetElement;
+
+    return () => {
+      if (copyObserverTargetElement.current) {
+        observer.unobserve(copyObserverTargetElement.current);
+      }
+    };
+  }, [fetchNextPage]);
 
   return (
     <>
@@ -62,13 +89,27 @@ function MyBookmarkHouseTemplate() {
           )}
         </Container.Grid>
       </Container.FlexCol>
-      <Container>
-        <Pagination
-          totalPage={houses && houses.length ? houses.length : 0}
-          pageState={pageState}
-        />
-      </Container>
+      <div
+        ref={observerTargetElement}
+        className="flex h-12 w-full items-start justify-center text-white"
+      >
+        {isFetching && (
+          <ClipLoader
+            key="ClipLoaderOverSTablet"
+            size={isOverSTabletBreakPoint ? 40 : 20}
+            loading
+            color="#643927"
+          />
+        )}
+      </div>
     </>
+    /* TODO: 무한 스크롤에서 pagination으로 대체 시 사용하기 */
+    //   <Container>
+    //   <Pagination
+    //     totalPage={houses && houses.length ? houses.length : 0}
+    //     pageState={pageState}
+    //   />
+    // </Container>
   );
 }
 

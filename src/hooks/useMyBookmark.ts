@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions } from '@tanstack/react-query';
 
 import { UserType } from '@/types/auth.type';
 import { supabase } from '@/libs/supabaseClient';
@@ -10,14 +10,15 @@ export type HouseBookmarkType = {
   house: HouseCardType;
 };
 
-export const useMyBookmarkHouseList = (
+export const useInfiniteMyBookmarkHouseList = (
   user: UserType | null,
-  page: number,
   filter: string,
 ) =>
-  queryOptions({
-    queryKey: USER_KEYS.USER_BOOKMARK(user?.id, page, filter),
-    queryFn: async () => {
+  infiniteQueryOptions({
+    queryKey: USER_KEYS.USER_BOOKMARK_INFINITE_HOUSE_FILTER(user?.id, filter),
+    queryFn: async ({ pageParam }) => {
+      const HOUSE_PER_PAGE = 3;
+
       const { data, error, status } = await supabase
         .from('user_bookmark')
         .select('house(*)')
@@ -25,7 +26,10 @@ export const useMyBookmarkHouseList = (
         .or(`region.like.%${filter}%,district.like.%${filter}%`, {
           referencedTable: 'house',
         })
-        .range((page - 1) * 9, page * 9);
+        .range(
+          pageParam * HOUSE_PER_PAGE,
+          (pageParam + 1) * HOUSE_PER_PAGE - 1,
+        );
 
       if (error) {
         throw new SupabaseCustomError(error, status);
@@ -33,22 +37,8 @@ export const useMyBookmarkHouseList = (
 
       return data;
     },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage?.length ? allPages.length + 1 : undefined,
     throwOnError: true,
-  });
-export const useMyBookmarkHouseCount = (
-  user: UserType | null,
-  filter: string,
-) =>
-  queryOptions({
-    queryKey: USER_KEYS.USER_BOOKMARK_HOUSE_COUNT(user?.id, filter),
-    queryFn: async () =>
-      supabase
-        .from('house')
-        .select('region, district, user_bookmark!inner(id)', {
-          count: 'exact',
-          head: false,
-        })
-        .eq('user_bookmark.id', user?.id ?? '')
-        .or(`region.like.%${filter}%,district.like.%${filter}%`, {}),
-    enabled: !!user,
   });
