@@ -21,7 +21,7 @@ import CustomIntersectionObserver from '@/components/organisms/CustomIntersectio
 
 type HousesType = HouseBookmarkType[] | undefined;
 
-function MyBookmarkHouseTemplate() {
+function MyBookmarkHouseTemplateComponent() {
   const user = useRecoilValue(UserAtom);
   const [houseFilter, setHouseFilter] = useRecoilState(BookmarkHouseFilterAtom);
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
@@ -82,9 +82,9 @@ function MyBookmarkHouseTemplate() {
   );
 }
 
-const SuspendedMyBookmarkHouseTemplate = WithSuspense({
-  InnerSuspenseComponent: MyBookmarkHouseTemplate,
+const BookmarkHouseTemplate = WithSuspense({
+  InnerSuspenseComponent: MyBookmarkHouseTemplateComponent,
   SuspenseFallback: <Loading className="size-full" />,
 });
 
-export default SuspendedMyBookmarkHouseTemplate;
+export default BookmarkHouseTemplate;

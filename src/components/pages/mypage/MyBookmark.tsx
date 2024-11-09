@@ -7,7 +7,7 @@ import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
 import { routePaths } from '@/constants/route';
 
-function MyBookmark() {
+function MyBookmarkPageComponent() {
   const tabItem = [
     { displayName: '하우스', path: routePaths.myBookmarkHouses },
     { displayName: '라운지', path: routePaths.myBookmarkLounges },
@@ -40,9 +40,9 @@ function MyBookmark() {
   );
 }
 
-const SuspendedMyBookmark = WithSuspense({
-  InnerSuspenseComponent: MyBookmark,
+const MyBookmark = WithSuspense({
+  InnerSuspenseComponent: MyBookmarkPageComponent,
   SuspenseFallback: <Loading className="size-full" />,
 });
 
-export default SuspendedMyBookmark;
+export default MyBookmark;

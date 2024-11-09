@@ -22,7 +22,7 @@ import Container from '@/components/atoms/Container';
 import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import IconButton from '@/components/molecules/IconButton';
 
-function HouseDetail() {
+function HouseDetailPageComponent() {
   const { houseId } = useParams();
   const [isLoadingDelaying, setIsLoadingDelaying] = useState(false);
   const navigate = useNavigate();
@@ -118,7 +118,8 @@ function HouseDetail() {
   );
 }
 
-const SuspendedHouseDetail = WithSuspenseAndErrorBoundary({
-  InnerSuspenseComponent: HouseDetail,
+const HouseDetail = WithSuspenseAndErrorBoundary({
+  InnerSuspenseComponent: HouseDetailPageComponent,
 });
-export default SuspendedHouseDetail;
+
+export default HouseDetail;

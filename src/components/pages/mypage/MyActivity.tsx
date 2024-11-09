@@ -7,16 +7,16 @@ import { UserAtom } from '@/stores/auth.store';
 import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
 
-export function MyActivity() {
+export function MyActivityPageComponent() {
   const user = useRecoilValue(UserAtom);
   const { data } = useSuspenseQuery(userInfoQuery(user));
 
   return <MyActivityTemplate user={data as UserInfoType} />;
 }
 
-const SuspendedMyActivity = WithSuspense({
-  InnerSuspenseComponent: MyActivity,
+const MyActivity = WithSuspense({
+  InnerSuspenseComponent: MyActivityPageComponent,
   SuspenseFallback: <Loading className="size-full" />,
 });
 
-export default SuspendedMyActivity;
+export default MyActivity;

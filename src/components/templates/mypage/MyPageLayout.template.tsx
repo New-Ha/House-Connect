@@ -74,7 +74,7 @@ function MyPageAside({
   );
 }
 
-function MyPageLayoutTemplate() {
+function MyPageLayoutTemplateComponent() {
   const [isAsideDropdownOpen, setIsAsideDropdownOpen] = useState(false);
 
   return (
@@ -91,8 +91,8 @@ function MyPageLayoutTemplate() {
   );
 }
 
-const WrapWithErrorboundaryMyActivity = WithErrorBoundary({
-  InnerErrorBoundaryComponent: MyPageLayoutTemplate,
+const MyPageLayoutTemplate = WithErrorBoundary({
+  InnerErrorBoundaryComponent: MyPageLayoutTemplateComponent,
 });
 
-export default WrapWithErrorboundaryMyActivity;
+export default MyPageLayoutTemplate;
