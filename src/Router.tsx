@@ -34,6 +34,9 @@ import MyBookmark from '@/components/pages/mypage/MyBookmark';
 import { routePaths } from '@/constants/route';
 import Error404 from '@/components/pages/maintenance/Error404';
 import CommingSoon from '@/components/pages/maintenance/CommingSoon';
+import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHouses.template';
+import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounges.template';
+import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkPosts.template';
 
 type RouteType = RouteObject & {
   shouldProtected?: boolean;
@@ -168,7 +171,24 @@ const routes: RouteType[] = [
         element: <MyPageLayoutTemplate />,
         children: [
           { path: routePaths.myActivity, element: <MyActivity /> },
-          { path: routePaths.myBookmark, element: <MyBookmark /> },
+          {
+            path: routePaths.myBookmark,
+            element: <MyBookmark />,
+            children: [
+              {
+                path: routePaths.myBookmarkHouses,
+                element: <MyBookmarkHouseTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkLounges,
+                element: <MyBookmarkLoungeTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkPosts,
+                element: <MyBookmarkArticleTemplate />,
+              },
+            ],
+          },
           { path: routePaths.myAccount, element: <MyAccount /> },
           { path: routePaths.myMate, element: <CommingSoon /> },
           { path: routePaths.myAlarm, element: <CommingSoon /> },

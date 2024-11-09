@@ -1,42 +1,41 @@
-import { useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import Container from '@/components/atoms/Container';
-import Button from '@/components/atoms/Button';
 import Typography from '@/components/atoms/Typography';
-import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHouse.template';
-import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounge.template';
-import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkArticle.template';
 import cn from '@/libs/cn';
 import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
+import { routePaths } from '@/constants/route';
 
 function MyBookmark() {
-  const [currentTab, setCurrentTab] = useState(0);
-  const tabItem = ['하우스', '라운지', '게시물'];
+  const tabItem = [
+    { displayName: '하우스', path: routePaths.myBookmarkHouses },
+    { displayName: '라운지', path: routePaths.myBookmarkLounges },
+    { displayName: '게시물', path: routePaths.myBookmarkPosts },
+  ];
 
   return (
     <Container.FlexCol className="size-full">
       <Container.FlexRow>
-        {tabItem.map((item, index) => (
-          <Button.Ghost
-            key={item}
-            className={cn(
-              'flex-1 items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 s-tablet:w-[8.3rem] s-tablet:flex-none tablet:p-5',
-              currentTab === index ? 'border-b-3 text-brown' : '',
-            )}
-            onClick={() => {
-              setCurrentTab(index);
-            }}
-          >
-            <Typography.SubTitle1 className="text-[1.077rem] font-semibold tablet:text-lg">
-              {item}
-            </Typography.SubTitle1>
-          </Button.Ghost>
+        {tabItem.map(({ displayName, path }) => (
+          <li key={displayName} className="flex-1 list-none">
+            <NavLink
+              to={path}
+              className={({ isActive }) =>
+                cn(
+                  'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 s-tablet:w-[8.3rem] s-tablet:flex-none tablet:p-5',
+                  isActive ? 'border-b-3 text-brown' : '',
+                )
+              }
+            >
+              <Typography.SubTitle1 className="text-[1.077rem] font-semibold tablet:text-lg">
+                {displayName}
+              </Typography.SubTitle1>
+            </NavLink>
+          </li>
         ))}
       </Container.FlexRow>
-      {currentTab === 0 && <MyBookmarkHouseTemplate />}
-      {currentTab === 1 && <MyBookmarkLoungeTemplate />}
-      {currentTab === 2 && <MyBookmarkArticleTemplate />}
+      <Outlet />
     </Container.FlexCol>
   );
 }

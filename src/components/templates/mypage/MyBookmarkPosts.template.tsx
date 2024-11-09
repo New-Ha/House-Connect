@@ -1,5 +1,5 @@
 import CommingSoon from '@/components/pages/maintenance/CommingSoon';
 
-export default function MyBookmarkArticleTemplate() {
+export default function MyBookmarkPostsTemplate() {
   return <CommingSoon />;
 }
