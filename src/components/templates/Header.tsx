@@ -53,6 +53,9 @@ export default function Header({ className, isLogin, ...others }: Props) {
       'myMate',
       'myPage',
       'myTheme',
+      'myBookmarkHouses',
+      'myBookmarkLounges',
+      'myBookmarkPosts',
     ]);
 
   if (nonGnbRoutes) {

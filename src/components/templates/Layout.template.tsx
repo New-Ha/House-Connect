@@ -38,6 +38,9 @@ export default function LayoutTemplate() {
     'myMate',
     'myPage',
     'myTheme',
+    'myBookmarkHouses',
+    'myBookmarkLounges',
+    'myBookmarkPosts',
   ]);
 
   if (isInitializingSession) {
