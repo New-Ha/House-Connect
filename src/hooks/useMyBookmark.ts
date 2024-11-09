@@ -13,11 +13,13 @@ export type HouseBookmarkType = {
 export const useInfiniteMyBookmarkHouseList = (
   user: UserType | null,
   filter: string,
+  pageSize: number = 10
 ) =>
   infiniteQueryOptions({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: USER_KEYS.USER_BOOKMARK_INFINITE_HOUSE_FILTER(user?.id, filter),
     queryFn: async ({ pageParam }) => {
-      const HOUSE_PER_PAGE = 3;
+      const HOUSE_PER_PAGE = pageSize;
 
       const { data, error, status } = await supabase
         .from('user_bookmark')

@@ -375,8 +375,11 @@ type HouseListQueryKeyType = ReturnType<typeof HOUSE_KEYS.HOUSE_LIST>;
 const fetchHouseList = async ({
   pageParam = 0,
   queryKey,
-}: QueryFunctionContext<HouseListQueryKeyType, number>) => {
-  const HOUSE_PER_PAGE = 10;
+  pageSize = 10,
+}: QueryFunctionContext<HouseListQueryKeyType, number> & {
+  pageSize?: number;
+}) => {
+  const HOUSE_PER_PAGE = pageSize;
   const [, , filterState] = queryKey;
   const filterPayload = filterState as HouseListFilterType;
 
@@ -531,10 +534,15 @@ const fetchHouseList = async ({
   };
 };
 
-export const useInfiniteHouseList = (filterPayload: HouseListFilterType) =>
+export const useInfiniteHouseList = (
+  filterPayload: HouseListFilterType,
+  pageSize: number = 10,
+) =>
   useInfiniteQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: HOUSE_KEYS.HOUSE_LIST(filterPayload),
-    queryFn: fetchHouseList,
+    queryFn: queryFunctionContext =>
+      fetchHouseList({ ...queryFunctionContext, pageSize }),
     initialPageParam: 0,
     getNextPageParam: lastPage =>
       lastPage.hasMore ? lastPage.nextPage : undefined,
