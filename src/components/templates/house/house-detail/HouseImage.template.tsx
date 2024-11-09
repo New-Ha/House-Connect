@@ -4,6 +4,7 @@ import Icon from '@/components/atoms/Icon';
 import Img from '@/components/atoms/Img';
 import Typography from '@/components/atoms/Typography';
 import { HouseImageProp } from '@/components/templates/house/house-detail/ImageCarouselModal';
+import cn from '@/libs/cn';
 
 export default function HouseImageTemplate({
   houseId,
@@ -24,8 +25,9 @@ export default function HouseImageTemplate({
   return (
     <Container.FlexRow className="relative max-h-[27.75rem] gap-5 tablet:min-h-[16.25rem] laptop:min-h-[22.1875rem]">
       <Img
-        className="flex-1"
+        className="flex-1 hover:cursor-pointer"
         imageStyle="object-cover"
+        triggerHoverStyle
         src={`${HOUSE_STORAGE_URL}/${representativeImg}`}
       />
       <Button.Ghost
@@ -40,7 +42,12 @@ export default function HouseImageTemplate({
             key={src}
             src={`${HOUSE_STORAGE_URL}/${src}`}
             alt={`house image ${index + 1}`}
-            className={`[&>img]:object-cover ${index === 3 && 'col-start-2 row-start-2'}`}
+            className={cn(
+              'hover:cursor-pointer',
+              index === 3 && 'col-start-2 row-start-2',
+            )}
+            imageStyle="object-cover"
+            triggerHoverStyle
           />
         ))}
         <Container.FlexCol
