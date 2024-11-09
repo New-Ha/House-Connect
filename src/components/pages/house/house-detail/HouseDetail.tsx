@@ -85,22 +85,24 @@ function HouseDetail() {
             />
           </li>
         </Container.FlexRow>
-        <Container.FlexRow className="items-center gap-[1.48rem] mobile:gap-[1.7rem]">
-          <li className="list-none">
-            <IconButton.Ghost
-              iconType="pencil"
-              iconClassName="size-[1.54rem]"
-              onClick={() => navigate(routePaths.houseEdit(houseId))}
-            />
-          </li>
-          <li className="list-none">
-            <IconButton.Ghost
-              iconType="trash"
-              iconClassName="size-[1.78rem]"
-              onClick={() => onClickDeleteHouse(houseId)}
-            />
-          </li>
-        </Container.FlexRow>
+        {user && (
+          <Container.FlexRow className="items-center gap-[1.48rem] mobile:gap-[1.7rem]">
+            <li className="list-none">
+              <IconButton.Ghost
+                iconType="pencil"
+                iconClassName="size-[1.54rem]"
+                onClick={() => navigate(routePaths.houseEdit(houseId))}
+              />
+            </li>
+            <li className="list-none">
+              <IconButton.Ghost
+                iconType="trash"
+                iconClassName="size-[1.78rem]"
+                onClick={() => onClickDeleteHouse(houseId)}
+              />
+            </li>
+          </Container.FlexRow>
+        )}
       </nav>
       <HouseDetailTemplate
         houseData={houseDetailData as HouseData}
