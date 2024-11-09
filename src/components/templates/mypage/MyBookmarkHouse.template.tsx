@@ -18,6 +18,7 @@ import { UserAtom } from '@/stores/auth.store';
 import Loading from '@/components/pages/maintenance/Loading';
 import useIsOverSTabletBreakpoint from '@/hooks/useIsOverSTabletBreakpoint';
 import useObserver from '@/hooks/useObserver';
+import ObserverTarget from '@/components/molecules/ObserverTarget';
 
 type HousesType = HouseBookmarkType[] | undefined;
 
@@ -27,7 +28,7 @@ function MyBookmarkHouseTemplate() {
   const observerTargetElement = useRef<HTMLDivElement>(null);
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
   const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
-    useInfiniteMyBookmarkHouseList(user, houseFilter),
+    useInfiniteMyBookmarkHouseList(user, houseFilter, 4),
   );
   useObserver({ callback: fetchNextPage, targetRef: observerTargetElement });
 
@@ -63,10 +64,7 @@ function MyBookmarkHouseTemplate() {
           )}
         </Container.Grid>
       </Container.FlexCol>
-      <div
-        ref={observerTargetElement}
-        className="flex h-12 w-full items-start justify-center text-white"
-      >
+      <ObserverTarget ref={observerTargetElement}>
         {isFetching && (
           <ClipLoader
             key="ClipLoaderOverSTablet"
@@ -75,7 +73,7 @@ function MyBookmarkHouseTemplate() {
             color="#643927"
           />
         )}
-      </div>
+      </ObserverTarget>
     </>
     /* TODO: 무한 스크롤에서 pagination으로 대체 시 사용하기 */
     //   <Container>

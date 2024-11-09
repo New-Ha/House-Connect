@@ -13,6 +13,7 @@ import HouseListFilter from '@/components/templates/house/house-list/HouseListFi
 import Container from '@/components/atoms/Container';
 import HouseCard from '@/components/organisms/HouseCard';
 import useObserver from '@/hooks/useObserver';
+import ObserverTarget from '@/components/molecules/ObserverTarget';
 
 export type HouseListTemplateProps = UseInfiniteQueryResult<
   InfiniteData<HouseListPerPage>
@@ -67,10 +68,7 @@ export default function HouseListTemplate({
             ),
         )}
       </Container.Grid>
-      <div
-        ref={observerTargetElement}
-        className="flex h-12 w-full items-start justify-center text-white"
-      >
+      <ObserverTarget ref={observerTargetElement}>
         {isFetching && (
           <ClipLoader
             key="ClipLoaderOverSTablet"
@@ -79,7 +77,7 @@ export default function HouseListTemplate({
             color="#643927"
           />
         )}
-      </div>
+      </ObserverTarget>
     </Container.FlexCol>
   );
 }
