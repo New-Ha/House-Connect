@@ -3,7 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-import HouseDetailTemplate, { HouseData } from '@/components/templates/house/house-detail/HouseDetailTemplate';
+import HouseDetailTemplate, {
+  HouseData,
+} from '@/components/templates/house/house-detail/HouseDetail.template';
 import {
   houseBookmarkQuery,
   houseDetailQuery,
@@ -11,7 +13,7 @@ import {
   useDeleteHouseDetail,
 } from '@/hooks/useHouseDetail';
 import { UserAtom } from '@/stores/auth.store';
-import CommentTemplate from '@/components/templates/CommentTemplate';
+import CommentTemplate from '@/components/templates/Comment.template';
 import { houseCommentQuery } from '@/hooks/useCommentReply';
 import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/maintenance/Loading';
