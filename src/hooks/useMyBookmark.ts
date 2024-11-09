@@ -13,7 +13,7 @@ export type HouseBookmarkType = {
 export const useInfiniteMyBookmarkHouseList = (
   user: UserType | null,
   filter: string,
-  pageSize: number = 10
+  pageSize: number = 10,
 ) =>
   infiniteQueryOptions({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
@@ -23,7 +23,7 @@ export const useInfiniteMyBookmarkHouseList = (
 
       const { data, error, status } = await supabase
         .from('user_bookmark')
-        .select('house(*)')
+        .select('house!inner(*)')
         .eq('user_id', user?.id ?? '')
         .or(`region.like.%${filter}%,district.like.%${filter}%`, {
           referencedTable: 'house',
