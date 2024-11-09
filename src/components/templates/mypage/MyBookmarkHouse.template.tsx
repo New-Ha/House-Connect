@@ -1,4 +1,4 @@
-import { KeyboardEvent, useRef } from 'react';
+import { KeyboardEvent } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { ClipLoader } from 'react-spinners';
@@ -17,20 +17,17 @@ import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import { UserAtom } from '@/stores/auth.store';
 import Loading from '@/components/pages/maintenance/Loading';
 import useIsOverSTabletBreakpoint from '@/hooks/useIsOverSTabletBreakpoint';
-import useObserver from '@/hooks/useObserver';
-import ObserverTarget from '@/components/molecules/ObserverTarget';
+import CustomIntersectionObserver from '@/components/organisms/CustomIntersectionObserver';
 
 type HousesType = HouseBookmarkType[] | undefined;
 
 function MyBookmarkHouseTemplate() {
   const user = useRecoilValue(UserAtom);
   const [houseFilter, setHouseFilter] = useRecoilState(BookmarkHouseFilterAtom);
-  const observerTargetElement = useRef<HTMLDivElement>(null);
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
   const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
     useInfiniteMyBookmarkHouseList(user, houseFilter, 4),
   );
-  useObserver({ callback: fetchNextPage, targetRef: observerTargetElement });
 
   const onEnterSearchFilter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
@@ -64,16 +61,16 @@ function MyBookmarkHouseTemplate() {
           )}
         </Container.Grid>
       </Container.FlexCol>
-      <ObserverTarget ref={observerTargetElement}>
+      <CustomIntersectionObserver callback={fetchNextPage}>
         {isFetching && (
           <ClipLoader
-            key="ClipLoaderOverSTablet"
+            key="ClipLoader"
             size={isOverSTabletBreakPoint ? 40 : 20}
             loading
             color="#643927"
           />
         )}
-      </ObserverTarget>
+      </CustomIntersectionObserver>
     </>
     /* TODO: 무한 스크롤에서 pagination으로 대체 시 사용하기 */
     //   <Container>

@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { ClipLoader } from 'react-spinners';
 import {
   InfiniteData,
@@ -12,8 +11,7 @@ import { houseBookmarkQuery, houseDetailQuery } from '@/hooks/useHouseDetail';
 import HouseListFilter from '@/components/templates/house/house-list/HouseListFilter';
 import Container from '@/components/atoms/Container';
 import HouseCard from '@/components/organisms/HouseCard';
-import useObserver from '@/hooks/useObserver';
-import ObserverTarget from '@/components/molecules/ObserverTarget';
+import CustomIntersectionObserver from '@/components/organisms/CustomIntersectionObserver';
 
 export type HouseListTemplateProps = UseInfiniteQueryResult<
   InfiniteData<HouseListPerPage>
@@ -26,11 +24,8 @@ export default function HouseListTemplate({
   fetchNextPage,
   isFetching,
 }: HouseListTemplateProps) {
-  const observerTargetElement = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
-
-  useObserver({ callback: fetchNextPage, targetRef: observerTargetElement });
 
   const prefetchHouseDetail = async (
     houseId: string | undefined,
@@ -68,16 +63,16 @@ export default function HouseListTemplate({
             ),
         )}
       </Container.Grid>
-      <ObserverTarget ref={observerTargetElement}>
+      <CustomIntersectionObserver callback={fetchNextPage}>
         {isFetching && (
           <ClipLoader
-            key="ClipLoaderOverSTablet"
+            key="ClipLoader"
             size={isOverSTabletBreakPoint ? 40 : 20}
             loading
             color="#643927"
           />
         )}
-      </ObserverTarget>
+      </CustomIntersectionObserver>
     </Container.FlexCol>
   );
 }
