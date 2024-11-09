@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { ClipLoader } from 'react-spinners';
 import {
   InfiniteData,
@@ -12,6 +12,7 @@ import { houseBookmarkQuery, houseDetailQuery } from '@/hooks/useHouseDetail';
 import HouseListFilter from '@/components/templates/house/house-list/HouseListFilter';
 import Container from '@/components/atoms/Container';
 import HouseCard from '@/components/organisms/HouseCard';
+import useObserver from '@/hooks/useObserver';
 
 export type HouseListTemplateProps = UseInfiniteQueryResult<
   InfiniteData<HouseListPerPage>
@@ -28,40 +29,7 @@ export default function HouseListTemplate({
   const queryClient = useQueryClient();
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
 
-  useEffect(() => {
-    /**
-     * * 1. root: 기본 값은 null로서 브라우저 viewport를 대상으로 지정
-     * * 2. rootMargin
-     * *  - 양수: root요소의 경계를 확장
-     * *  - 음수: root요소의 경계를 확장
-     * *  - E.g) '0px 0px 20px 0px'이라면 root요소의 아래쪽 경계에서 20px만큼 observer target과 교차하는 순간 callback실행
-     * * 3. threshold
-     * *  - 0: 타겟 요소와 교차하는 순간 callback실행
-     * *  - 1: 타겟 요소와 모두 교차해야 callback실행
-     */
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach((entry: IntersectionObserverEntry) => {
-          if (entry.isIntersecting) fetchNextPage();
-        });
-      },
-      {
-        root: null,
-        rootMargin: '10px',
-        threshold: 0,
-      },
-    );
-    if (observerTargetElement.current)
-      observer.observe(observerTargetElement.current);
-
-    const copyObserverTargetElement = observerTargetElement;
-
-    return () => {
-      if (copyObserverTargetElement.current) {
-        observer.unobserve(copyObserverTargetElement.current);
-      }
-    };
-  }, [fetchNextPage]);
+  useObserver({ callback: fetchNextPage, targetRef: observerTargetElement });
 
   const prefetchHouseDetail = async (
     houseId: string | undefined,

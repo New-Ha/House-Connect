@@ -1,8 +1,6 @@
-import { KeyboardEvent, useEffect, useRef } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  useSuspenseInfiniteQuery,
-} from '@tanstack/react-query';
+import { KeyboardEvent, useRef } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { ClipLoader } from 'react-spinners';
 
 import {
@@ -19,52 +17,28 @@ import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import { UserAtom } from '@/stores/auth.store';
 import Loading from '@/components/pages/maintenance/Loading';
 import useIsOverSTabletBreakpoint from '@/hooks/useIsOverSTabletBreakpoint';
+import useObserver from '@/hooks/useObserver';
 
 type HousesType = HouseBookmarkType[] | undefined;
 
 function MyBookmarkHouseTemplate() {
   const user = useRecoilValue(UserAtom);
-  const houseFilter = useRecoilValue(BookmarkHouseFilterAtom);
+  const [houseFilter, setHouseFilter] = useRecoilState(BookmarkHouseFilterAtom);
   const observerTargetElement = useRef<HTMLDivElement>(null);
-  const setHouseFilter = useSetRecoilState(BookmarkHouseFilterAtom);
+  const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
+  const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
+    useInfiniteMyBookmarkHouseList(user, houseFilter),
+  );
+  useObserver({ callback: fetchNextPage, targetRef: observerTargetElement });
+
   const onEnterSearchFilter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       e.preventDefault();
       setHouseFilter(e.currentTarget.value);
     }
   };
-  const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
-
-  const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
-    useInfiniteMyBookmarkHouseList(user, houseFilter),
-  );
 
   const houses = data?.pages.flatMap(page => page) as HousesType;
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach((entry: IntersectionObserverEntry) => {
-          if (entry.isIntersecting) fetchNextPage();
-        });
-      },
-      {
-        root: null,
-        rootMargin: '10px',
-        threshold: 0,
-      },
-    );
-    if (observerTargetElement.current)
-      observer.observe(observerTargetElement.current);
-
-    const copyObserverTargetElement = observerTargetElement;
-
-    return () => {
-      if (copyObserverTargetElement.current) {
-        observer.unobserve(copyObserverTargetElement.current);
-      }
-    };
-  }, [fetchNextPage]);
 
   return (
     <>
@@ -79,7 +53,7 @@ function MyBookmarkHouseTemplate() {
             />
           </Container>
         </Container>
-        <Container.Grid className="flex-1 grid-cols-1 items-start gap-x-[1.125rem] gap-y-10 pt-10 s-tablet:grid-cols-2 laptop:grid-cols-3">
+        <Container.Grid className="flex-1 grid-cols-1 items-start gap-x-[1.125rem] gap-y-10 py-10 s-tablet:grid-cols-2 laptop:grid-cols-3">
           {houses && houses?.length > 0 ? (
             houses.map(({ house }) => <HouseCard key={house.id} {...house} />)
           ) : (
