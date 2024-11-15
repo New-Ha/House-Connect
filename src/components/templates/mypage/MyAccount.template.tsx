@@ -1,8 +1,9 @@
-import { Session } from '@supabase/supabase-js';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, ReactNode, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { Session } from '@supabase/supabase-js';
 
 import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
@@ -20,18 +21,33 @@ import { createToast } from '@/libs/toast';
 import { useDeleteMyAccount, useMyAccountUpdate } from '@/hooks/useMyAccount';
 import useModal from '@/hooks/useModal';
 import { ConfirmModalState } from '@/types/modal.type';
-
-type MyAccountTemplateProps = {
-  session: Session;
-};
+import { SessionAtom } from '@/stores/auth.store';
+import cn from '@/libs/cn';
 
 function PasswordDot() {
   return <div className="size-4 rounded-full bg-brown" />;
 }
 
-export default function MyAccountTemplate(props: MyAccountTemplateProps) {
-  const { session } = props;
-  const { user } = session;
+function UserInfoRowContainer({
+  children,
+  className = '',
+}: {
+  children: ReactNode;
+  // eslint-disable-next-line react/require-default-props
+  className?: string;
+}) {
+  return (
+    <Container.FlexRow
+      className={cn('w-full items-center tablet:h-[4.75rem]', className)}
+    >
+      {children}
+    </Container.FlexRow>
+  );
+}
+
+export default function MyAccountTemplate() {
+  const session = useRecoilValue(SessionAtom);
+  const { user } = session as Session;
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadAvatar, setUploadedAvatar] = useState<string>();
@@ -106,115 +122,149 @@ export default function MyAccountTemplate(props: MyAccountTemplateProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSaveAccount)}>
+      <form onSubmit={form.handleSubmit(onSaveAccount)} className="size-full">
         <Container.FlexCol>
+          {/* 계정설정 취소, 저장 section */}
           <Container.FlexRow className="items-center justify-between">
-            <Typography.SubTitle1 className="text-brown">
+            <Typography.SubTitle1 className="text-[1.54rem] font-semibold text-brown">
               계정설정
             </Typography.SubTitle1>
             <Container.FlexRow className="gap-x-3">
               <Button.Outline
-                className="rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
+                className="h-[2.77rem] w-[6rem] justify-center rounded-full tablet:h-[2.25rem] tablet:w-[4.875rem]"
                 onClick={onClickCancel}
               >
-                <Typography.P3 className="text-brown1">취소</Typography.P3>
+                <Typography.P3 className="text-[1.23rem] text-brown1">
+                  취소
+                </Typography.P3>
               </Button.Outline>
               <Button.Fill
                 type="submit"
-                className="rounded-[3.125rem] px-6 py-[0.625rem]"
+                className="h-[2.77rem] w-[6rem] justify-center rounded-full tablet:h-[2.25rem] tablet:w-[4.875rem]"
                 disabled={isPending}
               >
-                <Typography.P3 className="text-white">저장</Typography.P3>
+                <Typography.P3 className="text-[1.23rem] text-white">
+                  저장
+                </Typography.P3>
               </Button.Fill>
             </Container.FlexRow>
           </Container.FlexRow>
-          <Divider.Col className="mb-8 mt-5" />
-          <Container className="relative size-32">
-            <Avatar.XXXL
-              src={uploadAvatar ?? user.user_metadata.avatar_url}
-              className="cursor-auto"
-            />
-            <IconButton.Ghost
-              className="absolute bottom-0 right-0 size-10 items-center justify-center rounded-full bg-white shadow-[0_2px_4px_0_rgba(0,0,0,25%)]"
-              iconType="edit-avatar"
-              disabled={isPending}
-              onClick={() => inputRef.current?.click()}
-            >
-              <Input
-                type="file"
-                className="hidden"
-                onChange={onClickChangeAvatar}
-                accept="image/png, image/jpeg"
-                ref={inputRef}
+          <Divider.Col className="mb-8 mt-6" />
+          <Container.FlexCol>
+            <Container className="relative size-32">
+              <Avatar.XXXL
+                src={uploadAvatar ?? user.user_metadata.avatar_url}
+                className="cursor-auto"
               />
-            </IconButton.Ghost>
-          </Container>
-          <Typography.P3 className="pt-[1.4375rem] text-brown">
-            &#183; 사진은 자동으로 150x150 사이즈로 적용됩니다.
-          </Typography.P3>
-          <Container.FlexCol className="mb-[5.75rem] w-[30.375rem] gap-y-10 pt-11 [&>div]:items-center">
-            <Container.FlexRow className="items-center">
-              <Typography.SubTitle2
-                className={`pr-[9.125rem] text-brown ${isEdit.nickname ? 'pb-5' : ''}`}
+              <IconButton.Ghost
+                className="absolute bottom-0 right-0 size-10 items-center justify-center rounded-full bg-white shadow-[0_2px_4px_0_rgba(0,0,0,25%)]"
+                iconType="edit-avatar"
+                disabled={isPending}
+                onClick={() => inputRef.current?.click()}
               >
-                이름
-              </Typography.SubTitle2>
-              {isEdit.nickname ? (
-                <FormItem.TextField
-                  name="nickname"
-                  placeholder="이름 변경"
-                  disabled={isPending}
-                  className=""
+                <Input
+                  type="file"
+                  className="hidden"
+                  onChange={onClickChangeAvatar}
+                  accept="image/png, image/jpeg"
+                  ref={inputRef}
                 />
-              ) : (
-                <>
-                  <Typography.P2 className="flex-1 text-brown">
-                    {user.user_metadata.nickname}
-                  </Typography.P2>
-                  <Button.Outline
-                    className="rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
-                    disabled={isPending}
-                    onClick={() =>
-                      setIsEdit(prev => ({ ...prev, nickname: true }))
-                    }
-                  >
-                    <Typography.P3 className="text-brown">변경</Typography.P3>
-                  </Button.Outline>
-                </>
-              )}
-            </Container.FlexRow>
-            <Container.FlexRow>
-              <Typography.SubTitle2 className="pr-[8.125rem] text-brown">
+              </IconButton.Ghost>
+            </Container>
+            <Typography.P3 className="pt-[1.4375rem] text-brown">
+              &#8226; 사진은 자동으로 150x150 사이즈로 적용됩니다.
+            </Typography.P3>
+          </Container.FlexCol>
+          <Container.FlexCol className="w-full max-w-[30.375rem] gap-y-[3.077rem] pt-11 target:gap-y-[2.5rem]">
+            <UserInfoRowContainer>
+              <FormItem.TextField
+                name="nickname"
+                labelName="닉네임"
+                placeholder="이름 변경"
+                disabled={isPending}
+                containerStyle={cn(
+                  'w-full flex items-center',
+                  '[&_label]:m-0 [&_label]:min-w-[6.924rem] w-full [&_label]:shrink-0 [&_label]:text-brown [&_label]:tablet:max-w-[11.25rem]',
+                  isEdit.nickname && '',
+                )}
+                inputStyle={
+                  isEdit.nickname
+                    ? ''
+                    : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
+                }
+                helperTextStyle={cn(
+                  'absolute bottom-0 left-0 translate-y-[150%] text-[0.8rem]',
+                  form.formState.errors.nickname ? 'block' : 'hidden',
+                )}
+              />
+              <Button.Outline
+                className={cn(
+                  'shrink-0 items-center rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]',
+                  isEdit.nickname && 'hidden',
+                )}
+                disabled={isPending}
+                onClick={() => setIsEdit(prev => ({ ...prev, nickname: true }))}
+              >
+                <Typography.P3 className="text-brown">변경</Typography.P3>
+              </Button.Outline>
+            </UserInfoRowContainer>
+            <UserInfoRowContainer>
+              <Typography.SubTitle2 className="min-w-[6.924rem] flex-1 shrink-0 text-brown tablet:max-w-[11.25rem]">
                 아이디
               </Typography.SubTitle2>
-              <Typography.P2 className="flex-1 text-brown">
+              <Typography.P2 className="w-full text-brown">
                 {user.email}
               </Typography.P2>
-            </Container.FlexRow>
+            </UserInfoRowContainer>
             {user.app_metadata.provider === 'email' && (
-              <Container.FlexRow
-                className={isEdit.password ? '!items-start' : ''}
+              <UserInfoRowContainer
+                className={cn(isEdit.password && 'items-start')}
               >
                 <Typography.SubTitle2
-                  className={`pr-[7.0625rem] text-brown ${isEdit.password ? 'pt-3' : ''}`}
+                  className={cn(
+                    'max-w-[6.924rem] flex-1 text-brown tablet:max-w-[11.25rem]',
+                    isEdit.password && 'translate-y-[100%]',
+                  )}
                 >
                   비밀번호
                 </Typography.SubTitle2>
                 {isEdit.password ? (
-                  <Container.FlexCol>
+                  <Container.FlexCol className="gap-12">
                     <FormItem.Password
                       name="password"
                       placeholder="비밀번호 수정"
+                      containerStyle="h-full [&_label]:m-0 items-center"
                       disabled={isPending}
                       isVisible={passwordVisible}
                       onClickVisible={() => setPasswordVisible(prev => !prev)}
+                      inputStyle={
+                        isEdit.password
+                          ? ''
+                          : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
+                      }
+                      helperTextStyle={cn(
+                        'absolute bottom-0 left-0 translate-y-[120%] leading-[150%] text-[0.8rem]',
+                        form.formState.errors.password ? 'block' : 'hidden',
+                      )}
                     />
                     <FormItem.Password
                       name="confirmPassword"
                       placeholder="비밀번호 확인"
+                      containerStyle="h-full [&_label]:m-0 items-center"
                       disabled={isPending}
                       isVisible={passwordVisible}
                       onClickVisible={() => setPasswordVisible(prev => !prev)}
+                      inputStyle={
+                        isEdit.password
+                          ? ''
+                          : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
+                      }
+                      helperTextStyle={cn(
+                        'absolute bottom-0 left-0 translate-y-[120%] leading-[150%] text-[0.8rem]',
+                        form.formState.errors.confirmPassword
+                          ? 'block'
+                          : 'hidden',
+                      )}
                     />
                   </Container.FlexCol>
                 ) : (
@@ -236,11 +286,11 @@ export default function MyAccountTemplate(props: MyAccountTemplateProps) {
                     </Button.Outline>
                   </>
                 )}
-              </Container.FlexRow>
+              </UserInfoRowContainer>
             )}
           </Container.FlexCol>
           {session?.user.app_metadata.provider !== 'email' ? (
-            <Container.FlexCol>
+            <Container.FlexCol className="mt-[3.25rem]">
               <Typography.SubTitle2 className="mb-9 text-brown">
                 계정 연동
               </Typography.SubTitle2>

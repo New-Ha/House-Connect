@@ -8,6 +8,7 @@ import IconButton from '@/components/molecules/IconButton';
 import cn from '@/libs/cn';
 import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
 import { WithErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
+import isRoutePathMatched from '@/libs/isRoutePathMatched';
 
 type MyPageAsideProps = {
   isAsideDropdownOpen: boolean;
@@ -19,7 +20,7 @@ function MyPageAside({
   setIsAsideDropdownOpen,
 }: MyPageAsideProps) {
   const location = useLocation();
-
+  const isMyAccountRoute = isRoutePathMatched(location.pathname, 'myAccount');
   return (
     <Container className="h-full">
       {/* after tablet breakpoint aside */}
@@ -68,6 +69,7 @@ function MyPageAside({
         )}
         <Typography.Head2 className="text-[1.077rem] font-semibold text-brown">
           {asideItems.find(({ path }) => path === location.pathname)?.name}
+          {isMyAccountRoute && '내 활동'}
         </Typography.Head2>
       </Container.FlexCol>
     </Container>

@@ -124,7 +124,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
           />
         </Container.FlexRow>
         <Container.FlexCol className="gap-y-[0.615rem] tablet:gap-y-3">
-          <Container.FlexRow className="items-center gap-x-3">
+          <Container.FlexRow className="w-full items-center gap-x-3">
             <Typography.SubTitle1 className="text-[1.54rem] text-brown">
               {user.nickname}님
             </Typography.SubTitle1>
