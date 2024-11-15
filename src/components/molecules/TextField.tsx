@@ -4,6 +4,7 @@ import Container from '@/components/atoms/Container';
 import Input, { InputProps } from '@/components/atoms/Input';
 import Label from '@/components/atoms/Label';
 import Typography from '@/components/atoms/Typography';
+import cn from '@/libs/cn';
 
 export type TextFieldProps<T extends FieldValues> = InputProps & {
   name: keyof T;
@@ -12,6 +13,7 @@ export type TextFieldProps<T extends FieldValues> = InputProps & {
   activeWatch?: boolean;
   containerStyle?: string;
   inputStyle?: string;
+  helperTextStyle?: string;
 };
 
 export default function TextField<T extends FieldValues>(
@@ -26,6 +28,7 @@ export default function TextField<T extends FieldValues>(
     placeholder,
     options,
     onKeyDown,
+    helperTextStyle,
   } = props;
 
   const { register, formState } = useFormContext();
@@ -33,18 +36,24 @@ export default function TextField<T extends FieldValues>(
   return (
     <Container className={containerStyle}>
       <Label>{labelName}</Label>
-      <Input
-        type={type}
-        className={inputStyle}
-        placeholder={placeholder}
-        onKeyDown={onKeyDown}
-        {...register(name, options)}
-      />
-      <Typography.Span2
-        className={`${!formState.errors[name]?.message && 'invisible h-3'} mt-[8px] block text-point`}
-      >
-        {formState.errors[name]?.message as string}
-      </Typography.Span2>
+      <Container.FlexCol className="relative">
+        <Input
+          type={type}
+          className={inputStyle}
+          placeholder={placeholder}
+          onKeyDown={onKeyDown}
+          {...register(name, options)}
+        />
+        <Typography.Span2
+          className={cn(
+            'mt-[0.5rem] block text-point',
+            !formState.errors[name]?.message && 'invisible h-3',
+            helperTextStyle,
+          )}
+        >
+          {formState.errors[name]?.message as string}
+        </Typography.Span2>
+      </Container.FlexCol>
     </Container>
   );
 }
@@ -55,4 +64,5 @@ TextField.defaultProps = {
   options: {},
   labelName: '',
   activeWatch: false,
+  helperTextStyle: '',
 };

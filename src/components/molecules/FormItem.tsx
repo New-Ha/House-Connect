@@ -46,7 +46,7 @@ FormItem.Password = function FormItemPassword<T extends FieldValues>(
         tabIndex={-1}
         className={cn(
           'absolute bottom-[2.75rem] right-[1rem]',
-          labelName ? 'top-[3.6rem]' : 'top-[1.6rem]',
+          labelName ? 'top-[3.6rem]' : 'top-[1.8rem]',
         )}
         iconType={isVisible ? 'visible' : 'invisible'}
         onClick={onClickVisible}
