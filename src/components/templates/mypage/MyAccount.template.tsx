@@ -194,7 +194,7 @@ export default function MyAccountTemplate() {
                 disabled={isPending}
                 containerStyle={cn(
                   'w-full flex items-center',
-                  '[&_label]:m-0 [&_label]:min-w-[6.924rem] w-full [&_label]:shrink-0 [&_label]:text-brown [&_label]:tablet:max-w-[11.25rem]',
+                  '[&_label]:m-0 [&_label]:min-w-[6.924rem] [&_label]:flex-1 [&_label]:shrink-0 [&_label]:text-brown [&_label]:tablet:max-w-[11.25rem]',
                   isEditing.nickname && '',
                 )}
                 inputStyle={
@@ -221,7 +221,7 @@ export default function MyAccountTemplate() {
               </Button.Outline>
             </UserInfoRowContainer>
             <UserInfoRowContainer>
-              <Typography.SubTitle2 className="min-w-[6.924rem] flex-1 shrink-0 text-brown tablet:max-w-[11.25rem]">
+              <Typography.SubTitle2 className="w-full min-w-[6.924rem] shrink-0 text-brown tablet:max-w-[11.25rem]">
                 아이디
               </Typography.SubTitle2>
               <Typography.P2 className="w-full text-brown">
@@ -232,7 +232,7 @@ export default function MyAccountTemplate() {
               <UserInfoRowContainer>
                 <Typography.SubTitle2
                   className={cn(
-                    'max-w-[6.924rem] flex-1 text-brown tablet:max-w-[11.25rem]',
+                    'min-w-[6.924rem] flex-1 text-brown tablet:max-w-[11.25rem]',
                   )}
                 >
                   비밀번호
