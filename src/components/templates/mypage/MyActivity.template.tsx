@@ -125,17 +125,17 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
         </Container.FlexRow>
         <Container.FlexCol className="gap-y-[0.615rem] tablet:gap-y-3">
           <Container.FlexRow className="w-full items-center gap-x-3">
-            <Typography.SubTitle1 className="text-[1.54rem] text-brown">
+            <Typography.SubTitle1 className="flex-1 break-all text-[1.54rem] leading-150 text-brown">
               {user.nickname}님
             </Typography.SubTitle1>
-            <Link to={routePaths.myAccount}>
+            <Link to={routePaths.myAccount} className="shrink-0">
               <BadgeButton.Outline
                 className="gap-x-[0.625rem] rounded-[1.875rem] px-4 py-[0.625rem]"
                 iconType="next"
                 stroke="brown"
                 iconClassName="h-[0.6875rem] w-[0.375rem]"
               >
-                <Typography.Span1 className="shrink-0">계정 설정</Typography.Span1>
+                <Typography.Span1>계정 설정</Typography.Span1>
               </BadgeButton.Outline>
             </Link>
           </Container.FlexRow>
