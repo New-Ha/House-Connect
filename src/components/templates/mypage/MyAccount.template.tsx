@@ -23,9 +23,18 @@ import useModal from '@/hooks/useModal';
 import { ConfirmModalState } from '@/types/modal.type';
 import { SessionAtom } from '@/stores/auth.store';
 import cn from '@/libs/cn';
+import { useSignPasswordReset } from '@/hooks/useSignPasswordReset';
 
-function PasswordDot() {
-  return <div className="size-4 rounded-full bg-brown" />;
+// eslint-disable-next-line react/require-default-props
+function PasswordDots({ dotLength = 6 }: { dotLength?: number }) {
+  return (
+    <Container.FlexRow className="flex-1 items-center gap-x-1">
+      {Array.from({ length: dotLength }).map(() => (
+        // eslint-disable-next-line react/jsx-key
+        <div className="size-4 rounded-full bg-brown" />
+      ))}
+    </Container.FlexRow>
+  );
 }
 
 function UserInfoRowContainer({
@@ -51,15 +60,13 @@ export default function MyAccountTemplate() {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadAvatar, setUploadedAvatar] = useState<string>();
-
-  const [isEdit, setIsEdit] = useState({ nickname: false, password: false });
-  const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const [isEditing, setIsEditing] = useState({ nickname: false });
   const { updateUser, isUpdating } = useMyAccountUpdate();
   const { deleteAccount, isDeleting } = useDeleteMyAccount();
-
   const { setModalState: setConfirmModal, closeModal: closeConfirmModal } =
     useModal('Confirm');
+  const { passwordReset, isPending: isPendingPasswordReset } =
+    useSignPasswordReset();
   const confirmModalContext: ConfirmModalState = {
     isOpen: true,
     type: 'Confirm',
@@ -84,15 +91,14 @@ export default function MyAccountTemplate() {
     resolver: zodResolver(AccountForm),
   });
 
-  const isPending = isUpdating || isDeleting;
+  const isPending = isUpdating || isDeleting || isPendingPasswordReset;
 
   const onClickCancel = () => {
     navigate(routePaths.myActivity);
   };
 
-  const onSaveAccount = (data: AccountFormType) => {
-    const { password, ...others } = data;
-    updateUser({ ...others, id: user.id });
+  const onSaveAccount = (formValues: AccountFormType) => {
+    updateUser({ ...formValues, id: user.id });
   };
 
   const onClickChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
@@ -118,6 +124,10 @@ export default function MyAccountTemplate() {
         });
       }
     }
+  };
+
+  const onClickPasswordReset = async () => {
+    passwordReset({ email: user.email ?? '' });
   };
 
   return (
@@ -185,10 +195,10 @@ export default function MyAccountTemplate() {
                 containerStyle={cn(
                   'w-full flex items-center',
                   '[&_label]:m-0 [&_label]:min-w-[6.924rem] w-full [&_label]:shrink-0 [&_label]:text-brown [&_label]:tablet:max-w-[11.25rem]',
-                  isEdit.nickname && '',
+                  isEditing.nickname && '',
                 )}
                 inputStyle={
-                  isEdit.nickname
+                  isEditing.nickname
                     ? ''
                     : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
                 }
@@ -200,10 +210,12 @@ export default function MyAccountTemplate() {
               <Button.Outline
                 className={cn(
                   'shrink-0 items-center rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]',
-                  isEdit.nickname && 'hidden',
+                  isEditing.nickname && 'hidden',
                 )}
                 disabled={isPending}
-                onClick={() => setIsEdit(prev => ({ ...prev, nickname: true }))}
+                onClick={() =>
+                  setIsEditing(prev => ({ ...prev, nickname: true }))
+                }
               >
                 <Typography.P3 className="text-brown">변경</Typography.P3>
               </Button.Outline>
@@ -217,75 +229,22 @@ export default function MyAccountTemplate() {
               </Typography.P2>
             </UserInfoRowContainer>
             {user.app_metadata.provider === 'email' && (
-              <UserInfoRowContainer
-                className={cn(isEdit.password && 'items-start')}
-              >
+              <UserInfoRowContainer>
                 <Typography.SubTitle2
                   className={cn(
                     'max-w-[6.924rem] flex-1 text-brown tablet:max-w-[11.25rem]',
-                    isEdit.password && 'translate-y-[100%]',
                   )}
                 >
                   비밀번호
                 </Typography.SubTitle2>
-                {isEdit.password ? (
-                  <Container.FlexCol className="gap-12">
-                    <FormItem.Password
-                      name="password"
-                      placeholder="비밀번호 수정"
-                      containerStyle="h-full [&_label]:m-0 items-center"
-                      disabled={isPending}
-                      isVisible={passwordVisible}
-                      onClickVisible={() => setPasswordVisible(prev => !prev)}
-                      inputStyle={
-                        isEdit.password
-                          ? ''
-                          : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
-                      }
-                      helperTextStyle={cn(
-                        'absolute bottom-0 left-0 translate-y-[120%] leading-[150%] text-[0.8rem]',
-                        form.formState.errors.password ? 'block' : 'hidden',
-                      )}
-                    />
-                    <FormItem.Password
-                      name="confirmPassword"
-                      placeholder="비밀번호 확인"
-                      containerStyle="h-full [&_label]:m-0 items-center"
-                      disabled={isPending}
-                      isVisible={passwordVisible}
-                      onClickVisible={() => setPasswordVisible(prev => !prev)}
-                      inputStyle={
-                        isEdit.password
-                          ? ''
-                          : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
-                      }
-                      helperTextStyle={cn(
-                        'absolute bottom-0 left-0 translate-y-[120%] leading-[150%] text-[0.8rem]',
-                        form.formState.errors.confirmPassword
-                          ? 'block'
-                          : 'hidden',
-                      )}
-                    />
-                  </Container.FlexCol>
-                ) : (
-                  <>
-                    <Container.FlexRow className="flex-1 items-center gap-x-1">
-                      {Array.from({ length: 6 }).map(() => (
-                        // eslint-disable-next-line react/jsx-key
-                        <PasswordDot />
-                      ))}
-                    </Container.FlexRow>
-                    <Button.Outline
-                      className="rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
-                      disabled={isPending}
-                      onClick={() =>
-                        setIsEdit(prev => ({ ...prev, password: true }))
-                      }
-                    >
-                      <Typography.P3 className="text-brown">변경</Typography.P3>
-                    </Button.Outline>
-                  </>
-                )}
+                <PasswordDots />
+                <Button.Outline
+                  className="rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
+                  disabled={isPending}
+                  onClick={onClickPasswordReset}
+                >
+                  <Typography.P3 className="text-brown">변경</Typography.P3>
+                </Button.Outline>
               </UserInfoRowContainer>
             )}
           </Container.FlexCol>

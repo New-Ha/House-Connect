@@ -17,6 +17,25 @@ export const useSignPasswordReset = () => {
 
   const { mutate: passwordReset, isPending } = useMutation({
     mutationFn: async (payload: SignPasswordResetType) => {
+      const { error: logoutError } = await supabase.auth.signOut();
+
+      if (logoutError) {
+        if (
+          localStorage.getItem(
+            `sb-${import.meta.env.VITE_PROJECT_ID}-auth-token`,
+          )
+        ) {
+          localStorage.removeItem(
+            `sb-${import.meta.env.VITE_PROJECT_ID}-auth-token`,
+          );
+        }
+        createToast('logoutError', '로그아웃 중 오류가 발생했습니다.', {
+          type: 'error',
+          isLoading: false,
+          autoClose: 1000,
+        });
+      }
+
       const { error } = await supabase.auth.resetPasswordForEmail(
         payload.email,
         {
@@ -27,9 +46,13 @@ export const useSignPasswordReset = () => {
       );
       if (error) throw new Error(error.message);
     },
-    onMutate: () =>
-      createToast('passwordReset', '초기화 요청을 보내는 중입니다...'),
-    onSuccess: () => successToast('passwordReset', '이메일을 확인해주세요.'),
+    onMutate: () => createToast('passwordReset', '이메일 발송 중입니다.'),
+    onSuccess: () => {
+      successToast('passwordReset', '이메일을 확인해주세요.');
+      setTimeout(() => {
+        successToast('passwordReset', '다시 로그인해주세요');
+      }, 1000);
+    },
     onError: () => errorToast('passwordReset', '요청에 실패했습니다.'),
   });
   return { passwordReset, isPending };

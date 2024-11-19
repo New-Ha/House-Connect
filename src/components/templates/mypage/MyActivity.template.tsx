@@ -135,7 +135,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
                 stroke="brown"
                 iconClassName="h-[0.6875rem] w-[0.375rem]"
               >
-                <Typography.Span1>계정 설정</Typography.Span1>
+                <Typography.Span1 className="shrink-0">계정 설정</Typography.Span1>
               </BadgeButton.Outline>
             </Link>
           </Container.FlexRow>
