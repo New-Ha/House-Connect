@@ -7,13 +7,12 @@ import { supabase } from '@/libs/supabaseClient';
 import { AccountFormType } from '@/types/account.type';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import { SessionAtom, UserAtom } from '@/stores/auth.store';
+import forceLogout from '@/libs/forceLogout';
 
 export const useMyAccountUpdate = () => {
   const navigate = useNavigate();
   const { mutate: updateUser, isPending: isUpdating } = useMutation({
-    mutationFn: async (
-      payload: AccountFormType & { id: string },
-    ) => {
+    mutationFn: async (payload: AccountFormType & { id: string }) => {
       let avatarUploadResult = '';
       if (payload.avatar) {
         const result = await supabase.storage
@@ -57,9 +56,9 @@ export const useDeleteMyAccount = () => {
     },
     onMutate: () => createToast('delete-user', '계정을 삭제 중입니다...'),
     onSuccess: async () => {
-      // ! 이미 제거된 유저로 Supabase.auth.signOut이 불가하여 수동으로 제거
       successToast('delete-user', '계정 삭제를 완료했습니다.');
-      localStorage.removeItem(`sb-${import.meta.env.VITE_PROJECT_ID}-auth-token`);
+      // ! 이미 제거된 유저로 Supabase.auth.signOut이 불가하여 수동으로 제거
+      forceLogout();
       setSession(null);
       setUser(null);
       navigate(routePaths.signIn);

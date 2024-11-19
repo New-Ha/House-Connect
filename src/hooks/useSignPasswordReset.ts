@@ -9,6 +9,7 @@ import {
 import { supabase } from '@/libs/supabaseClient';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import getRedirectURL from '@/libs/getRedirectURL';
+import forceLogout from '@/libs/forceLogout';
 
 export const useSignPasswordReset = () => {
   const isDev =
@@ -20,15 +21,8 @@ export const useSignPasswordReset = () => {
       const { error: logoutError } = await supabase.auth.signOut();
 
       if (logoutError) {
-        if (
-          localStorage.getItem(
-            `sb-${import.meta.env.VITE_PROJECT_ID}-auth-token`,
-          )
-        ) {
-          localStorage.removeItem(
-            `sb-${import.meta.env.VITE_PROJECT_ID}-auth-token`,
-          );
-        }
+        forceLogout();
+
         createToast('logoutError', '로그아웃 중 오류가 발생했습니다.', {
           type: 'error',
           isLoading: false,
