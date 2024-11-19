@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { ComponentProps, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +9,7 @@ import Icon from '@/components/atoms/Icon';
 import { SessionAtom } from '@/stores/auth.store';
 import { createToast } from '@/libs/toast';
 import { supabase } from '@/libs/supabaseClient';
+import isRoutePathMatched from '@/libs/isRoutePathMatched';
 
 export function SignLayoutWrapper({
   className,
@@ -29,11 +30,14 @@ export function SignLayoutWrapper({
 export default function SignLayoutTemplate() {
   const navigate = useNavigate();
   const session = useRecoilValue(SessionAtom);
+  const location = useLocation();
 
   useEffect(() => {
     let timeoutId: number;
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const { data } = supabase.auth.onAuthStateChange(async _event => {
+      if (isRoutePathMatched(location.pathname, 'signUpdatePassword')) return;
+
       if (session) {
         timeoutId = window.setTimeout(async () => {
           const { data, error } = await supabase
@@ -75,7 +79,7 @@ export default function SignLayoutTemplate() {
       data.subscription.unsubscribe();
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [session, navigate]);
+  }, [session, navigate, location.pathname]);
 
   return (
     <>

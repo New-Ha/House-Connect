@@ -65,6 +65,9 @@ export const useSignUpdatePassword = () => {
       createToast('passwordUpdate', '비밀번호를 변경 중입니다...'),
     onSuccess: () => {
       successToast('passwordUpdate', '비밀번호 변경에 성공했습니다.');
+      setTimeout(() => {
+        successToast('reLoginAfterPasswordUpdate', '다시 로그인해주세요');
+      }, 1000);
       navigate(routePaths.signIn);
     },
     onError: () => {
