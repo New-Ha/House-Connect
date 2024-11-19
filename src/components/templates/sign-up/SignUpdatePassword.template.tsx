@@ -11,6 +11,7 @@ import { SignUpdatePassword, SignUpdatePasswordType } from '@/types/auth.type';
 import { useSignUpdatePassword } from '@/hooks/useSignPasswordReset';
 import { routePaths } from '@/constants/route';
 
+// @FIXME: 현재 password recovery page에 email링크를 통해 redirect되면 자동로그인이 되어 root page로 redirect되는 이슈
 export default function SignUpdatePasswordTemplate() {
   const [showPassword, setShowPassword] = useState(false);
   const Form = FormProvider;
