@@ -28,7 +28,7 @@ import { useSignPasswordReset } from '@/hooks/useSignPasswordReset';
 // eslint-disable-next-line react/require-default-props
 function PasswordDots({ dotLength = 6 }: { dotLength?: number }) {
   return (
-    <Container.FlexRow className="flex-1 items-center gap-x-1">
+    <Container.FlexRow className="w-full items-center gap-x-1">
       {Array.from({ length: dotLength }).map(() => (
         // eslint-disable-next-line react/jsx-key
         <div className="size-4 rounded-full bg-brown" />
@@ -160,6 +160,7 @@ export default function MyAccountTemplate() {
             </Container.FlexRow>
           </Container.FlexRow>
           <Divider.Col className="mb-8 mt-6" />
+          {/* 계정 avatar section */}
           <Container.FlexCol>
             <Container className="relative size-32">
               <Avatar.XXXL
@@ -185,6 +186,7 @@ export default function MyAccountTemplate() {
               &#8226; 사진은 자동으로 150x150 사이즈로 적용됩니다.
             </Typography.P3>
           </Container.FlexCol>
+          {/* 계정 profile section */}
           <Container.FlexCol className="w-full max-w-[30.375rem] gap-y-[3.077rem] pt-11 target:gap-y-[2.5rem]">
             <UserInfoRowContainer>
               <FormItem.TextField
@@ -194,13 +196,13 @@ export default function MyAccountTemplate() {
                 disabled={isPending}
                 containerStyle={cn(
                   'w-full flex items-center',
-                  '[&_label]:m-0 [&_label]:min-w-[6.924rem] [&_label]:flex-1 [&_label]:shrink-0 [&_label]:text-brown [&_label]:tablet:max-w-[11.25rem]',
+                  '[&_label]:m-0 [&_label]:min-w-[6.924rem] tablet:[&_label]:min-w-[11.25rem] [&>div]:w-full [&_label]:text-brown',
                   isEditing.nickname && '',
                 )}
                 inputStyle={
                   isEditing.nickname
                     ? ''
-                    : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none'
+                    : 'w-full border-none p-0 placeholder:text-transparent focus:ring-0 pointer-events-none text-brown'
                 }
                 helperTextStyle={cn(
                   'absolute bottom-0 left-0 translate-y-[150%] text-[0.8rem]',
@@ -221,25 +223,33 @@ export default function MyAccountTemplate() {
               </Button.Outline>
             </UserInfoRowContainer>
             <UserInfoRowContainer>
-              <Typography.SubTitle2 className="w-full min-w-[6.924rem] shrink-0 text-brown tablet:max-w-[11.25rem]">
+              <Typography.SubTitle2 className="min-w-[6.924rem] shrink-0 text-brown tablet:min-w-[11.25rem]">
                 아이디
               </Typography.SubTitle2>
               <Typography.P2 className="w-full text-brown">
                 {user.email}
               </Typography.P2>
+              <Button.Outline
+                className={cn(
+                  'shrink-0 items-center invisible rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]',
+                  isEditing.nickname && 'hidden',
+                )}
+                disabled={isPending}
+                onClick={() =>
+                  setIsEditing(prev => ({ ...prev, nickname: true }))
+                }
+              >
+                <Typography.P3 className="text-brown">변경</Typography.P3>
+              </Button.Outline>
             </UserInfoRowContainer>
             {user.app_metadata.provider === 'email' && (
               <UserInfoRowContainer>
-                <Typography.SubTitle2
-                  className={cn(
-                    'min-w-[6.924rem] flex-1 text-brown tablet:max-w-[11.25rem]',
-                  )}
-                >
+                <Typography.SubTitle2 className="min-w-[6.924rem] text-brown tablet:min-w-[11.25rem]">
                   비밀번호
                 </Typography.SubTitle2>
                 <PasswordDots />
                 <Button.Outline
-                  className="rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
+                  className="shrink-0 rounded-[3.125rem] px-[1.4375rem] py-[0.5625rem]"
                   disabled={isPending}
                   onClick={onClickPasswordReset}
                 >
@@ -248,41 +258,53 @@ export default function MyAccountTemplate() {
               </UserInfoRowContainer>
             )}
           </Container.FlexCol>
-          {session?.user.app_metadata.provider !== 'email' ? (
+          {/* 연동된 계정 provider section */}
+          {session?.user.app_metadata.provider !== 'email' && (
             <Container.FlexCol className="mt-[3.25rem]">
               <Typography.SubTitle2 className="mb-9 text-brown">
                 계정 연동
               </Typography.SubTitle2>
-              <Container.FlexRow className="items-center">
-                <Badge.Outline
-                  className={`mr-[0.9375rem] rounded-full ${session?.user.app_metadata.provider === 'google' ? 'p-[0.6875rem]' : 'px-2.5 py-[0.6875rem]'}`}
-                  focus={false}
-                  active={false}
-                  hover={false}
-                >
-                  <Icon
-                    type={
-                      session?.user.app_metadata.provider === 'google'
-                        ? 'google-logo'
-                        : 'kakaotalk-logo-text'
-                    }
-                  />
-                </Badge.Outline>
-                <Typography.P3 className="mr-[18.5rem] text-brown">
-                  {session?.user.app_metadata.provider === 'google'
-                    ? 'Google'
-                    : 'Kakaotalk'}
-                </Typography.P3>
-                <Typography.P3 className="text-brown1">연결됨</Typography.P3>
-              </Container.FlexRow>
+              <Container.FlexCol className="w-full max-w-[32rem] gap-[1.538rem]">
+                {session?.user.app_metadata.providers?.map(
+                  (provider: 'kakao' | 'google') => (
+                    <Container.FlexRow
+                      key={provider}
+                      className="w-full items-center justify-between"
+                    >
+                      <Container.FlexRow className="items-center gap-[1.5rem] tablet:gap-8">
+                        <Badge.Outline
+                          className="rounded-full p-[0.6875rem]"
+                          focus={false}
+                          active={false}
+                          hover={false}
+                        >
+                          <Icon
+                            type={
+                              provider === 'google'
+                                ? 'google-logo'
+                                : 'kakaotalk-logo-text'
+                            }
+                          />
+                        </Badge.Outline>
+                        <Typography.P3 className="text-brown">
+                          {provider === 'google' ? 'Google' : 'Kakaotalk'}
+                        </Typography.P3>
+                      </Container.FlexRow>
+                      <Typography.P3 className="shrink-0 text-brown1">
+                        연결됨
+                      </Typography.P3>
+                    </Container.FlexRow>
+                  ),
+                )}
+              </Container.FlexCol>
             </Container.FlexCol>
-          ) : null}
+          )}
           <Button.Ghost
-            className="mt-[5.75rem]"
+            className="mt-[5.75rem] w-fit"
             disabled={isPending}
             onClick={() => setConfirmModal(confirmModalContext)}
           >
-            <Typography.P3 className="text-brown underline underline-offset-2">
+            <Typography.P3 className="text-brown underline underline-offset-4">
               회원 탈퇴
             </Typography.P3>
           </Button.Ghost>
