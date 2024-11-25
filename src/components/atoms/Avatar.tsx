@@ -67,7 +67,7 @@ AvatarSize.forEach(({ size, defaultClassName }) => {
           className,
         ),
         src: src?.startsWith('images/avatar/')
-          ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/avatar/${src}`
+          ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}${src.replace('images/', '')}`
           : `${src}`,
         ...others,
       })

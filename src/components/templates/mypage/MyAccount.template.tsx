@@ -106,7 +106,7 @@ export default function MyAccountTemplate() {
     );
     setUploadedAvatar(null);
   };
-  
+
   const onSaveAccount = (formValues: AccountFormType) => {
     updateUser({ ...formValues, id: user.id });
   };
