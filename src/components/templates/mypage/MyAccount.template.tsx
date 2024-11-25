@@ -1,11 +1,9 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChangeEvent, ReactNode, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { Session } from '@supabase/supabase-js';
 
-import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
 import Typography from '@/components/atoms/Typography';
 import Divider from '@/components/atoms/Divider';
@@ -57,10 +55,12 @@ function UserInfoRowContainer({
 export default function MyAccountTemplate() {
   const session = useRecoilValue(SessionAtom);
   const { user } = session as Session;
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadAvatar, setUploadedAvatar] = useState<string>();
-  const [isEditing, setIsEditing] = useState({ nickname: false });
+  const [uploadAvatar, setUploadedAvatar] = useState<string | null>();
+  const [isEditing, setIsEditing] = useState({
+    nickname: false,
+    avatar: false,
+  });
   const { updateUser, isUpdating } = useMyAccountUpdate();
   const { deleteAccount, isDeleting } = useDeleteMyAccount();
   const { setModalState: setConfirmModal, closeModal: closeConfirmModal } =
@@ -94,14 +94,25 @@ export default function MyAccountTemplate() {
   const isPending = isUpdating || isDeleting || isPendingPasswordReset;
 
   const onClickCancel = () => {
-    navigate(routePaths.myActivity);
+    setIsEditing(
+      prev =>
+        Object.entries(prev).reduce(
+          (acc, cur) => ({
+            ...acc,
+            [`${cur[0]}`]: false,
+          }),
+          {},
+        ) as { nickname: boolean; avatar: boolean },
+    );
+    setUploadedAvatar(null);
   };
-
+  
   const onSaveAccount = (formValues: AccountFormType) => {
     updateUser({ ...formValues, id: user.id });
   };
 
   const onClickChangeAvatar = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEditing(prev => ({ ...prev, avatar: true }));
     event.preventDefault();
     const { files } = event.currentTarget;
     if (files && files.length > 0) {
@@ -139,7 +150,12 @@ export default function MyAccountTemplate() {
             <Typography.SubTitle1 className="text-[1.54rem] font-semibold text-brown">
               계정설정
             </Typography.SubTitle1>
-            <Container.FlexRow className="gap-x-3">
+            <Container.FlexRow
+              className={cn(
+                'gap-x-3 invisible',
+                Object.values(isEditing).some(value => value) && 'visible',
+              )}
+            >
               <Button.Outline
                 className="h-[2.77rem] w-[6rem] justify-center rounded-full tablet:h-[2.25rem] tablet:w-[4.875rem]"
                 onClick={onClickCancel}
