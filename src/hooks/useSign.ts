@@ -31,43 +31,40 @@ import { createToast, errorToast, successToast } from '@/libs/toast';
 import { ShowVerificationAtom } from '@/stores/sign.store';
 import getRedirectURL from '@/libs/getRedirectURL';
 
-const preProcessingUserData = (
-  data: AuthTokenResponsePassword | AuthResponse,
-): UserType | undefined => {
-  if (data.data.user?.email) {
-    const { email, id } = data.data.user;
-    const { gender, avatar, birth, name, nickname, status } =
-      data.data.user.user_metadata;
+type UserDataSource = AuthTokenResponsePassword | AuthResponse | Session | null;
+
+const parseUserFromSession = (userData: UserDataSource): UserType | null => {
+  if (!userData) return null;
+
+  let data = null;
+
+  // AuthTokenResponsePassword | AuthResponse type일 시
+  if ('data' in userData) {
+    if (userData.error) throw new Error(userData.error?.message);
+
+    data = userData.data;
+  } else {
+    data = userData;
+  }
+
+  if (data?.user?.email) {
+    const { email, id } = data.user;
+    const { gender, avatar, avatar_url, birth, name, nickname, status } =
+      data.user.user_metadata;
+
     return {
-      gender,
-      avatar,
-      birth,
+      id,
       name,
       nickname,
+      gender,
       email,
-      id,
+      avatar: avatar || avatar_url,
+      birth,
       status,
-    };
+    } as UserType;
   }
-  throw new Error(data.error?.message);
-};
 
-const parseUserFromSession = (session: Session | null): UserType | null => {
-  if (!session) return null;
-  const { email, id } = session.user;
-  const { gender, avatar, avatar_url, birth, name, nickname, status } =
-    session.user.user_metadata;
-
-  return {
-    id,
-    name,
-    nickname,
-    gender,
-    email,
-    avatar: avatar || avatar_url,
-    birth,
-    status,
-  } as UserType;
+  return null;
 };
 
 export const useSignUpEmail = () => {
@@ -99,7 +96,6 @@ export const useSignUpEmail = () => {
 };
 
 export const useSignInEmail = () => {
-  const setUser = useSetRecoilState(UserAtom);
   const setIsNotVerified = useSetRecoilState(IsNotVerifiedAtom);
   const { mutate: signInEmail, isPending: isSignInEmail } = useMutation({
     mutationFn: async (payload: EmailAuthType) =>
@@ -111,10 +107,7 @@ export const useSignInEmail = () => {
         setIsNotVerified(true);
       }
     },
-    onSuccess: async data => {
-      const payload = preProcessingUserData(data);
-      // * Recoil 상태로 유저정보 등록
-      if (payload) setUser(payload);
+    onSuccess: async () => {
       successToast('signin', '로그인 성공!');
     },
   });
@@ -139,7 +132,7 @@ export const useVerifyEmail = ({
     },
     onMutate: () => createToast('signin', mutateMessage),
     onSuccess: async data => {
-      const payload = preProcessingUserData(data);
+      const payload = parseUserFromSession(data);
       // * Recoil 상태로 유저정보 등록
       if (payload) setUser(payload);
       successToast('signin', successMessage);

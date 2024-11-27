@@ -51,7 +51,6 @@ export default function UserMenu({
                 setDropView(!dropView);
               }}
             >
-              {/* @FIXME: 아바타 변경 후 초기 rendering 시 avatar가 빈 값으로 빈 아바타가 rendering 되는 이슈 */}
               <Avatar.XS src={user.avatar} isActive={isUserMenuActive} />
             </Button.Ghost>
           ) : (
