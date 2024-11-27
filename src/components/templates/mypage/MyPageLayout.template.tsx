@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useMatch } from 'react-router-dom';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import Container from '@/components/atoms/Container';
@@ -9,6 +9,7 @@ import cn from '@/libs/cn';
 import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
 import { WithErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import isRoutePathMatched from '@/libs/isRoutePathMatched';
+import { routePaths } from '@/constants/route';
 
 type MyPageAsideProps = {
   isAsideDropdownOpen: boolean;
@@ -21,6 +22,10 @@ function MyPageAside({
 }: MyPageAsideProps) {
   const location = useLocation();
   const isMyAccountRoute = isRoutePathMatched(location.pathname, 'myAccount');
+
+  // * mybookmark아래 nested route -> 1. houses, 2. lounge, 3. posts가 있으므로 이에 관련된 nested route인지 체크
+  const isMybookmarkNestedRoute = useMatch(`${routePaths.myBookmark}/*`);
+
   return (
     <Container className="h-full">
       {/* after tablet breakpoint aside */}
@@ -70,6 +75,8 @@ function MyPageAside({
         <Typography.Head2 className="text-[1.077rem] font-semibold text-brown">
           {asideItems.find(({ path }) => path === location.pathname)?.name}
           {isMyAccountRoute && '내 활동'}
+          {/* mybookmark root route가 아닌 nested route일 시 */}
+          {isMybookmarkNestedRoute?.params['*'] && '내 북마크'}
         </Typography.Head2>
       </Container.FlexCol>
     </Container>

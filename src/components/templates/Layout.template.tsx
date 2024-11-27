@@ -44,7 +44,7 @@ export default function LayoutTemplate() {
   ]);
 
   if (isInitializingSession) {
-    return <Loading text="Checking User..." />;
+    return <Loading text="로그인 정보 확인 중..." />;
   }
 
   return (

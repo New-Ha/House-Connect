@@ -17,7 +17,6 @@ export default function MyPageAsideDropdown({
   setDropView,
 }: MyPageAsideDropdownProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-
   useCloseOnClickOutside(containerRef, () => setDropView(false));
 
   return (
@@ -29,11 +28,11 @@ export default function MyPageAsideDropdown({
       )}
     >
       {asideItems.map(({ name, path }) => (
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events
         <li
           className="cursor-pointer list-none p-[1.23rem] hover:bg-brown6"
           key={path}
           onClick={() => setDropView(false)}
-          aria-hidden
         >
           <NavLink
             to={path}
