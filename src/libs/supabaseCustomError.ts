@@ -1,29 +1,37 @@
-import { PostgrestError } from '@supabase/supabase-js';
+import { AuthError, PostgrestError } from '@supabase/supabase-js';
 
 class SupabaseCustomError extends Error {
-  public code: string;
+  public code?: string;
 
   public statusCode: number;
 
-  public hint: string;
+  public hint?: string;
 
-  public details: string;
+  public details?: string;
 
-  constructor(postgresError: PostgrestError, statusCode: number) {
-    super(postgresError.message);
+  constructor(error: PostgrestError | AuthError, statusCode: number) {
+    super(error.message);
     this.name = 'SupabaseCustomError';
-    this.code = postgresError.code;
-    this.hint = postgresError.hint;
-    this.details = postgresError.details;
     this.statusCode = statusCode;
 
-    console.error({
-      name: this.name,
-      code: this.code,
-      hint: this.hint,
-      details: this.details,
-      statusCode: this.statusCode,
-    });
+    if (error instanceof AuthError) {
+      console.error({
+        name: this.name,
+        statusCode: this.statusCode,
+      });
+    } else {
+      this.code = error.code;
+      this.hint = error.hint;
+      this.details = error.details;
+
+      console.error({
+        name: this.name,
+        code: this.code,
+        hint: this.hint,
+        details: this.details,
+        statusCode: this.statusCode,
+      });
+    }
   }
 }
 

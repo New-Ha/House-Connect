@@ -30,6 +30,7 @@ import {
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import { ShowVerificationAtom } from '@/stores/sign.store';
 import getRedirectURL from '@/libs/getRedirectURL';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 type UserDataSource = AuthTokenResponsePassword | AuthResponse | Session | null;
 
@@ -98,8 +99,13 @@ export const useSignUpEmail = () => {
 export const useSignInEmail = () => {
   const setIsNotVerified = useSetRecoilState(IsNotVerifiedAtom);
   const { mutate: signInEmail, isPending: isSignInEmail } = useMutation({
-    mutationFn: async (payload: EmailAuthType) =>
-      supabase.auth.signInWithPassword(payload),
+    mutationFn: async (payload: EmailAuthType) => {
+      const { data, error } = await supabase.auth.signInWithPassword(payload);
+
+      if (error) throw new SupabaseCustomError(error, error.status as number);
+
+      return data;
+    },
     onMutate: () => createToast('signin', '로그인 시도 중...'),
     onError: (error: AuthError) => {
       errorToast('signin', error.message);
@@ -193,7 +199,7 @@ export const useUpdateUserInfo = () => {
   const { mutate: updateUserInfo, isPending } = useMutation({
     mutationFn: async (payload: SignUpInfoType) => {
       const { error } = await supabase.auth.updateUser({
-        data: { ...payload, nickname: payload.name },
+        data: { ...payload, name: payload.name, nickname: payload.name },
       });
       if (error) throw new Error(error.message);
     },
