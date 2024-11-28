@@ -26,6 +26,8 @@ function MyPageAside({
   // * mybookmark아래 nested route -> 1. houses, 2. lounge, 3. posts가 있으므로 이에 관련된 nested route인지 체크
   const isMybookmarkNestedRoute = useMatch(`${routePaths.myBookmark}/*`);
 
+  console.log(isMybookmarkNestedRoute);
+
   return (
     <Container className="h-full">
       {/* after tablet breakpoint aside */}
@@ -76,7 +78,9 @@ function MyPageAside({
           {asideItems.find(({ path }) => path === location.pathname)?.name}
           {isMyAccountRoute && '내 활동'}
           {/* mybookmark root route가 아닌 nested route일 시 */}
-          {isMybookmarkNestedRoute?.params['*'] && '내 북마크'}
+          {isMybookmarkNestedRoute?.params['*'] &&
+            isMybookmarkNestedRoute?.params['*'] !== 'houses' &&
+            '내 북마크'}
         </Typography.Head2>
       </Container.FlexCol>
     </Container>
