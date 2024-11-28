@@ -126,7 +126,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
         <Container.FlexCol className="gap-y-[0.615rem] tablet:gap-y-3">
           <Container.FlexRow className="w-full items-center gap-x-3">
             <Typography.SubTitle1 className="flex-1 break-all text-[1.54rem] leading-150 text-brown">
-              {user.nickname}님
+              {user.name}님
             </Typography.SubTitle1>
             <Link to={routePaths.myAccount} className="shrink-0">
               <BadgeButton.Outline
@@ -139,7 +139,9 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
               </BadgeButton.Outline>
             </Link>
           </Container.FlexRow>
-          <Typography.P3 className="text-brown1">@{user.name}</Typography.P3>
+          <Typography.P3 className="text-brown1">
+            @{user.nickname}
+          </Typography.P3>
         </Container.FlexCol>
       </Container.FlexRow>
       <Divider.Col />
