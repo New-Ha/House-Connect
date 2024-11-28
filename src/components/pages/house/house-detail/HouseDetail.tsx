@@ -55,6 +55,8 @@ function HouseDetail() {
     }
   };
 
+  const isOwner = houseDetailData?.user_id === user?.id;
+
   return (
     <Container className="relative w-full">
       {isLoadingDelaying && (
@@ -85,7 +87,7 @@ function HouseDetail() {
             />
           </li>
         </Container.FlexRow>
-        {user && (
+        {isOwner && (
           <Container.FlexRow className="items-center gap-[1.48rem] mobile:gap-[1.7rem]">
             <li className="list-none">
               <IconButton.Ghost
