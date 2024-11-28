@@ -46,6 +46,18 @@ export default function SignLayoutTemplate() {
             .eq('id', session?.user.id)
             .maybeSingle();
 
+          const { birth, gender, name } = session.user.user_metadata;
+
+          if (!birth || !gender || !name) {
+            createToast('signup-info', '추가 정보를 입력해주세요.', {
+              isLoading: false,
+              type: 'warning',
+              autoClose: 3000,
+            });
+
+            return navigate(routePaths.signUpInfo);
+          }
+
           if (data) {
             if (data.is_set_profile) {
               return navigate(routePaths.root);
@@ -56,18 +68,6 @@ export default function SignLayoutTemplate() {
 
           if (error) {
             navigate(routePaths.root);
-          }
-
-          const { birth, gender, nickname } = session.user.user_metadata;
-
-          if (!birth || !gender || !nickname) {
-            createToast('signup-info', '추가 정보를 입력해주세요.', {
-              isLoading: false,
-              type: 'warning',
-              autoClose: 3000,
-            });
-
-            return navigate(routePaths.signUpInfo);
           }
 
           return navigate(routePaths.root);
