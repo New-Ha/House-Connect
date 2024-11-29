@@ -67,8 +67,7 @@ AvatarSize.forEach(({ size, defaultClassName }) => {
           className,
         ),
         src: src?.startsWith('images/avatar/')
-          // @FIXME: avatar(profile image) not changed immediately after change the profile image
-          ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}${src.replace('images/', '')}`
+          ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}${src.replace('images/', '')}?t=${Date.now()}`
           : `${src}`,
         ...others,
       })
