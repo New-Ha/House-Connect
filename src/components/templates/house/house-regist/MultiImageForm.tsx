@@ -156,10 +156,10 @@ export default function MultiImageForm({
 
   return (
     <Container.FlexCol className="w-full justify-center">
-      <Container.FlexRow>
+      <Container.FlexRow className="items-center">
         {currentPageIndex > 0 && (
           <IconButton.Ghost
-            className="absolute left-[-0.1875rem] z-50"
+            className="absolute left-0 z-50"
             iconType="prev"
             stroke="brown"
             onClick={handlePrevImage}
