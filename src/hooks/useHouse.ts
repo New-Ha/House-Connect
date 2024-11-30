@@ -396,7 +396,8 @@ const fetchHouseList = async ({
       user_id,
       user_mate_style!inner(mate_gender, mate_number)`, // ! supabase default join은 left join으로 inner로 명시해주어야 inner join이 가능
     )
-    .eq('temporary', 1);
+    .eq('temporary', 1)
+    .order('created_at', { ascending: false });
 
   const filterCondition: {
     [K in keyof HouseListFilterType]: {

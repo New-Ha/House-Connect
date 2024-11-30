@@ -63,12 +63,16 @@ export const HouseForm = z.object({
    * - undefined: 지정되지 않음(초기값)
    */
   floor: z.union([z.literal(0), z.literal(1), z.literal(2)]).optional(),
-  deposit_price: z.number({
-    invalid_type_error: '보증금을 만원 단위 숫자로 입력해주세요.',
-  }),
-  monthly_price: z.number({
-    invalid_type_error: '월세를 만원 단위 숫자로 입력해주세요.',
-  }),
+  deposit_price: z
+    .number({
+      invalid_type_error: '보증금을 만원 단위 숫자로 입력해주세요.',
+    })
+    .max(10000, '보증금은 10,000 만원 이하로 입력해주세요.'),
+  monthly_price: z
+    .number({
+      invalid_type_error: '월세를 만원 단위 숫자로 입력해주세요.',
+    })
+    .max(500, '월세는 500 만원 이하로 입력해주세요.'),
   manage_price: z.number({
     invalid_type_error: '관리비를 만원 단위 숫자로 입력해주세요.',
   }),
