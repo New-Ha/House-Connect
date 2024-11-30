@@ -277,7 +277,7 @@ export default function MultiImageForm({
               </Container.FlexRow>
             ))}
           {totalImageCount < IMAGE_PER_PAGE &&
-            Array.from({ length: IMAGE_PER_PAGE - totalImageCount }).map(_ => (
+            Array.from({ length: IMAGE_PER_PAGE - totalImageCount }).map(() => (
               <Label
                 key={uuid()}
                 htmlFor="house_img"
