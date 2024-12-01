@@ -11,6 +11,7 @@ const persistSignUpProfile: AtomEffect<SignUpProfileType> = ({
   const tempSignUpProfileData = sessionStorage.getItem(signUpProfileKey);
 
   if (tempSignUpProfileData !== null)
+    // @FIXME: 직렬화된 데이터에 value가 undefined인 property는 삭제되어 상태에 저장되지 않는 이슈 발생.
     setSelf(JSON.parse(tempSignUpProfileData));
 
   onSet((newValue, _, isReset) => {
