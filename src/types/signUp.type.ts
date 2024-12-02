@@ -263,7 +263,7 @@ export type SignUpProfileType = z.infer<typeof SignUpProfile>;
 export type SignUpProfileStateType = {
   type: 0 | 1 | 2 | 3 | undefined;
   rental_type: 0 | 1 | 2 | 3 | undefined;
-  regions: string[];
+  regions: RegionUnion[];
   deposit_price: [number, number];
   term: [number, number];
   monthly_rental_price: [number, number];
