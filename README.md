@@ -14,7 +14,7 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 경제적 부담을 덜고, 함께 밥을 먹고 생활하는 나에게 딱 맞는 가족💖을 구해보세요! <br>
 
 <span>👉🏻 </span>
-<a href="house-connect.vercel.app">룸메이트 찾으러 가기!</a>
+<a href="https://house-connect.vercel.app/">룸메이트 찾으러 가기!</a>
 
 <br><br>
 
@@ -59,7 +59,7 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 
 | 🔗 배포링크 🔗 | 🪪 테스트 계정 ID | 🗝️ 테스트 계정 PW |
 | --- | --- | --- |
-| [house-connect.vercel.app](https://house-connect.vercel.app/) | [houseconnect.test@gmail.com](mailto:houseconnect.test@gmail.com) | hchchc01! |
+| https://house-connect.vercel.app/ | [houseconnect.test@gmail.com](mailto:houseconnect.test@gmail.com) | hchchc01! |
 
 </div>
 
