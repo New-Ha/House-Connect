@@ -1,21 +1,37 @@
 import { atom, AtomEffect, RecoilState, selectorFamily } from 'recoil';
 
-import { SignUpProfileType } from '@/types/signUp.type';
+import { SignUpProfileStateType } from '@/types/signUp.type';
 
 const signUpProfileKey = 'signUpProfile';
 
-const persistSignUpProfile: AtomEffect<SignUpProfileType> = ({
+const persistSignUpProfile: AtomEffect<SignUpProfileStateType> = ({
   setSelf,
   onSet,
 }) => {
-  const tempSignUpProfileData = sessionStorage.getItem(signUpProfileKey);
+  const sessionSignUpProfileData = sessionStorage.getItem(signUpProfileKey);
 
-  if (tempSignUpProfileData !== null)
-    setSelf(JSON.parse(tempSignUpProfileData));
+  if (sessionSignUpProfileData !== null) {
+    const parsedData = JSON.parse(sessionSignUpProfileData);
+    const undefinedPreservedData = Object.entries(parsedData).reduce(
+      (acc, [key, value]) => ({
+        ...acc,
+        [key]: value === 'undefined' ? undefined : value,
+      }),
+      {},
+    );
+
+    setSelf(undefinedPreservedData as SignUpProfileStateType);
+  }
 
   onSet((newValue, _, isReset) => {
     if (isReset) sessionStorage.removeItem(signUpProfileKey);
-    else sessionStorage.setItem(signUpProfileKey, JSON.stringify(newValue));
+    else {
+      // * JSON.stringify는 직렬화 시 undefined를 무시하므로, undefined를 'undefined'인 string type으로 변환하여 직렬화 함.
+      const serializedWithUndefined = JSON.stringify(newValue, (_key, value) =>
+        value === undefined ? 'undefined' : value,
+      );
+      sessionStorage.setItem(signUpProfileKey, serializedWithUndefined);
+    }
   });
 };
 
@@ -23,7 +39,7 @@ const persistSignUpProfile: AtomEffect<SignUpProfileType> = ({
  * `SignUpProfileState`은 atom으로 회원가입에 필요한 개인정보를 제외한 선호하는 프로필 옵션을 관리하는 state이다.
  * undefined는 초기값으로 사용자가 아직 선택하지 않았음을 의미.
  *
- * @type {RecoilState<SignUpProfileType>}
+ * @type {RecoilState<SignUpProfileStateType>}
  *
  * @property { 0 | 1 | 2 | 3 | undefined } type - 집 유형 (0: 원룸/오피스텔, 1: 빌라/연립, 2: 아파트, 3: 단독주택)
  * @property { 0 | 1 | 2 | 3 | undefined } rental_type - 집 대여 유형 (0: 월세, 1: 전세, 2: 반 전세)
@@ -41,8 +57,8 @@ const persistSignUpProfile: AtomEffect<SignUpProfileType> = ({
  * @effects persistSignUpProfile - session storage를 이용한 새로고침 시 state persistence
  */
 
-export const SignUpProfileState: RecoilState<SignUpProfileType> =
-  atom<SignUpProfileType>({
+export const SignUpProfileState: RecoilState<SignUpProfileStateType> =
+  atom<SignUpProfileStateType>({
     key: 'signUpProfileState',
     default: {
       type: undefined,
@@ -64,11 +80,11 @@ export const SignUpProfileState: RecoilState<SignUpProfileType> =
 export const SignupProfileStateSelector = selectorFamily({
   key: 'signupProfileStateSelector',
   get:
-    <K extends keyof SignUpProfileType>(param: K) =>
+    <K extends keyof SignUpProfileStateType>(param: K) =>
     ({ get }) =>
       get(SignUpProfileState)[param],
   set:
-    <K extends keyof SignUpProfileType>(param: K) =>
+    <K extends keyof SignUpProfileStateType>(param: K) =>
     ({ set }, newValue) =>
       set(SignUpProfileState, prevState => ({
         ...prevState,
