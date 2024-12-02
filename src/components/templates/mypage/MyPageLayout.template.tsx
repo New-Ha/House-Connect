@@ -26,8 +26,6 @@ function MyPageAside({
   // * mybookmark아래 nested route -> 1. houses, 2. lounge, 3. posts가 있으므로 이에 관련된 nested route인지 체크
   const isMybookmarkNestedRoute = useMatch(`${routePaths.myBookmark}/*`);
 
-  console.log(isMybookmarkNestedRoute);
-
   return (
     <Container className="h-full">
       {/* after tablet breakpoint aside */}

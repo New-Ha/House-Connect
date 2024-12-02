@@ -23,7 +23,7 @@ function MyBookmarkPageComponent() {
               to={path}
               className={({ isActive }) =>
                 cn(
-                  'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 s-tablet:w-[8.3rem] s-tablet:flex-none tablet:p-5',
+                  'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 tablet:w-[8.3rem] tablet:flex-none tablet:p-5',
                   isActive ? 'border-b-3 text-brown' : '',
                 )
               }
