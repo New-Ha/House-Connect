@@ -122,13 +122,14 @@ export default function HouseRegister() {
   // ! reset을 사용하면 undefined여야하는 입력란이 초기값인 NaN이들어가면서 placeholder가 보이지 않아서 setValue 사용
   useEffect(() => {
     if (fetchedUserLifeStyle && fetchedUserMateStyle) {
+      const mappedAge = userMateStyleData.prefer_mate_age.map(age => age - 20);
       form.setValue('smoking', userLifeStyleData.smoking);
       form.setValue('pet', userLifeStyleData.pet);
       form.setValue('appeals', userLifeStyleData.appeals);
       form.setValue('mate_gender', userMateStyleData.mate_gender);
       form.setValue('mate_number', userMateStyleData.mate_number);
       form.setValue('mate_appeals', userMateStyleData.mate_appeals);
-      form.setValue('prefer_mate_age', userMateStyleData.prefer_mate_age);
+      form.setValue('prefer_mate_age', mappedAge as [number, number]);
     }
   }, [
     fetchedUserLifeStyle,
@@ -160,6 +161,7 @@ export default function HouseRegister() {
   const onUpdateProfile = async (
     formData: HouseFormType & UserLifeStyleType & UserMateStyleType,
   ) => {
+    const preferAge = formData.prefer_mate_age.map(age => age + 20);
     updateUserProfile({
       dbName: 'user_lifestyle',
       data: {
@@ -176,7 +178,7 @@ export default function HouseRegister() {
         mate_gender: formData.mate_gender,
         mate_number: formData.mate_number,
         mate_appeals: formData.mate_appeals,
-        prefer_mate_age: formData.prefer_mate_age,
+        prefer_mate_age: preferAge as [number, number],
       },
       userId,
     });
