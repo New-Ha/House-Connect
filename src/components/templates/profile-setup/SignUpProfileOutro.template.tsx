@@ -10,6 +10,7 @@ export default function SignUpProfileOutroTemplate() {
     <Container.FlexCol className="relative top-[-7.25rem] size-full items-center justify-center gap-y-[4.25rem]">
       <Container.FlexCol className="items-center gap-y-[1.875rem]">
         <Container.FlexCol className="items-center gap-y-7">
+          {/* @FIXME: Typography의 기본 className이 적용되지 않음. */}
           <Typography.Head2 className="text-brown">
             프로필 설정이 완료되었어요
           </Typography.Head2>
