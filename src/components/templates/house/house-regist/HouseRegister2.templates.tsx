@@ -41,9 +41,10 @@ export default function HouseRegisterTemplates2() {
     prefer_mate_age: form.getValues('prefer_mate_age'),
   });
 
-  const [preferAge, setPreferAge] = useState<
-    UserMateStyleType['prefer_mate_age']
-  >(form.watch('prefer_mate_age'));
+  const preferMateAge = form.watch('prefer_mate_age');
+
+  const [preferAge, setPreferAge] =
+    useState<UserMateStyleType['prefer_mate_age']>(preferMateAge);
 
   const onClickMatesNum = (
     stateValue: SignUpProfileFormType['mate_number'],
