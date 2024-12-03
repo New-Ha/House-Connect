@@ -15,7 +15,7 @@ export default function SelectorItem({
 }: SelectorItemProps) {
   return (
     <li className={cn(selectorItemStyle, className)} {...others}>
-      <Button.Ghost className="w-full cursor-pointer justify-center bg-bg p-5">
+      <Button.Ghost className="w-full cursor-pointer justify-center bg-transparent p-5">
         {children}
       </Button.Ghost>
     </li>
