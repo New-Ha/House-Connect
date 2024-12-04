@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { UserInfoType } from '@/hooks/useUserInfo';
 import Avatar from '@/components/atoms/Avatar';
@@ -20,8 +21,6 @@ import {
 import { generateUnitByPrice, generateUnitByTerm } from '@/libs/generateUnit';
 import BadgeIcon from '@/components/molecules/BadgeIcon';
 import Button from '@/components/atoms/Button';
-import useModal from '@/hooks/useModal';
-import { ProfileModifyModalState } from '@/types/modal.type';
 import { routePaths } from '@/constants/route';
 import cn from '@/libs/cn';
 import { IconType } from '@/types/icon.type';
@@ -100,19 +99,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
   const { user } = props;
   const [currentTab, setCurrentTab] = useState(0);
   const tabItem = ['내가 쓴 게시글', '내가 쓴 댓글'];
-
-  const { setModalState: setProfileModifyModal } = useModal('ProfileModify');
-
-  const profileModifyContext: ProfileModifyModalState = {
-    isOpen: true,
-    type: 'ProfileModify',
-    userInfo: {
-      ...user.user_mate_style,
-      ...user.user_lifestyle,
-      ...user.user_looking_house,
-      ...user,
-    },
-  };
+  const navigate = useNavigate();
 
   return (
     <Container.FlexCol className="gap-y-8">
@@ -151,7 +138,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
         </Typography.SubTitle1>
         <Button.Outline
           className="rounded-[30px] px-4 py-[0.625rem]"
-          onClick={() => setProfileModifyModal(profileModifyContext)}
+          onClick={() => navigate(routePaths.signUpProfile)}
         >
           <Typography.Span1 className="text-brown">수정</Typography.Span1>
         </Button.Outline>
