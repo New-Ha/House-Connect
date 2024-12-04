@@ -88,24 +88,27 @@ export default function HouseRegister() {
   useEffect(() => {
     const checkTemporaryHouse = async () => {
       if (!houseId) {
-        const { id: tempHouseId } = await fetchTemporaryHouseId(userId);
-        setModalState({
-          isOpen: true,
-          type: 'Continue',
-          title: '저장된 글이 있어요!',
-          message: `저장된 글을 불러와 이어서 작성할 수 있습니다.
-					취소를 누르면 저장된 글은 삭제됩니다.`,
-          continueButtonContent: '이어쓰기',
-          cancelButtonContent: '취소',
-          onClickCancel: () => {
-            deleteHousePost(tempHouseId);
-            closeModal();
-          },
-          onClickContinue: () => {
-            navigate(routePaths.houseEdit(tempHouseId));
-            closeModal();
-          },
-        });
+        const result = await fetchTemporaryHouseId(userId);
+        if (result) {
+          const { id: tempHouseId } = result;
+          setModalState({
+            isOpen: true,
+            type: 'Continue',
+            title: '저장된 글이 있어요!',
+            message: `저장된 글을 불러와 이어서 작성할 수 있습니다.
+						취소를 누르면 저장된 글은 삭제됩니다.`,
+            continueButtonContent: '이어쓰기',
+            cancelButtonContent: '취소',
+            onClickCancel: () => {
+              deleteHousePost(tempHouseId);
+              closeModal();
+            },
+            onClickContinue: () => {
+              navigate(routePaths.houseEdit(tempHouseId));
+              closeModal();
+            },
+          });
+        }
       }
     };
     checkTemporaryHouse();

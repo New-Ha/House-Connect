@@ -30,14 +30,19 @@ import { Keys } from '@/types/common.type';
 // fetch functions
 export const fetchTemporaryHouseId = async (
   userId: string,
-): Promise<{ id: string }> => {
+): Promise<{ id: string } | null> => {
   const TEMPORARY = 0;
   const { data, error } = await supabase
     .from('house')
     .select('id')
     .match({ user_id: userId, temporary: TEMPORARY });
+
   if (error)
     throw new Error(`임시저장된 글 확인에 실패했습니다.: ${error.message}`);
+
+  if (!data || data.length === 0) {
+    return null;
+  }
   return { id: data[0].id };
 };
 
@@ -317,7 +322,7 @@ export const useHouseUpdate = () => {
         await saveImageStorage(user_id, images, houseId);
         removeToast(toastId as string);
         successToast('uploadHousePost', '게시글이 업데이트되었습니다.');
-        navigate(routePaths.houseEdit(houseId));
+        navigate(routePaths.houseDetail(houseId));
       }
     },
   });
