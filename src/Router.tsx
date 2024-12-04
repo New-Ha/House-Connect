@@ -38,7 +38,7 @@ import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHou
 import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounges.template';
 import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkPosts.template';
 
-type RouteType = RouteObject & {
+type RouteType = Omit<RouteObject, 'children'> & {
   shouldProtected?: boolean;
   element: ReactElement;
   children?: RouteType[];
@@ -153,7 +153,7 @@ const routes: RouteType[] = [
       },
       {
         path: routePaths.signUpProfile,
-        // shouldProtected: true,
+        shouldProtected: true,
         element: <SignUpProfile />,
       },
       {
@@ -222,8 +222,8 @@ const createRoutes = (routeInfo: RouteType[]): RouteObject[] =>
     // ! delete useless property of RouterObject from react-router-dom
     const { shouldProtected: _, ...parsedToRouterObject } = routeObject;
 
-    return parsedToRouterObject;
-  });
+    return parsedToRouterObject as RouteObject;
+  }) ;
 
 const router = createBrowserRouter(createRoutes(routes));
 
