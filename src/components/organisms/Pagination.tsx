@@ -5,7 +5,7 @@ import IconButton from '@/components/molecules/IconButton';
 import Button from '@/components/atoms/Button';
 import Typography from '@/components/atoms/Typography';
 
-type PagenationProps = {
+type PaginationProps = {
   totalPage: number;
   pageState: [number, Dispatch<SetStateAction<number>>];
 };
@@ -51,7 +51,7 @@ const calcPagination = (currentPage: number, totalPage: number) => {
   pages.push(totalPage);
   return pages;
 };
-export default function Pagination(props: PagenationProps) {
+export default function Pagination(props: PaginationProps) {
   const { pageState, totalPage } = props;
   const [currentPage, setCurrentPage] = pageState;
   const pageList = calcPagination(currentPage, totalPage);
