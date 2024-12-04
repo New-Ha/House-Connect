@@ -8,9 +8,10 @@ import {
 } from 'react-hook-form';
 import { KeyboardEvent, useEffect } from 'react';
 import { DevTool } from '@hookform/devtools';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastContainer } from 'react-toastify';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import SignUpProfileLayoutTemplate from '@/components/templates/profile-setup/SignUpProfileLayout.template';
 import SignUpProfile1_1Template from '@/components/templates/profile-setup/SignUpProfile1_1.template';
@@ -24,9 +25,26 @@ import { SignUpProfileForm, SignUpProfileFormType } from '@/types/signUp.type';
 import { SignUpProfileState } from '@/stores/sign.store';
 import { createToast } from '@/libs/toast';
 import useSignUpProfile from '@/hooks/useSignUpProfile';
+import { userProfileQuery } from '@/hooks/useUserInfo';
+import { UserAtom } from '@/stores/auth.store';
+import Loading from '@/components/pages/maintenance/Loading';
+import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 
-export default function SignUpProfile() {
-  const signUpProfileState = useRecoilValue(SignUpProfileState);
+function SignUpProfilePage() {
+  const user = useRecoilValue(UserAtom);
+  const { data: userProfileData } = useSuspenseQuery({
+    ...userProfileQuery(user?.id),
+    select: data =>
+      data
+        ? Object.fromEntries(
+            Object.values(data).flatMap(item =>
+              Object.entries(item as Record<string, unknown>),
+            ),
+          )
+        : {},
+  });
+  const [signUpProfileState, setSignUpProfileState] =
+    useRecoilState(SignUpProfileState);
   const { mutate, isPending } = useSignUpProfile();
   const formMethods = useForm<SignUpProfileFormType>({
     mode: 'onChange',
@@ -51,11 +69,20 @@ export default function SignUpProfile() {
 
   useEffect(() => {
     Object.entries(signUpProfileState).forEach(async ([key, value]) => {
-      formMethods.setValue(key as keyof SignUpProfileFormType, value);
+      formMethods.setValue(
+        key as keyof SignUpProfileFormType,
+        value as SignUpProfileFormType[keyof SignUpProfileFormType],
+      );
       if (key !== 'appealsInputValue' && key !== 'mateAppealsInputValue')
         await formMethods.trigger(key as keyof SignUpProfileFormType);
     });
   }, [formMethods, signUpProfileState]);
+
+  useEffect(() => {
+    if (userProfileData) {
+      setSignUpProfileState(prev => ({ ...prev, ...userProfileData }));
+    }
+  }, [userProfileData, setSignUpProfileState]);
 
   const onError: SubmitErrorHandler<SignUpProfileFormType> = data => {
     Object.entries(data as FieldErrors<SignUpProfileFormType>).forEach(
@@ -117,3 +144,10 @@ export default function SignUpProfile() {
     </FormProvider>
   );
 }
+
+const SignUpProfile = WithSuspenseAndErrorBoundary({
+  InnerSuspenseComponent: SignUpProfilePage,
+  SuspenseFallback: <Loading className="size-full" />,
+});
+
+export default SignUpProfile;

@@ -61,15 +61,18 @@ export const SignUpProfileState: RecoilState<SignUpProfileStateType> =
   atom<SignUpProfileStateType>({
     key: 'signUpProfileState',
     default: {
+      // user_looking_house
       type: undefined,
       rental_type: undefined,
       regions: [],
       deposit_price: [0, 10000],
       term: [0, 24],
       monthly_rental_price: [0, 500],
+      // user_lifestyle
       smoking: undefined,
       pet: undefined,
       appeals: [],
+      // user_mate_style
       mate_gender: undefined,
       mate_number: undefined,
       mate_appeals: [],
