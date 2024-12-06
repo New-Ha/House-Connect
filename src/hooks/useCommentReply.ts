@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import { supabase } from '@/libs/supabaseClient';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
+import USER_KEYS from '@/constants/queryKeys/user';
 
 type Comment = {
   id?: string;
@@ -18,6 +20,7 @@ type Comment = {
   methodType: 'insert' | 'update' | 'delete';
   onCloseRegister?: () => void;
 };
+
 export const useComment = () => {
   const { houseId } = useParams();
   const queryClient = useQueryClient();
@@ -75,6 +78,7 @@ export const useComment = () => {
   });
   return { updateComment, commentPending };
 };
+
 export const useReply = () => {
   const { houseId } = useParams();
   const queryClient = useQueryClient();
@@ -147,4 +151,79 @@ export const houseCommentQuery = (houseId: string | undefined) =>
         )
         .eq('house_id', houseId ?? ''),
     enabled: !!houseId,
+  });
+
+/**
+ ** user_house_comments rpc definition
+  * ? house_reply, house_comment, house에 관련된 데이터를 supabase api를 통해서 가져오는 것은
+  * ? 복잡한 쿼리가 필요하므로 sql로 supabase rpc로 정의 함.
+
+ * CREATE
+  OR REPLACE FUNCTION user_house_comments (input_user_id UUID) RETURNS TABLE (
+    house_id UUID,
+    user_id UUID,
+    content TEXT,
+    comment_updated_at TIMESTAMPTZ,
+    house_data JSON
+  ) AS $$
+    with comments_union_result AS (
+      select 
+      house_id,
+      user_id,
+      content,
+      updated_at as comment_updated_at
+      from
+        house_comment
+      where
+        user_id = input_user_id
+        
+      UNION ALL
+
+      select
+        hc.house_id as house_id,
+        coalesce(hr.user_id, hc.user_id) as user_id,
+        hr.content as content,
+        hr.updated_at as comment_updated_at
+      from 
+        house_reply as hr 
+      inner join 
+        house_comment as hc 
+      on 
+        hr.comment_id = hc.id
+      where
+        hr.user_id = input_user_id
+    )
+
+    -- comments의 union결과를 house정보를 가져오기 위해 다시 join
+    select
+      cur.house_id,
+      cur.user_id,
+      cur.content,
+      cur.comment_updated_at,
+      row_to_json(h) as house_data
+    from 
+      comments_union_result as cur
+    left join
+      house as h
+    on
+      h.id = cur.house_id;
+  $$ LANGUAGE sql;
+ */
+
+export const commentsQuery = (userId: string | undefined) =>
+  queryOptions({
+    queryKey: USER_KEYS.USER_HOUSE_COMMENTS(userId),
+    queryFn: async () => {
+      if (!userId) return [];
+      const { data, error, status } = await supabase.rpc(
+        'user_house_comments',
+        { input_user_id: userId },
+      );
+
+      if (error) {
+        throw new SupabaseCustomError(error, status);
+      }
+
+      return data;
+    },
   });

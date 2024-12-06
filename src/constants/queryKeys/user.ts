@@ -12,6 +12,8 @@ const USER_KEYS = {
   ) => [...USER_KEYS.ALL, 'bookmark', 'infinite-list', userId, filter] as const,
   USER_PROFILE_INFO: (userId: string | undefined) =>
     [...USER_KEYS.ALL, 'profile', userId] as const,
+  USER_HOUSE_COMMENTS: (userId: string | undefined) =>
+    [...USER_KEYS.ALL, 'user_comments', userId] as const,
 };
 
 export default USER_KEYS;

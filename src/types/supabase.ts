@@ -747,6 +747,18 @@ export type Database = {
         }
         Returns: Json
       }
+      user_house_comments: {
+        Args: {
+          input_user_id: string
+        }
+        Returns: {
+          house_id: string
+          user_id: string
+          content: string
+          comment_updated_at: string
+          house_data: Json
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
