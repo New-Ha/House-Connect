@@ -8,7 +8,6 @@ import IconButton from '@/components/molecules/IconButton';
 import cn from '@/libs/cn';
 import MyPageAsideDropdown from '@/components/organisms/dropdown/MyPageAsideDropdown';
 import { WithErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
-import isRoutePathMatched from '@/libs/isRoutePathMatched';
 import { routePaths } from '@/constants/route';
 
 type MyPageAsideProps = {
@@ -21,10 +20,10 @@ function MyPageAside({
   setIsAsideDropdownOpen,
 }: MyPageAsideProps) {
   const location = useLocation();
-  const isMyAccountRoute = isRoutePathMatched(location.pathname, 'myAccount');
 
   // * mybookmark아래 nested route -> 1. houses, 2. lounge, 3. posts가 있으므로 이에 관련된 nested route인지 체크
   const isMybookmarkNestedRoute = useMatch(`${routePaths.myBookmark}/*`);
+  const isMyActivityNestedRoute = useMatch(`${routePaths.myActivity}/*`);
 
   return (
     <Container className="h-full">
@@ -74,11 +73,13 @@ function MyPageAside({
         )}
         <Typography.Head2 className="text-[1.077rem] font-semibold text-brown">
           {asideItems.find(({ path }) => path === location.pathname)?.name}
-          {isMyAccountRoute && '내 활동'}
           {/* mybookmark root route가 아닌 nested route일 시 */}
           {isMybookmarkNestedRoute?.params['*'] &&
             isMybookmarkNestedRoute?.params['*'] !== 'houses' &&
             '내 북마크'}
+          {isMyActivityNestedRoute?.params['*'] &&
+            isMyActivityNestedRoute?.params['*'] !== 'houses' &&
+            '내 활동'}
         </Typography.Head2>
       </Container.FlexCol>
     </Container>
