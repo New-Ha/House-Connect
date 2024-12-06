@@ -95,11 +95,17 @@ function HouseProfileInfoRow({
   );
 }
 
+type MyActivityTemplateProps = {
+  user: UserInfoType;
+};
+
 export default function MyActivityTemplate(props: MyActivityTemplateProps) {
   const { user } = props;
-  const [currentTab, setCurrentTab] = useState(0);
-  const tabItem = ['내가 쓴 게시글', '내가 쓴 댓글'];
   const navigate = useNavigate();
+  const tabItems = [
+    { displayName: '내가 쓴 하우스', path: routePaths.myActivityHouses },
+    { displayName: '내가 쓴 댓글', path: routePaths.myActivityComments },
+  ];
 
   return (
     <Container.FlexCol className="gap-y-8">
@@ -267,17 +273,27 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
       <Container.FlexCol>
         {/* TODO: fetch 내가 쓴 댓글  */}
         <Container.FlexRow>
-          {tabItem.map((item, index) => (
-            <Button.Ghost
-              key={item}
-              className={`h-14 w-[11.25rem] items-center justify-center border-b-brown text-brown2 ${currentTab === index ? 'border-b-3 text-brown' : ''}`}
-              onClick={() => setCurrentTab(index)}
-            >
-              <Typography.SubTitle1>{item}</Typography.SubTitle1>
-            </Button.Ghost>
+          {tabItems.map(({ displayName, path }) => (
+            <li key={displayName} className="flex-1 list-none">
+              <NavLink
+                key={`${displayName} ${path}`}
+                to={path}
+                className={({ isActive }) =>
+                  cn(
+                    'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 tablet:w-[8.3rem] tablet:flex-none tablet:p-5',
+                    isActive ? 'border-b-3 text-brown' : '',
+                  )
+                }
+                onClick={() => navigate(path)}
+              >
+                <Typography.SubTitle1 className="text-[1.077rem] font-semibold tablet:text-lg">
+                  {displayName}
+                </Typography.SubTitle1>{' '}
+              </NavLink>
+            </li>
           ))}
         </Container.FlexRow>
-        <CommingSoon className="py-[3.7rem]" />
+        <Outlet />
         <Divider.Col />
       </Container.FlexCol>
     </Container.FlexCol>

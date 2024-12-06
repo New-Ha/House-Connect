@@ -37,6 +37,8 @@ import CommingSoon from '@/components/pages/maintenance/CommingSoon';
 import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHouses.template';
 import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounges.template';
 import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkPosts.template';
+import MyActivityComments from '@/components/templates/mypage/MyActivityComments.template';
+import MyActivityHouses from '@/components/templates/mypage/MyActivityHouses.template';
 
 type RouteType = Omit<RouteObject, 'children'> & {
   shouldProtected?: boolean;
@@ -170,7 +172,20 @@ const routes: RouteType[] = [
         shouldProtected: true,
         element: <MyPageLayoutTemplate />,
         children: [
-          { path: routePaths.myActivity, element: <MyActivity /> },
+          {
+            path: routePaths.myActivity,
+            element: <MyActivity />,
+            children: [
+              {
+                path: routePaths.myActivityHouses,
+                element: <MyActivityHouses />,
+              },
+              {
+                path: routePaths.myActivityComments,
+                element: <MyActivityComments />,
+              },
+            ],
+          },
           {
             path: routePaths.myBookmark,
             element: <MyBookmark />,
@@ -223,7 +238,7 @@ const createRoutes = (routeInfo: RouteType[]): RouteObject[] =>
     const { shouldProtected: _, ...parsedToRouterObject } = routeObject;
 
     return parsedToRouterObject as RouteObject;
-  }) ;
+  });
 
 const router = createBrowserRouter(createRoutes(routes));
 

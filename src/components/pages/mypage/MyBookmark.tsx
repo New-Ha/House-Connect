@@ -8,7 +8,7 @@ import Loading from '@/components/pages/maintenance/Loading';
 import { routePaths } from '@/constants/route';
 
 function MyBookmarkPageComponent() {
-  const tabItem = [
+  const tabItems = [
     { displayName: '하우스', path: routePaths.myBookmarkHouses },
     { displayName: '라운지', path: routePaths.myBookmarkLounges },
     { displayName: '게시물', path: routePaths.myBookmarkPosts },
@@ -17,7 +17,7 @@ function MyBookmarkPageComponent() {
   return (
     <Container.FlexCol className="size-full">
       <Container.FlexRow>
-        {tabItem.map(({ displayName, path }) => (
+        {tabItems.map(({ displayName, path }) => (
           <li key={displayName} className="flex-1 list-none">
             <NavLink
               to={path}

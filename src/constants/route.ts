@@ -23,6 +23,8 @@ const routePaths = {
   componentTest: '/component-test',
   myPage: '/mypage',
   myActivity: '/mypage/activity',
+  myActivityComments: '/mypage/activity/comments',
+  myActivityHouses: '/mypage/activity/houses',
   myBookmark: '/mypage/bookmark',
   myBookmarkHouses: '/mypage/bookmark/houses',
   myBookmarkLounges: '/mypage/bookmark/lounges',
@@ -164,6 +166,18 @@ const routeHeaderInfo: {
     userMenu: true,
   },
   myActivity: {
+    logo: true,
+    gnb: true,
+    userMenu: true,
+    isHeaderExistUnderSTablet: true,
+  },
+  myActivityComments: {
+    logo: true,
+    gnb: true,
+    userMenu: true,
+    isHeaderExistUnderSTablet: true,
+  },
+  myActivityHouses: {
     logo: true,
     gnb: true,
     userMenu: true,
