@@ -76,10 +76,10 @@ export default function ChatList({
                       {nickname}
                     </Typography.Span1>
                     <Typography.Span2 className="font-medium leading-150 text-brown2">
-                      {formatDateByCountry(
-                        new Date(lastMessageDate),
-                        isToday(new Date(), new Date(lastMessageDate)),
-                      )}
+                      {formatDateByCountry({
+                        date: new Date(lastMessageDate),
+                        time: isToday(new Date(), new Date(lastMessageDate)),
+                      })}
                     </Typography.Span2>
                   </Container.FlexRow>
                   <Container.FlexRow className="items-center justify-between ">

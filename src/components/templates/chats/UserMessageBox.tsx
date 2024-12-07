@@ -89,7 +89,10 @@ export default function UserMessageBox({
                 {eachMessage.message}
               </MessageBox>
               <Typography.Span2 className="translate-y-[-0.125rem] text-brown2">
-                {formatDateByCountry(lastCreatedAt, true)}
+                {formatDateByCountry({
+                  date: lastCreatedAt,
+                  time: true,
+                })}
               </Typography.Span2>
             </Container.FlexRow>
           ),
