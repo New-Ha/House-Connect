@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 import { UserInfoType } from '@/hooks/useUserInfo';
 import Avatar from '@/components/atoms/Avatar';
@@ -24,11 +23,6 @@ import Button from '@/components/atoms/Button';
 import { routePaths } from '@/constants/route';
 import cn from '@/libs/cn';
 import { IconType } from '@/types/icon.type';
-import CommingSoon from '@/components/pages/maintenance/CommingSoon';
-
-type MyActivityTemplateProps = {
-  user: UserInfoType;
-};
 
 function HouseProfileInfoRow({
   className,
@@ -270,9 +264,9 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
           />
         </Container.FlexCol>
       </Container.Grid>
-      <Container.FlexCol>
+      <Container.FlexCol className="size-full">
         {/* TODO: fetch 내가 쓴 댓글  */}
-        <Container.FlexRow>
+        <Container.FlexRow className="">
           {tabItems.map(({ displayName, path }) => (
             <li key={displayName} className="flex-1 list-none">
               <NavLink
@@ -280,7 +274,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
                 to={path}
                 className={({ isActive }) =>
                   cn(
-                    'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 tablet:w-[8.3rem] tablet:flex-none tablet:p-5',
+                    'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2',
                     isActive ? 'border-b-3 text-brown' : '',
                   )
                 }
@@ -288,7 +282,7 @@ export default function MyActivityTemplate(props: MyActivityTemplateProps) {
               >
                 <Typography.SubTitle1 className="text-[1.077rem] font-semibold tablet:text-lg">
                   {displayName}
-                </Typography.SubTitle1>{' '}
+                </Typography.SubTitle1>
               </NavLink>
             </li>
           ))}

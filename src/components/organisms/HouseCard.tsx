@@ -30,7 +30,7 @@ export default function HouseCard(props: HouseCardProps) {
   return (
     <Link
       to={routePaths.houseDetail(id)}
-      className="relative w-full rounded-xl shadow-[0_4px_12px_0_rgba(0,0,0,12%)]"
+      className="relative w-full rounded-xl shadow-card"
       onMouseEnter={onMouseEnter}
     >
       <Img
