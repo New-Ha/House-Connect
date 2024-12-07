@@ -33,6 +33,8 @@ export default function LayoutTemplate() {
   const isMyPagePath = isRoutePathMatched(location.pathname, [
     'myAccount',
     'myActivity',
+    'myActivityComments',
+    'myActivityHouses',
     'myAlarm',
     'myBookmark',
     'myMate',

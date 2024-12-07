@@ -47,6 +47,8 @@ export default function Header({ className, isLogin, ...others }: Props) {
     isRoutePathMatched(location.pathname, 'root') ||
     isRoutePathMatched(location.pathname, [
       'myAccount',
+      'myActivityHouses',
+      'myActivityComments',
       'myActivity',
       'myAlarm',
       'myBookmark',
