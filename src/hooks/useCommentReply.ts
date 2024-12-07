@@ -157,13 +157,13 @@ export const houseCommentQuery = (houseId: string | undefined) =>
  ** user_house_comments rpc definition
   * ? house_reply, house_comment, house에 관련된 데이터를 supabase api를 통해서 가져오는 것은
   * ? 복잡한 쿼리가 필요하므로 sql로 supabase rpc로 정의 함.
+  * ? 한 house에 동일한 유저가 댓글, 답글을 다는 경우가 있으므로 house_id, user_id를 기준으로 grouping.
 
  * CREATE
   OR REPLACE FUNCTION user_house_comments (input_user_id UUID) RETURNS TABLE (
     house_id UUID,
     user_id UUID,
-    content TEXT,
-    comment_updated_at TIMESTAMPTZ,
+    comments JSON,
     house_data JSON
   ) AS $$
     with comments_union_result AS (
@@ -198,15 +198,19 @@ export const houseCommentQuery = (houseId: string | undefined) =>
     select
       cur.house_id,
       cur.user_id,
-      cur.content,
-      cur.comment_updated_at,
+      json_agg(json_build_object(
+        'content', cur.content,
+        'comment_updated_at', cur.comment_updated_at
+      )) as comments,
       row_to_json(h) as house_data
     from 
       comments_union_result as cur
     left join
       house as h
     on
-      h.id = cur.house_id;
+      h.id = cur.house_id
+    group by
+      cur.house_id, cur.user_id, h.*
   $$ LANGUAGE sql;
  */
 
