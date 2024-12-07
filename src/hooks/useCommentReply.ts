@@ -11,6 +11,7 @@ import { createToast, errorToast, successToast } from '@/libs/toast';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 import SupabaseCustomError from '@/libs/supabaseCustomError';
 import USER_KEYS from '@/constants/queryKeys/user';
+import { UserComments } from '@/types/comments.type';
 
 type Comment = {
   id?: string;
@@ -235,10 +236,33 @@ export const commentsQuery = (userId: string | undefined) =>
         { input_user_id: userId },
       );
 
+      const commentsData = data as UserComments;
+
+      // * [{..., comments: [{id, updated_at, content}, ...]}]와 같은 구조로 되어 있음.
+      const sortedDataByUpdatedAt = commentsData?.sort((a, b) => {
+        // * comments를 updated_at오름차순 정렬하여 가장 최신의 comment를 기준으로 data를 오름차순 정렬을 위함.
+        const aDate = new Date(
+          [...a.comments].sort(
+            (a, b) =>
+              new Date(b.updated_at).getTime() -
+              new Date(a.updated_at).getTime(),
+          )[0].updated_at,
+        ).getTime();
+        const bDate = new Date(
+          [...b.comments].sort(
+            (a, b) =>
+              new Date(b.updated_at).getTime() -
+              new Date(a.updated_at).getTime(),
+          )[0].updated_at,
+        ).getTime();
+
+        return bDate - aDate;
+      });
+
       if (error) {
         throw new SupabaseCustomError(error, status);
       }
 
-      return data;
+      return sortedDataByUpdatedAt;
     },
   });
