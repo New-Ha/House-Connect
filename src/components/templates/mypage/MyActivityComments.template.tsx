@@ -15,9 +15,7 @@ import { routePaths } from '@/constants/route';
 function MyActivityCommentsTemplateComponent() {
   const user = useRecoilValue(UserAtom);
   const { data: comments } = useSuspenseQuery(commentsQuery(user?.id));
-
-  console.log('comments =>', comments);
-
+  
   return (
     <Link to={routePaths.houseDetail('06dd84f0-8a64-49cd-b4f2-efba63246838')}>
       <Container.FlexCol className="size-full">

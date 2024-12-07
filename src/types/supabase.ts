@@ -753,10 +753,9 @@ export type Database = {
         }
         Returns: {
           house_id: string
-          user_id: string
-          content: string
-          comment_updated_at: string
-          house_data: Json
+          comments: Json
+          house: Json
+          user: Json
         }[]
       }
     }
