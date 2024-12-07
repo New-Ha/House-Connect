@@ -94,7 +94,10 @@ export const HouseForm = z.object({
     .refine(data => data[0] <= data[1], {
       message: '최소 기간이 최대 기간보다 클 수 없습니다.',
     }),
-  describe: z.string(),
+  describe: z.string({
+    required_error:
+      '룸메이트를 구하는 이유 혹은 우리 집에 대한 설명을 작성해주세요.',
+  }),
   /**
    * ### 저장 유형
    * - 0: 임시 저장(default)
