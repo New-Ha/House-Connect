@@ -69,6 +69,7 @@ import Filter from '@/assets/icons/filter.svg?react';
 import Add from '@/assets/icons/add.svg?react';
 import Reset from '@/assets/icons/reset.svg?react';
 import Home from '@/assets/icons/home.svg?react';
+import SpeechBalloon from '@/assets/icons/speech-balloon.svg?react';
 import { IconType } from '@/types/icon.type';
 import cn from '@/libs/cn';
 
@@ -409,6 +410,12 @@ const IconSVG: { [key in IconType]: FC<SVGProps<SVGSVGElement>> } = {
   ),
   home: ({ className, ...others }) => (
     <Home className={cn('size-4', className)} {...others} />
+  ),
+  'speech-balloon': ({ className, ...others }) => (
+    <SpeechBalloon
+      className={cn('w-[1rem] h-[0.875rem]', className)}
+      {...others}
+    />
   ),
 };
 
