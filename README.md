@@ -28,7 +28,7 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 
 ### Library / Framework
 
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">  <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">  <img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white">  <img src="https://img.shields.io/badge/reacthookform-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white">  <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">  <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">  <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">  <img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white">  <img src="https://img.shields.io/badge/reacthookform-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white">  <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">  <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white"> <img src="https://img.shields.io/badge/Zod-3E67B1?style=for-the-badge&logo=Zod&logoColor=white">
 
 ### Communication
 
@@ -41,9 +41,9 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 
 <div align="center">
 
-| 개발 정리 노션 | 화면정의서 | API 문서 |
-| --- | --- | --- |
-| [노션 페이지 보러가기](https://www.notion.so/729545d5375b4575ba75e28ef5a4e485?pvs=21) | [화면 정의서 보러가기](https://www.notion.so/ff9f484ab546484b8d9ebf24a183f0b3?pvs=21) | [API 정의서 보러가기](https://www.notion.so/5511dc39045948d6a6c07ee684093997?pvs=21) |
+| 개발 정리 노션 | 화면정의서 | API 문서 | Figma |
+| --- | --- | --- | --- |
+| [노션 페이지 보러가기](https://www.notion.so/729545d5375b4575ba75e28ef5a4e485?pvs=21) | [화면 정의서 보러가기](https://www.notion.so/ff9f484ab546484b8d9ebf24a183f0b3?pvs=21) | [API 정의서 보러가기](https://www.notion.so/5511dc39045948d6a6c07ee684093997?pvs=21) | [Figma 보러가기](https://www.figma.com/design/2tUiEsYcJadYiGm7gtQEPa/%ED%95%98%EC%9A%B0%EC%8A%A4%EC%BB%A4%EB%84%A5%ED%8A%B8-ver.2?node-id=0-1&node-type=canvas&t=Wx5TISqy8IYSNO6K-0) |
 
 </div>
 
@@ -83,10 +83,6 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 |![채팅1](https://github.com/user-attachments/assets/cee73aad-c37e-4bdf-a1ba-1e183fc1a09c)|![채팅2](https://github.com/user-attachments/assets/abf37bb1-78bd-4d7e-a554-8e4adef4522f)|
 |새로운 채팅이 오면 알림이 뜹니다. 메시지를 보내고 수신할 수 있습니다.|해당 채팅방에 접속하지 않아도 채팅알람이 뜨고, 채팅방을 열어서 메시지를 주고 받을 수 있습니다.|
 
-
-
-
-
 </div>
 
 <br><br>
@@ -94,10 +90,13 @@ House-Connect는 나와 **라이프 스타일이 맞는** 룸메이트를 구할
 ---
 
 ### 🧑🏻‍💻 프로젝트 실행 방법
+> 최신 버전의 프로젝트를 경험하시려면 dev 브랜치로 실행해주세요!
+
+> 배포 버전의 프로젝트를 경험하시려면 main 브랜치로 실행해주세요!
 
 ```bash
-$ git clone <https://github.com/house-mate-connect/house-connect.git>
-$ git checkout dev
+$ git clone <https://github.com/HC-House-Connect/House-Connect>
+$ git checkout dev (혹은 main)
 $ yarn install
 $ yarn dev
 
