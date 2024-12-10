@@ -755,7 +755,7 @@ export type Database = {
           house_id: string
           comments: Json
           house: Json
-          user: Json
+          comments_total_count: number
         }[]
       }
     }

@@ -236,7 +236,7 @@ export const commentsQuery = (userId: string | undefined) =>
         { input_user_id: userId },
       );
 
-      const commentsData = data as UserComments;
+      const commentsData = data as UserComments
 
       // * [{..., comments: [{id, updated_at, content}, ...]}]와 같은 구조로 되어 있음.
       const sortedDataByUpdatedAt = commentsData?.sort((a, b) => {

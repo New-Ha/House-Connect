@@ -17,14 +17,14 @@ import { UserComments } from '@/types/comments.type';
 function MyActivityCommentsTemplateComponent() {
   const user = useRecoilValue(UserAtom);
   const { data } = useSuspenseQuery(commentsQuery(user?.id));
-  const userComments = data as UserComments
+  const userComments = data as UserComments;
 
   return (
-    <Link to={routePaths.houseDetail('06dd84f0-8a64-49cd-b4f2-efba63246838')}>
-      <Container.FlexCol className="size-full">
-        <Container.Grid className="flex-1 grid-cols-1 items-start gap-x-[1.125rem] py-10">
-          {userComments && userComments?.length > 0 ? (
-            userComments.map(({ comments, house, user }) => (
+    <Container.FlexCol className="size-full">
+      <Container.Grid className="flex-1 grid-cols-1 items-start gap-x-[1.125rem] py-10">
+        {userComments && userComments?.length > 0 ? (
+          userComments.map(({ comments, house, comments_total_count }) => (
+            <Link to={routePaths.houseDetail(house.id)} key={house.id}>
               <Container.FlexCol
                 key={comments[0].id}
                 className="size-full cursor-pointer gap-[1.846rem] border-b border-brown pb-[2.154rem] pt-[1.538rem] tablet:gap-6 tablet:pb-8 tablet:pt-[1.25rem]"
@@ -68,27 +68,26 @@ function MyActivityCommentsTemplateComponent() {
                         className="h-[1.077rem] w-[1.23rem] tablet:h-[1rem] tablet:w-[1.125rem]"
                       />
                       <Typography.Span1 className="text-[0.923rem] text-brown tablet:text-[0.875rem]">
-                        {/* TODO: 댓글을 단 house의 총 댓글 수 (댓글 + 답변)를 구해서 total_comments_count 구현하기 */}
-                        1
+                        {comments_total_count}
                       </Typography.Span1>
                     </Container.FlexRow>
                     <Divider.Col />
                     <Typography.Span1 className="text-[0.923rem] text-brown1 tablet:text-[0.875rem]">
                       {/* TODO: comment를 단 user의 nickname이 아닌 house를 등록한 user id를 통해서 nickname을 가져와야 한다.  */}
-                      {user.nickname}
+                      {house.user_nickname}
                     </Typography.Span1>
                   </Container.FlexRow>
                 </Container.FlexCol>
               </Container.FlexCol>
-            ))
-          ) : (
-            <Typography.Span1 className="text-brown">
-              댓글이 없습니다.
-            </Typography.Span1>
-          )}
-        </Container.Grid>
-      </Container.FlexCol>
-    </Link>
+            </Link>
+          ))
+        ) : (
+          <Typography.Span1 className="text-brown">
+            작성한 댓글이 없습니다.
+          </Typography.Span1>
+        )}
+      </Container.Grid>
+    </Container.FlexCol>
   );
 }
 
