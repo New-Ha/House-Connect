@@ -4,7 +4,7 @@ import Divider from '@/components/atoms/Divider';
 import Icon from '@/components/atoms/Icon';
 import Typography from '@/components/atoms/Typography';
 import BadgeIcon from '@/components/molecules/BadgeIcon';
-import { HouseData } from '@/components/templates/house/house-detail/HouseDetailTemplate';
+import { HouseData } from '@/components/templates/house/house-detail/HouseDetail.template';
 import {
   floorInfo,
   genderInfo,
@@ -12,6 +12,7 @@ import {
   mateNumInfo,
   rentalTypesInfo,
 } from '@/constants/profileDetailInfo';
+import { generateRangeByTerm } from '@/libs/generateUnit';
 
 type HouseInfoCardProps = {
   houseData: HouseData;
@@ -19,18 +20,6 @@ type HouseInfoCardProps = {
 
 export default function HouseInfoCard({ houseData }: HouseInfoCardProps) {
   const { user_mate_style: userMateStyle } = houseData;
-
-  const termArray = houseData?.term.map(value => {
-    const years = Math.floor(value / 12);
-    const months = value % 12;
-    if (years === 0) {
-      return `최소 ${months}개월에서 `;
-    }
-    if (months === 0) {
-      return `${years}년 이상`;
-    }
-    return `${years}년 ${months}개월 이상`;
-  });
 
   return (
     <Container.FlexCol className="gap-10 rounded-lg bg-brown6 p-6 text-brown laptop:gap-11 laptop:p-8">
@@ -104,7 +93,9 @@ export default function HouseInfoCard({ houseData }: HouseInfoCardProps) {
             active={false}
             hover={false}
           >
-            <Typography.P2 className="py-2.5">{termArray}</Typography.P2>
+            <Typography.P2 className="py-2.5">
+              {generateRangeByTerm(houseData.term)}
+            </Typography.P2>
           </Badge.Outline>
         </Container.FlexRow>
         <Container.FlexCol className="gap-3">
@@ -140,8 +131,8 @@ export default function HouseInfoCard({ houseData }: HouseInfoCardProps) {
                 hover={false}
               >
                 <Typography.P2 className="py-2.5">
-                  {userMateStyle.prefer_mate_age[0] + 20}살-
-                  {userMateStyle.prefer_mate_age[1] + 20}살
+                  {userMateStyle.prefer_mate_age[0]}살-
+                  {userMateStyle.prefer_mate_age[1]}살
                 </Typography.P2>
               </Badge.Outline>
             </Container.FlexRow>

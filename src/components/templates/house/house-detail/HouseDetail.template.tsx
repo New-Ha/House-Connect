@@ -26,7 +26,7 @@ import {
   UserMateStyleType,
 } from '@/components/pages/house/house-regist/HouseRegister';
 import ImageCarouselModal from '@/components/templates/house/house-detail/ImageCarouselModal';
-import HouseImageTemplate from '@/components/templates/house/house-detail/HouseImageTemplate';
+import HouseImageTemplate from '@/components/templates/house/house-detail/HouseImage.template';
 import HouseInfoCard from '@/components/templates/house/house-detail/HouseInfoCard';
 import UserInfoCard from '@/components/templates/house/house-detail/UserInfoCard';
 import { supabase } from '@/libs/supabaseClient';

@@ -1,4 +1,4 @@
-import SignInTemplate from '@/components/templates/sign-up/SignInTemplate';
+import SignInTemplate from '@/components/templates/sign-up/SignIn.template';
 import { SignLayoutWrapper } from '@/components/templates/sign-up/SignLayout.template';
 
 export default function SignIn() {

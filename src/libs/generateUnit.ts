@@ -16,6 +16,25 @@ export const generateUnitByTerm = (value: number, maxLimitValue: number) => {
   return `${year} ${month}`;
 };
 
+// ! 연월 단위
+export const generateRangeByTerm = (range: [number, number]): string => {
+  const [minValue, maxValue] = range;
+
+  const minYearValue = Math.floor(minValue / 12);
+  const minMonthValue = minValue % 12;
+  const minYear = minYearValue ? `${minYearValue}년` : '';
+  const minMonth = minMonthValue ? `${minMonthValue}개월` : '';
+  const minRange = minValue === 0 ? `` : `${minYear} ${minMonth} 이상`;
+
+  const maxYearValue = Math.floor(maxValue / 12);
+  const maxMonthValue = maxValue % 12;
+  const maxYear = maxYearValue ? `${maxYearValue}년` : '';
+  const maxMonth = maxMonthValue ? `${maxMonthValue}개월` : '';
+  const maxRange = `${maxYear} ${maxMonth}`.trim();
+
+  return `${minRange} ${maxRange} 이하`;
+};
+
 // ! 만 단위
 export const generateUnitByPrice = (value: number, maxLimitValue: number) => {
   if (value === 0) return '0원';

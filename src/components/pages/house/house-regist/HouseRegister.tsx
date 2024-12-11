@@ -11,8 +11,8 @@ import { SignUpProfileFormType } from '@/types/signUp.type';
 import Container from '@/components/atoms/Container';
 import Typography from '@/components/atoms/Typography';
 import Carousel from '@/components/organisms/Carousel';
-import HouseRegisterTemplate1 from '@/components/templates/house/house-regist/HouseRegisterTemplate1';
-import HouseRegisterTemplates2 from '@/components/templates/house/house-regist/HouseRegisterTemplates2';
+import HouseRegisterTemplate1 from '@/components/templates/house/house-regist/HouseRegister1.template';
+import HouseRegisterTemplates2 from '@/components/templates/house/house-regist/HouseRegister2.templates';
 import Button from '@/components/atoms/Button';
 import useModal from '@/hooks/useModal';
 import { InputRangeState } from '@/components/molecules/DualInputRange';
@@ -88,24 +88,27 @@ export default function HouseRegister() {
   useEffect(() => {
     const checkTemporaryHouse = async () => {
       if (!houseId) {
-        const { id: tempHouseId } = await fetchTemporaryHouseId(userId);
-        setModalState({
-          isOpen: true,
-          type: 'Continue',
-          title: '저장된 글이 있어요!',
-          message: `저장된 글을 불러와 이어서 작성할 수 있습니다.
-					취소를 누르면 저장된 글은 삭제됩니다.`,
-          continueButtonContent: '이어쓰기',
-          cancelButtonContent: '취소',
-          onClickCancel: () => {
-            deleteHousePost(tempHouseId);
-            closeModal();
-          },
-          onClickContinue: () => {
-            navigate(routePaths.houseEdit(tempHouseId));
-            closeModal();
-          },
-        });
+        const result = await fetchTemporaryHouseId(userId);
+        if (result) {
+          const { id: tempHouseId } = result;
+          setModalState({
+            isOpen: true,
+            type: 'Continue',
+            title: '저장된 글이 있어요!',
+            message: `저장된 글을 불러와 이어서 작성할 수 있습니다.
+						취소를 누르면 저장된 글은 삭제됩니다.`,
+            continueButtonContent: '이어쓰기',
+            cancelButtonContent: '취소',
+            onClickCancel: () => {
+              deleteHousePost(tempHouseId);
+              closeModal();
+            },
+            onClickContinue: () => {
+              navigate(routePaths.houseEdit(tempHouseId));
+              closeModal();
+            },
+          });
+        }
       }
     };
     checkTemporaryHouse();
@@ -122,13 +125,14 @@ export default function HouseRegister() {
   // ! reset을 사용하면 undefined여야하는 입력란이 초기값인 NaN이들어가면서 placeholder가 보이지 않아서 setValue 사용
   useEffect(() => {
     if (fetchedUserLifeStyle && fetchedUserMateStyle) {
+      const mappedAge = userMateStyleData.prefer_mate_age.map(age => age - 20);
       form.setValue('smoking', userLifeStyleData.smoking);
       form.setValue('pet', userLifeStyleData.pet);
       form.setValue('appeals', userLifeStyleData.appeals);
       form.setValue('mate_gender', userMateStyleData.mate_gender);
       form.setValue('mate_number', userMateStyleData.mate_number);
       form.setValue('mate_appeals', userMateStyleData.mate_appeals);
-      form.setValue('prefer_mate_age', userMateStyleData.prefer_mate_age);
+      form.setValue('prefer_mate_age', mappedAge as [number, number]);
     }
   }, [
     fetchedUserLifeStyle,
@@ -160,6 +164,7 @@ export default function HouseRegister() {
   const onUpdateProfile = async (
     formData: HouseFormType & UserLifeStyleType & UserMateStyleType,
   ) => {
+    const preferAge = formData.prefer_mate_age.map(age => age + 20);
     updateUserProfile({
       dbName: 'user_lifestyle',
       data: {
@@ -176,7 +181,7 @@ export default function HouseRegister() {
         mate_gender: formData.mate_gender,
         mate_number: formData.mate_number,
         mate_appeals: formData.mate_appeals,
-        prefer_mate_age: formData.prefer_mate_age,
+        prefer_mate_age: preferAge as [number, number],
       },
       userId,
     });

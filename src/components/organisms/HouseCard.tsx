@@ -8,6 +8,7 @@ import Badge from '@/components/atoms/Badge';
 import Typography from '@/components/atoms/Typography';
 import { houseTypesInfo, rentalTypesInfo } from '@/constants/profileDetailInfo';
 import { HouseCardType } from '@/types/house.type';
+import HoverOverlay from '@/components/atoms/HoverOverlay';
 
 type HouseCardProps = HouseCardType & ComponentProps<'a'>;
 
@@ -94,6 +95,7 @@ export default function HouseCard(props: HouseCardProps) {
           </Container.FlexRow>
         </Container.FlexRow>
       </Container.FlexCol>
+      <HoverOverlay />
     </Link>
   );
 }

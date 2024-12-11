@@ -156,20 +156,27 @@ export default function MultiImageForm({
 
   return (
     <Container.FlexCol className="w-full justify-center">
-      <Container.FlexRow>
+      <Container.FlexRow className="items-center">
         {currentPageIndex > 0 && (
           <IconButton.Ghost
-            className="absolute left-[-0.1875rem] z-50"
+            className={cn(
+              'size-[1.25rem] absolute left-4 z-10 flex items-center justify-center rounded-full bg-bg opacity-60 hover:opacity-100',
+              'mobile:size-9',
+              's-tablet:size-12',
+            )}
             iconType="prev"
+            fill="brown1"
             stroke="brown"
+            iconClassName={cn(
+              'size-[0.5rem]',
+              'mobile:size-4',
+              's-tablet:size-6',
+            )}
             onClick={handlePrevImage}
           />
         )}
         <Container.Grid
-          className={cn(
-            'w-full grid-cols-4 gap-[0.5rem] px-6',
-            's-tablet:gap-4',
-          )}
+          className={cn('w-full grid-cols-4 gap-[0.5rem]', 's-tablet:gap-4')}
         >
           <div className="relative aspect-square w-full">
             <Label
@@ -270,7 +277,7 @@ export default function MultiImageForm({
               </Container.FlexRow>
             ))}
           {totalImageCount < IMAGE_PER_PAGE &&
-            Array.from({ length: IMAGE_PER_PAGE - totalImageCount }).map(_ => (
+            Array.from({ length: IMAGE_PER_PAGE - totalImageCount }).map(() => (
               <Label
                 key={uuid()}
                 htmlFor="house_img"
@@ -282,9 +289,19 @@ export default function MultiImageForm({
           currentPageIndex <
             Math.ceil(totalImageCount / IMAGE_PER_PAGE) - 1 && (
             <IconButton.Ghost
+              className={cn(
+                'size-[1.25rem] absolute right-4 z-10 flex items-center justify-center rounded-full bg-bg opacity-60 hover:opacity-100',
+                'mobile:size-9',
+                's-tablet:size-12',
+              )}
               iconType="next"
-              iconClassName="absolute right-0 z-10"
+              fill="brown1"
               stroke="brown"
+              iconClassName={cn(
+                'size-[0.5rem]',
+                'mobile:size-4',
+                's-tablet:size-6',
+              )}
               onClick={handleNextImage}
             />
           )}

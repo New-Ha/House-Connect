@@ -32,12 +32,11 @@ const GridContainer: FC<ContainerProps> = ({
   </div>
 );
 
-const FlexRowContainer: FC<ContainerProps> = ({
-  children,
-  className = '',
-  ...others
-}) => (
-  <div className={cn('flex', className)} {...others}>
+const FlexRowContainer: ForwardRefRenderFunction<
+  HTMLDivElement,
+  ContainerProps
+> = ({ children, className = '', ...others }, ref) => (
+  <div ref={ref} className={cn('flex', className)} {...others}>
     {children}
   </div>
 );
@@ -51,6 +50,6 @@ const FlexColumnContainer: ForwardRefRenderFunction<
   </div>
 );
 
-Container.FlexRow = FlexRowContainer;
+Container.FlexRow = forwardRef(FlexRowContainer);
 Container.FlexCol = forwardRef(FlexColumnContainer);
 Container.Grid = GridContainer;

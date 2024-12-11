@@ -13,7 +13,7 @@ import {
   useDeleteHouseDetail,
 } from '@/hooks/useHouseDetail';
 import { UserAtom } from '@/stores/auth.store';
-import CommentTemplate from '@/components/templates/CommentTemplate';
+import CommentTemplate from '@/components/templates/Comment.template';
 import { houseCommentQuery } from '@/hooks/useCommentReply';
 import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/maintenance/Loading';
@@ -55,6 +55,8 @@ function HouseDetailPageComponent() {
     }
   };
 
+  const isOwner = houseDetailData?.user_id === user?.id;
+
   return (
     <Container className="relative w-full">
       {isLoadingDelaying && (
@@ -85,22 +87,24 @@ function HouseDetailPageComponent() {
             />
           </li>
         </Container.FlexRow>
-        <Container.FlexRow className="items-center gap-[1.48rem] mobile:gap-[1.7rem]">
-          <li className="list-none">
-            <IconButton.Ghost
-              iconType="pencil"
-              iconClassName="size-[1.54rem]"
-              onClick={() => navigate(routePaths.houseEdit(houseId))}
-            />
-          </li>
-          <li className="list-none">
-            <IconButton.Ghost
-              iconType="trash"
-              iconClassName="size-[1.78rem]"
-              onClick={() => onClickDeleteHouse(houseId)}
-            />
-          </li>
-        </Container.FlexRow>
+        {isOwner && (
+          <Container.FlexRow className="items-center gap-[1.48rem] mobile:gap-[1.7rem]">
+            <li className="list-none">
+              <IconButton.Ghost
+                iconType="pencil"
+                iconClassName="size-[1.54rem]"
+                onClick={() => navigate(routePaths.houseEdit(houseId))}
+              />
+            </li>
+            <li className="list-none">
+              <IconButton.Ghost
+                iconType="trash"
+                iconClassName="size-[1.78rem]"
+                onClick={() => onClickDeleteHouse(houseId)}
+              />
+            </li>
+          </Container.FlexRow>
+        )}
       </nav>
       <HouseDetailTemplate
         houseData={houseDetailData as HouseData}
