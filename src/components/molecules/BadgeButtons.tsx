@@ -58,7 +58,7 @@ export default function BadgeButtons({
 
   return (
     <Container.FlexRow className={className}>
-      {contents.map(content => (
+      {contents && contents.map(content => (
         <BadgeButtonComponent
           key={content}
           className={badgeStyle}

@@ -258,4 +258,19 @@ const SignUpProfile = SignUpProfileFormOriginal.omit({
   appealsInputValue: true,
   mateAppealsInputValue: true,
 });
+
 export type SignUpProfileType = z.infer<typeof SignUpProfile>;
+export type SignUpProfileStateType = {
+  type: 0 | 1 | 2 | 3 | undefined;
+  rental_type: 0 | 1 | 2 | 3 | undefined;
+  regions: RegionUnion[];
+  deposit_price: [number, number];
+  term: [number, number];
+  monthly_rental_price: [number, number];
+  smoking: boolean | undefined;
+  pet: 0 | 1 | 2 | undefined;
+  appeals: string[];
+  mate_appeals: string[];
+  mate_gender: 0 | 1 | 2 | undefined;
+  mate_number: 0 | 1 | 2 | 3 | undefined;
+};

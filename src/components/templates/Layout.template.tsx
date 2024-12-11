@@ -5,7 +5,8 @@ import { useAuthState } from '@/hooks/useSign';
 import Header from '@/components/templates/Header';
 import isRoutePathMatched from '@/libs/isRoutePathMatched';
 import Container from '@/components/atoms/Container';
-import HouseListTopSection from '@/components/templates/House/HouseList/HouseListTopSection';
+import HouseListTopSection from '@/components/templates/house/house-list/HouseListTopSection';
+import Loading from '@/components/pages/maintenance/Loading';
 
 export default function LayoutTemplate() {
   // * supabase authListener를 등록함과 동시에 isLogin상태를 가져오기 위함
@@ -29,9 +30,23 @@ export default function LayoutTemplate() {
     isRoutePathMatched(location.pathname, 'house') ||
     isRoutePathMatched(location.pathname, 'root');
 
-  // TODO: loading page로 대체 
+  const isMyPagePath = isRoutePathMatched(location.pathname, [
+    'myAccount',
+    'myActivity',
+    'myActivityComments',
+    'myActivityHouses',
+    'myAlarm',
+    'myBookmark',
+    'myMate',
+    'myPage',
+    'myTheme',
+    'myBookmarkHouses',
+    'myBookmarkLounges',
+    'myBookmarkPosts',
+  ]);
+
   if (isInitializingSession) {
-    return <h1>사용자 확인 중...</h1>;
+    return <Loading text="로그인 정보 확인 중..." />;
   }
 
   return (
@@ -60,6 +75,7 @@ export default function LayoutTemplate() {
             // * isSignPath & isSignUpProfilePath에 해당하는 page는 header가 존재하기 때문
             (isSignPath || isSignUpProfilePath) && 'pt-[8rem] pb-8',
             's-tablet:pt-[8rem] px-8 pb-8',
+            isMyPagePath && 'pt-[8rem] s-tablet:pt-[10rem]',
             // 'bg-yellow-200',
           )}
         >

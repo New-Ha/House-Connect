@@ -747,6 +747,17 @@ export type Database = {
         }
         Returns: Json
       }
+      user_house_comments: {
+        Args: {
+          input_user_id: string
+        }
+        Returns: {
+          house_id: string
+          comments: Json
+          house: Json
+          comments_total_count: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

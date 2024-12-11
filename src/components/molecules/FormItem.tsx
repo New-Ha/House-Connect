@@ -8,6 +8,7 @@ import TextAreaField, {
 } from '@/components/molecules/TextAreaField';
 import Container from '@/components/atoms/Container';
 import IconButton from './IconButton';
+import cn from '@/libs/cn';
 
 export default function FormItem() {}
 
@@ -43,7 +44,10 @@ FormItem.Password = function FormItemPassword<T extends FieldValues>(
       />
       <IconButton.Ghost
         tabIndex={-1}
-        className={`absolute bottom-[44px] right-[13px] ${labelName ? 'top-[53px]' : 'top-[30px]'}`}
+        className={cn(
+          'absolute bottom-[2.75rem] right-[1rem]',
+          labelName ? 'top-[3.6rem]' : 'top-[1.8rem]',
+        )}
         iconType={isVisible ? 'visible' : 'invisible'}
         onClick={onClickVisible}
       />
@@ -76,7 +80,6 @@ FormItem.Hidden = function FormItemHidden<T extends FieldValues>(
 
   return <span>Name 속성이 필요합니다</span>;
 };
-
 
 FormItem.TextAreaField = function FormItemTextAreaField<T extends FieldValues>(
   // eslint-disable-next-line react/require-default-props

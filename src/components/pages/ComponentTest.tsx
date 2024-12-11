@@ -582,8 +582,8 @@ export default function ComponentTest() {
           </BadgeIcon.Outline>
         </Container.FlexCol>
         <Container.FlexRow className="items-center gap-2">
-          <Icon type="edit" />
-          <Icon type="delete" />
+          <Icon type="pencil" />
+          <Icon type="trash" />
         </Container.FlexRow>
       </Container.FlexRow>
 

@@ -42,11 +42,25 @@ export default function Header({ className, isLogin, ...others }: Props) {
 
   const headerConfig = getHeaderConfig(location.pathname);
 
-  const isHouseListPath =
+  const nonGnbRoutes =
     isRoutePathMatched(location.pathname, 'house') ||
-    isRoutePathMatched(location.pathname, 'root');
+    isRoutePathMatched(location.pathname, 'root') ||
+    isRoutePathMatched(location.pathname, [
+      'myAccount',
+      'myActivityHouses',
+      'myActivityComments',
+      'myActivity',
+      'myAlarm',
+      'myBookmark',
+      'myMate',
+      'myPage',
+      'myTheme',
+      'myBookmarkHouses',
+      'myBookmarkLounges',
+      'myBookmarkPosts',
+    ]);
 
-  if (isHouseListPath) {
+  if (nonGnbRoutes) {
     headerConfig.gnb = !!isOverSTabletBreakPoint;
   }
 
@@ -57,7 +71,7 @@ export default function Header({ className, isLogin, ...others }: Props) {
           className={cn(
             commonHeaderStyle,
             'top-0 left-0 bg-bg',
-            isHouseListPath && (isOverSTabletBreakPoint ? '' : 'h-[6rem]'),
+            nonGnbRoutes && (isOverSTabletBreakPoint ? '' : 'h-[6rem]'),
             className,
           )}
           {...others}
@@ -81,7 +95,7 @@ export default function Header({ className, isLogin, ...others }: Props) {
           <GNB
             className={cn(
               commonHeaderStyle,
-              isHouseListPath && 'h-auto py-7 bg-bg',
+              nonGnbRoutes && 'h-auto py-7 bg-bg',
               'bottom-0 left-0 justify-center',
             )}
           />

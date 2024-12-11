@@ -2,9 +2,11 @@ import { ComponentProps } from 'react';
 
 import Container from '@/components/atoms/Container';
 import cn from '@/libs/cn';
+import HoverOverlay from '@/components/atoms/HoverOverlay';
 
 type ImgProps = ComponentProps<'img'> & {
   imageStyle?: string;
+  triggerHoverStyle?: boolean;
 };
 
 export default function Img({
@@ -12,11 +14,15 @@ export default function Img({
   alt,
   className,
   imageStyle,
+  triggerHoverStyle,
   ...others
 }: ImgProps) {
   return (
     <Container.FlexRow
-      className={cn('w-full rounded-xl overflow-hidden', className)}
+      className={cn(
+        'w-full group relative rounded-xl overflow-hidden',
+        className,
+      )}
     >
       <img
         className={cn('w-full max-w-full object-cover', imageStyle)}
@@ -24,10 +30,12 @@ export default function Img({
         alt={alt}
         {...others}
       />
+      {triggerHoverStyle && <HoverOverlay />}
     </Container.FlexRow>
   );
 }
 
 Img.defaultProps = {
   imageStyle: '',
+  triggerHoverStyle: false,
 };

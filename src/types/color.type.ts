@@ -8,6 +8,16 @@ type ColorType =
   | 'brown3'
   | 'brown4'
   | 'brown5'
-  | 'point';
+  | 'brown6'
+  | 'brown7'
+  | 'dark-brown'
+  | 'point'
+  | 'point1'
+  | 'hover-outline'
+  | 'active-fill'
+  | 'active-outline'
+  | 'focus'
+  | 'bg-beige'
+  | 'bg-orange';
 
 export default ColorType;

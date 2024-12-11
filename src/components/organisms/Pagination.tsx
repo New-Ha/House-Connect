@@ -5,7 +5,7 @@ import IconButton from '@/components/molecules/IconButton';
 import Button from '@/components/atoms/Button';
 import Typography from '@/components/atoms/Typography';
 
-type PagenationProps = {
+type PaginationProps = {
   totalPage: number;
   pageState: [number, Dispatch<SetStateAction<number>>];
 };
@@ -51,7 +51,7 @@ const calcPagination = (currentPage: number, totalPage: number) => {
   pages.push(totalPage);
   return pages;
 };
-export default function Pagination(props: PagenationProps) {
+export default function Pagination(props: PaginationProps) {
   const { pageState, totalPage } = props;
   const [currentPage, setCurrentPage] = pageState;
   const pageList = calcPagination(currentPage, totalPage);
@@ -61,7 +61,7 @@ export default function Pagination(props: PagenationProps) {
   return (
     <Container.FlexRow className="items-center justify-center">
       <IconButton.Ghost
-        iconType="page-prev"
+        iconType="prev"
         className="size-10 justify-center"
         stroke={currentPage === 1 ? 'brown2' : 'brown'}
         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
@@ -85,7 +85,7 @@ export default function Pagination(props: PagenationProps) {
         ),
       )}
       <IconButton.Ghost
-        iconType="page-next"
+        iconType="next"
         className="size-10 justify-center"
         stroke={currentPage === totalPage ? 'brown2' : 'brown'}
         fill={currentPage === totalPage ? 'brown2' : 'brown'}

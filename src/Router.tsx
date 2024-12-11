@@ -9,33 +9,38 @@ import { useRecoilValue } from 'recoil';
 
 import LayoutTemplate from '@/components/templates/Layout.template';
 import ComponentTest from '@/components/pages/ComponentTest';
-import SignLayoutTemplate from '@/components/templates/SignLayout.template';
-import SignUpProfileIntro from '@/components/pages/SignUpProfileIntro';
-import SignUpProfile from '@/components/pages/SignUpProfile';
-import SignIn from '@/components/pages/SignIn';
-import SignUp from '@/components/pages/SignUp';
+import SignLayoutTemplate from '@/components/templates/sign-up/SignLayout.template';
+import SignUpProfileIntro from '@/components/pages/profile-setup/SignUpProfileIntro';
+import SignUpProfile from '@/components/pages/profile-setup/SignUpProfile';
+import SignIn from '@/components/pages/sign-up/SignIn';
+import SignUp from '@/components/pages/sign-up/SignUp';
 // import About from '@/components/pages/About';
-import SignUpProfileOutro from '@/components/pages/SignUpProfileOutro';
+import SignUpProfileOutro from '@/components/pages/profile-setup/SignUpProfileOutro';
 import { IsInitializingSession, SessionAtom } from '@/stores/auth.store';
-import Loading from '@/components/pages/Loading';
-import SignPasswordReset from '@/components/pages/SignPasswordReset';
-import SignUpdatePassword from '@/components/pages/SignUpdatePassword';
-import SignUpEmail from '@/components/pages/SignUpEmail';
-import SignUpInfo from '@/components/pages/SignUpInfo';
-import HouseRegister from '@/components/pages/HouseRegister';
+import Loading from '@/components/pages/maintenance/Loading';
+import SignPasswordReset from '@/components/pages/sign-up/SignPasswordReset';
+import SignUpdatePassword from '@/components/pages/sign-up/SignUpdatePassword';
+import SignUpEmail from '@/components/pages/sign-up/SignUpEmail';
+import SignUpInfo from '@/components/pages/sign-up/SignUpInfo';
+import HouseRegister from '@/components/pages/house/house-regist/HouseRegister';
 import { ChatRoom } from '@/components/templates/chats';
-import Chat from '@/components/pages/Chat';
-import HouseDetail from '@/components/pages/HouseDetail';
-import HouseList from '@/components/pages/HouseList';
-import MyPageLayoutTemplate from '@/components/templates/MyPageLayout.template';
-import MyActivity from '@/components/pages/MyActivity';
-import MyAccount from '@/components/pages/MyAccount';
-import MyBookmark from '@/components/pages/MyBookmark';
+import Chat from '@/components/pages/chat/Chat';
+import HouseDetail from '@/components/pages/house/house-detail/HouseDetail';
+import HouseList from '@/components/pages/house/house-list/HouseList';
+import MyPageLayoutTemplate from '@/components/templates/mypage/MyPageLayout.template';
+import MyActivity from '@/components/pages/mypage/MyActivity';
+import MyAccount from '@/components/pages/mypage/MyAccount';
+import MyBookmark from '@/components/pages/mypage/MyBookmark';
 import { routePaths } from '@/constants/route';
 import Error404 from '@/components/pages/maintenance/Error404';
 import CommingSoon from '@/components/pages/maintenance/CommingSoon';
+import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHouses.template';
+import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounges.template';
+import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkPosts.template';
+import MyActivityComments from '@/components/templates/mypage/MyActivityComments.template';
+import MyActivityHouses from '@/components/templates/mypage/MyActivityHouses.template';
 
-type RouteType = RouteObject & {
+type RouteType = Omit<RouteObject, 'children'> & {
   shouldProtected?: boolean;
   element: ReactElement;
   children?: RouteType[];
@@ -150,7 +155,7 @@ const routes: RouteType[] = [
       },
       {
         path: routePaths.signUpProfile,
-        // shouldProtected: true,
+        shouldProtected: true,
         element: <SignUpProfile />,
       },
       {
@@ -167,12 +172,42 @@ const routes: RouteType[] = [
         shouldProtected: true,
         element: <MyPageLayoutTemplate />,
         children: [
-          { path: routePaths.myActivity, element: <MyActivity /> },
-          { path: routePaths.myBookmark, element: <MyBookmark /> },
+          {
+            path: routePaths.myActivity,
+            element: <MyActivity />,
+            children: [
+              {
+                path: routePaths.myActivityHouses,
+                element: <MyActivityHouses />,
+              },
+              {
+                path: routePaths.myActivityComments,
+                element: <MyActivityComments />,
+              },
+            ],
+          },
+          {
+            path: routePaths.myBookmark,
+            element: <MyBookmark />,
+            children: [
+              {
+                path: routePaths.myBookmarkHouses,
+                element: <MyBookmarkHouseTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkLounges,
+                element: <MyBookmarkLoungeTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkPosts,
+                element: <MyBookmarkArticleTemplate />,
+              },
+            ],
+          },
           { path: routePaths.myAccount, element: <MyAccount /> },
-          { path: routePaths.myMate, element: <h1>준비중...</h1> },
-          { path: routePaths.myAlarm, element: <h1>준비중...</h1> },
-          { path: routePaths.myTheme, element: <h1>준비중...</h1> },
+          { path: routePaths.myMate, element: <CommingSoon /> },
+          { path: routePaths.myAlarm, element: <CommingSoon /> },
+          { path: routePaths.myTheme, element: <CommingSoon /> },
         ],
       },
       {
@@ -202,7 +237,7 @@ const createRoutes = (routeInfo: RouteType[]): RouteObject[] =>
     // ! delete useless property of RouterObject from react-router-dom
     const { shouldProtected: _, ...parsedToRouterObject } = routeObject;
 
-    return parsedToRouterObject;
+    return parsedToRouterObject as RouteObject;
   });
 
 const router = createBrowserRouter(createRoutes(routes));
