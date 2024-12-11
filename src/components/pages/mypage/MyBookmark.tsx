@@ -1,41 +1,48 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { useQueries } from '@tanstack/react-query';
+import { NavLink, Outlet } from 'react-router-dom';
 
-import MyBookmarkTemplate from '@/components/templates/mypage/MyBookmark.template';
-import { UserAtom } from '@/stores/auth.store';
-import {
-  HouseBookmarkType,
-  useMyBookmarkHouseCount,
-  useMyBookmarkHouseList,
-} from '@/hooks/useMyBookmark';
-import {
-  BookmarkHouseFilterAtom,
-  BookmarkPageAtom,
-} from '@/stores/bookmark.store';
+import Container from '@/components/atoms/Container';
+import Typography from '@/components/atoms/Typography';
+import cn from '@/libs/cn';
+import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
+import Loading from '@/components/pages/maintenance/Loading';
+import { routePaths } from '@/constants/route';
 
-export default function MyBookmark() {
-  const user = useRecoilValue(UserAtom);
-  const pageState = useRecoilState(BookmarkPageAtom);
-  const houseFilter = useRecoilValue(BookmarkHouseFilterAtom);
-
-  // TODO Lounge, Article을 생성 후 변경
-  const data = useQueries({
-    queries: [
-      useMyBookmarkHouseList(user, pageState[0], houseFilter),
-      useMyBookmarkHouseCount(user, houseFilter),
-    ],
-  });
-
-  const [houseListData, houseCountData] = data;
-
-  const { data: house } = houseListData;
-  const { data: houseCount } = houseCountData;
+function MyBookmarkPageComponent() {
+  const tabItems = [
+    { displayName: '하우스', path: routePaths.myBookmarkHouses },
+    { displayName: '라운지', path: routePaths.myBookmarkLounges },
+    { displayName: '게시물', path: routePaths.myBookmarkPosts },
+  ];
 
   return (
-    <MyBookmarkTemplate
-      house={house?.data as HouseBookmarkType[]}
-      houseCount={houseCount?.count as number}
-      pageState={pageState}
-    />
+    <Container.FlexCol className="size-full">
+      <Container.FlexRow>
+        {tabItems.map(({ displayName, path }) => (
+          <li key={displayName} className="flex-1 list-none">
+            <NavLink
+              to={path}
+              className={({ isActive }) =>
+                cn(
+                  'flex size-full items-center justify-center border-b-brown px-[1.54rem] py-[1.385rem] text-brown2 tablet:w-[8.3rem] tablet:flex-none tablet:p-5',
+                  isActive ? 'border-b-3 text-brown' : '',
+                )
+              }
+            >
+              <Typography.SubTitle1 className="text-[1.077rem] font-semibold tablet:text-lg">
+                {displayName}
+              </Typography.SubTitle1>
+            </NavLink>
+          </li>
+        ))}
+      </Container.FlexRow>
+      <Outlet />
+    </Container.FlexCol>
   );
 }
+
+const MyBookmark = WithSuspense({
+  InnerSuspenseComponent: MyBookmarkPageComponent,
+  SuspenseFallback: <Loading className="size-full" />,
+});
+
+export default MyBookmark;

@@ -13,6 +13,7 @@ export type BadgeProps = {
 export type BadgeType = 'Fill' | 'Outline';
 
 type BadgeComponentProps = {
+  // eslint-disable-next-line no-unused-vars
   [key in BadgeType]: (props: BadgeProps) => React.ReactNode;
 };
 const badgeType: { type: BadgeType; defaultClassName: string }[] = [

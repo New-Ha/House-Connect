@@ -1,18 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+
 import { routePaths } from '@/constants/route';
 import { supabase } from '@/libs/supabaseClient';
 import { AccountFormType } from '@/types/account.type';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import { SessionAtom, UserAtom } from '@/stores/auth.store';
+import forceLogout from '@/libs/forceLogout';
 
 export const useMyAccountUpdate = () => {
   const navigate = useNavigate();
   const { mutate: updateUser, isPending: isUpdating } = useMutation({
-    mutationFn: async (
-      payload: Omit<AccountFormType, 'confirmPassword'> & { id: string },
-    ) => {
+    mutationFn: async (payload: AccountFormType & { id: string }) => {
       let avatarUploadResult = '';
       if (payload.avatar) {
         const result = await supabase.storage
@@ -56,11 +56,9 @@ export const useDeleteMyAccount = () => {
     },
     onMutate: () => createToast('delete-user', '계정을 삭제 중입니다...'),
     onSuccess: async () => {
-      // ! User 삭제 후에는 Supabase.auth.signOut이 불가
-      // ! 이미 제거된 유저라 로그아웃 불가
-      // ! 수동으로 제거해주어야 함.
       successToast('delete-user', '계정 삭제를 완료했습니다.');
-      localStorage.removeItem('sb-vkgzfgadnhdgapepgjlp-auth-token');
+      // ! 이미 제거된 유저로 Supabase.auth.signOut이 불가하여 수동으로 제거
+      forceLogout();
       setSession(null);
       setUser(null);
       navigate(routePaths.signIn);

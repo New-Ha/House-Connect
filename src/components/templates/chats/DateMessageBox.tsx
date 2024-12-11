@@ -14,7 +14,7 @@ export default function DateMessageBox({
   children,
   date,
 }: DateMessageBoxProps) {
-  const messageDate = formatDateByCountry(date);
+  const messageDate = formatDateByCountry({ date });
 
   return (
     <Container.FlexCol className="gap-8">

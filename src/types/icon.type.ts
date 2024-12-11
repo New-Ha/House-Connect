@@ -69,7 +69,7 @@ export type IconType =
   | 'filter'
   | 'add'
   | 'reset'
-  | 'home';
+  | 'home' | 'speech-balloon'
 
 export type CustomIconType = {
   fill?: ColorType;

@@ -72,12 +72,14 @@ export default {
       },
       boxShadow: {
         avatar: 'rgba(0, 0, 0, 0.25) 0px 0px 4px 0px',
+        dropdown: 'rgba(0, 0, 0, 0.25) 0px 0px 4px 0px',
         'avatar-active': 'rgba(0, 0, 0, 0.3) 0px 0px 4px 3px',
         badge: 'rgba(0, 0, 0, 0.16) 0px 0px 8px 0px',
+        card: 'rgba(0, 0, 0, 0.12) 0px 4px 12px 0px',
       },
       dropShadow: {
         icon: '0px 0px 2px rgba(0, 0, 0, 0.5)',
-      }
+      },
     },
   },
 

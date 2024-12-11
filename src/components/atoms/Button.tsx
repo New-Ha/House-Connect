@@ -39,9 +39,9 @@ buttonType.forEach(({ type, defaultClassName }) => {
       {
         className: cn(
           defaultClassName,
-          className,
           isActive &&
-            'border-transparent bg-brown4 outline outline-[3px] outline-point',
+          'border-transparent bg-brown4 outline outline-[3px] outline-point',
+          className,
         ),
         type: 'button',
         ...others,

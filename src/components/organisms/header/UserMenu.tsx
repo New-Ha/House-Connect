@@ -10,7 +10,7 @@ import Link from '@/components/atoms/Link';
 import Typography from '@/components/atoms/Typography';
 import { routePaths } from '@/constants/route';
 import Button from '@/components/atoms/Button';
-import UserDropdown from '@/components/organisms/UserDropdown';
+import UserDropdown from '@/components/organisms/dropdown/UserDropdown';
 
 type UserMenuProps = ComponentProps<'div'> & {
   user: UserType | null;
@@ -45,18 +45,25 @@ export default function UserMenu({
             iconType={hasNewAlarm ? 'alarm-exist' : 'alarm-none'}
           />
           {user?.avatar ? (
-            <Button.Ghost onClick={() => setDropView(!dropView)}>
+            <Button.Ghost
+              onClick={e => {
+                e.stopPropagation();
+                setDropView(!dropView);
+              }}
+            >
               <Avatar.XS src={user.avatar} isActive={isUserMenuActive} />
             </Button.Ghost>
           ) : (
-            <IconButton button="Ghost" iconType="avatar" />
-          )}
-          {dropView && (
-            <UserDropdown
-              setDropView={setDropView}
-              user={user}
+            <IconButton
+              button="Ghost"
+              iconType="avatar"
+              onClick={e => {
+                e.stopPropagation();
+                setDropView(!dropView);
+              }}
             />
           )}
+          {dropView && <UserDropdown setDropView={setDropView} user={user} />}
         </>
       )}
       {!isLogin && (

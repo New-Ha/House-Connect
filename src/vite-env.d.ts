@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_PRODUCTION_URL: string;
   readonly VITE_DEVELOPMENT_URL: string;
   readonly VITE_VERCEL_URL: string;
+  readonly VITE_PROJECT_ID: string;
 }
 
 interface ImportMeta {

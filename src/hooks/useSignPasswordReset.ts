@@ -9,6 +9,7 @@ import {
 import { supabase } from '@/libs/supabaseClient';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import getRedirectURL from '@/libs/getRedirectURL';
+import forceLogout from '@/libs/forceLogout';
 
 export const useSignPasswordReset = () => {
   const isDev =
@@ -17,6 +18,18 @@ export const useSignPasswordReset = () => {
 
   const { mutate: passwordReset, isPending } = useMutation({
     mutationFn: async (payload: SignPasswordResetType) => {
+      const { error: logoutError } = await supabase.auth.signOut();
+
+      if (logoutError) {
+        forceLogout();
+
+        createToast('logoutError', '로그아웃 중 오류가 발생했습니다.', {
+          type: 'error',
+          isLoading: false,
+          autoClose: 1000,
+        });
+      }
+
       const { error } = await supabase.auth.resetPasswordForEmail(
         payload.email,
         {
@@ -27,9 +40,13 @@ export const useSignPasswordReset = () => {
       );
       if (error) throw new Error(error.message);
     },
-    onMutate: () =>
-      createToast('passwordReset', '초기화 요청을 보내는 중입니다...'),
-    onSuccess: () => successToast('passwordReset', '이메일을 확인해주세요.'),
+    onMutate: () => createToast('passwordReset', '이메일 발송 중입니다.'),
+    onSuccess: () => {
+      successToast('passwordReset', '이메일을 확인해주세요.');
+      setTimeout(() => {
+        successToast('passwordReset', '다시 로그인해주세요');
+      }, 1000);
+    },
     onError: () => errorToast('passwordReset', '요청에 실패했습니다.'),
   });
   return { passwordReset, isPending };
@@ -48,6 +65,9 @@ export const useSignUpdatePassword = () => {
       createToast('passwordUpdate', '비밀번호를 변경 중입니다...'),
     onSuccess: () => {
       successToast('passwordUpdate', '비밀번호 변경에 성공했습니다.');
+      setTimeout(() => {
+        successToast('reLoginAfterPasswordUpdate', '다시 로그인해주세요');
+      }, 1000);
       navigate(routePaths.signIn);
     },
     onError: () => {

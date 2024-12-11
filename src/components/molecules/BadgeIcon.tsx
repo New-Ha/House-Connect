@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 import Badge, { BadgeProps, BadgeType } from '@/components/atoms/Badge';
 import Icon, { IconProps } from '@/components/atoms/Icon';
+import cn from '@/libs/cn';
 import { IconDirectionType, IconType } from '@/types/icon.type';
 
 type BadgeIconProps = Omit<IconProps, 'type'> &
@@ -39,7 +40,7 @@ export default function BadgeIcon(props: BadgeIconProps) {
   if (badge === 'Fill')
     return (
       <Badge.Fill
-        className={`${directionStyle[direction]} ${className} ${customClassName}`}
+        className={cn(directionStyle[direction], customClassName, className)}
         focus={focus}
         active={active}
         hover={hover}
@@ -52,7 +53,7 @@ export default function BadgeIcon(props: BadgeIconProps) {
   if (badge === 'Outline')
     return (
       <Badge.Outline
-        className={`${directionStyle[direction]} ${className} ${customClassName}`}
+        className={cn(directionStyle[direction], customClassName, className)}
         focus={focus}
         active={active}
         hover={hover}

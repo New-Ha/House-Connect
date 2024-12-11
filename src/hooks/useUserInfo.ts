@@ -6,6 +6,7 @@ import { RegionUnion, SignUpProfileType } from '@/types/signUp.type';
 import { createToast, errorToast, successToast } from '@/libs/toast';
 import useModal from '@/hooks/useModal';
 import USER_KEYS from '@/constants/queryKeys/user';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 export type UserInfoType = {
   avatar: string;
@@ -42,15 +43,71 @@ type UserMateStyleType = {
 export const userInfoQuery = (user: UserType | null) =>
   queryOptions({
     queryKey: USER_KEYS.USER_INFO(user?.id),
-    queryFn: async () =>
-      supabase
+    queryFn: async () => {
+      const { data, error, status } = await supabase
         .from('user')
         .select(
           'avatar, name, nickname,gender, user_lifestyle(appeals, pet, smoking), user_looking_house(deposit_price, monthly_rental_price, regions, rental_type, term, type), user_mate_style(mate_gender, mate_number, mate_appeals, prefer_mate_age)',
         )
         .eq('id', user?.id ?? '')
-        .single(),
+        .single();
+
+      if (error) {
+        throw new SupabaseCustomError(error, status);
+      }
+
+      return data;
+    },
     enabled: !!user,
+  });
+
+export const userProfileQuery = (userId: string | undefined) =>
+  queryOptions({
+    queryKey: USER_KEYS.USER_PROFILE_INFO(userId),
+    queryFn: async () => {
+      if (!userId) return {};
+
+      const { data: userData } = await supabase
+        .from('user')
+        .select('is_set_profile')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (userData?.is_set_profile) {
+        const { data, error, status } = await supabase
+          .from('user')
+          .select(
+            `user_looking_house(
+                type,
+                rental_type,
+                regions,
+                deposit_price,
+                term,
+                monthly_rental_price
+              ), user_lifestyle(
+                smoking,
+                pet,
+                appeals
+              ), user_mate_style(
+                mate_gender,
+                mate_number,
+                mate_appeals
+              )`,
+            // * table간 관계 참조를 위해 user table에서 조인하고 user data는 필요없으므로 head: false 옵션 줌
+            { head: false },
+          )
+          .eq('id', userId)
+          .maybeSingle();
+
+        if (error) {
+          throw new SupabaseCustomError(error, status);
+        }
+
+        return data;
+      }
+
+      return {};
+    },
   });
 
 export const useUpdateProfile = () => {

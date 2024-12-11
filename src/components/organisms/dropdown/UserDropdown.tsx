@@ -40,7 +40,7 @@ export default function UserDropdown({ user, setDropView }: UserDropdownProps) {
   return (
     <Container.FlexCol
       ref={containerRef}
-      className="absolute right-0 top-14 z-50 w-[17.625rem] overflow-hidden rounded-xl bg-bg text-brown shadow-[0_0_4px_0_rgb(0,0,0,0.25)]"
+      className="absolute right-0 top-14 z-50 w-[17.625rem] overflow-hidden rounded-xl bg-bg text-brown shadow-dropdown"
     >
       <Container.FlexRow className="items-center gap-[1.0625rem] border-b-[0.5px] border-brown2 p-6">
         {user?.avatar ? (

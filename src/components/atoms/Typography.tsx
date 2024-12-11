@@ -21,7 +21,7 @@ const typoType: {
   component: string;
 }[] = [
   { type: 'Head1', defaultClassName: 'text-Head1', component: 'h1' },
-  { type: 'Head2', defaultClassName: 'text-Head2', component: 'h2' },
+  { type: 'Head2', defaultClassName: '!text-Head2', component: 'h2' },
   { type: 'Head3', defaultClassName: 'text-Head3', component: 'h3' },
 
   { type: 'SubTitle1', defaultClassName: 'text-SubTitle1', component: 'h4' },

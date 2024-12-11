@@ -30,8 +30,23 @@ export default function LayoutTemplate() {
     isRoutePathMatched(location.pathname, 'house') ||
     isRoutePathMatched(location.pathname, 'root');
 
+  const isMyPagePath = isRoutePathMatched(location.pathname, [
+    'myAccount',
+    'myActivity',
+    'myActivityComments',
+    'myActivityHouses',
+    'myAlarm',
+    'myBookmark',
+    'myMate',
+    'myPage',
+    'myTheme',
+    'myBookmarkHouses',
+    'myBookmarkLounges',
+    'myBookmarkPosts',
+  ]);
+
   if (isInitializingSession) {
-    return <Loading text="Checking User..." />;
+    return <Loading text="로그인 정보 확인 중..." />;
   }
 
   return (
@@ -60,6 +75,7 @@ export default function LayoutTemplate() {
             // * isSignPath & isSignUpProfilePath에 해당하는 page는 header가 존재하기 때문
             (isSignPath || isSignUpProfilePath) && 'pt-[8rem] pb-8',
             's-tablet:pt-[8rem] px-8 pb-8',
+            isMyPagePath && 'pt-[8rem] s-tablet:pt-[10rem]',
             // 'bg-yellow-200',
           )}
         >

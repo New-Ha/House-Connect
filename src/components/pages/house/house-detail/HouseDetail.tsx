@@ -3,9 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-import HouseDetailTemplate, {
-  HouseData,
-} from '@/components/templates/house/house-detail/HouseDetail.template';
 import {
   houseBookmarkQuery,
   houseDetailQuery,
@@ -19,10 +16,13 @@ import { CommentType } from '@/types/houseComment.type';
 import Loading from '@/components/pages/maintenance/Loading';
 import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
-import WithSuspenseAndErrorBoundary from '@/components/molecules/WithSuspenseAndErrorBoundary';
+import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import IconButton from '@/components/molecules/IconButton';
+import HouseDetailTemplate, {
+  HouseData,
+} from '@/components/templates/house/house-detail/HouseDetail.template';
 
-function HouseDetail() {
+function HouseDetailPageComponent() {
   const { houseId } = useParams();
   const [isLoadingDelaying, setIsLoadingDelaying] = useState(false);
   const navigate = useNavigate();
@@ -122,5 +122,8 @@ function HouseDetail() {
   );
 }
 
-const SuspendedHouseDetail = WithSuspenseAndErrorBoundary(HouseDetail);
-export default SuspendedHouseDetail;
+const HouseDetail = WithSuspenseAndErrorBoundary({
+  InnerSuspenseComponent: HouseDetailPageComponent,
+});
+
+export default HouseDetail;

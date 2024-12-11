@@ -1,6 +1,7 @@
 import React, { ComponentProps, ReactNode } from 'react';
 
 import cn from '@/libs/cn';
+import Icon from '@/components/atoms/Icon';
 /*
 - xs; 40px (2.5rem)
 - s; 44px (2.75rem)
@@ -14,6 +15,7 @@ export type AvatarProps = ComponentProps<'img'> & { isActive?: boolean };
 export type AvatarSizeType = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
 
 type AvatarComponentProps = {
+  // eslint-disable-next-line no-unused-vars
   [key in AvatarSizeType]: (props: AvatarProps) => ReactNode;
 };
 
@@ -56,17 +58,21 @@ AvatarSize.forEach(({ size, defaultClassName }) => {
     src,
     ...others
   }: AvatarProps) =>
-    React.createElement('img', {
-      className: cn(
-        'shadow-avatar shrink-0 cursor-pointer rounded-full',
-        className,
-        defaultClassName,
-        isActive && 'shadow-avatar-active',
-      ),
-      src: src?.startsWith('images/avatar/')
-        ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}/avatar/${src}`
-        : `${src}`,
-      ...others,
-    });
+    src ? (
+      React.createElement('img', {
+        className: cn(
+          'shadow-avatar shrink-0 cursor-pointer rounded-full',
+          defaultClassName,
+          isActive && 'shadow-avatar-active',
+          className,
+        ),
+        src: src?.startsWith('images/avatar/')
+          ? `${import.meta.env.VITE_SUPABASE_STORAGE_URL}${src.replace('images/', '')}?t=${Date.now()}`
+          : `${src}`,
+        ...others,
+      })
+    ) : (
+      <Icon type="avatar" className={cn(defaultClassName, className)} />
+    );
 });
 export default Avatar;

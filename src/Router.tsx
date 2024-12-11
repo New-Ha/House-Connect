@@ -34,8 +34,13 @@ import MyBookmark from '@/components/pages/mypage/MyBookmark';
 import { routePaths } from '@/constants/route';
 import Error404 from '@/components/pages/maintenance/Error404';
 import CommingSoon from '@/components/pages/maintenance/CommingSoon';
+import MyBookmarkHouseTemplate from '@/components/templates/mypage/MyBookmarkHouses.template';
+import MyBookmarkLoungeTemplate from '@/components/templates/mypage/MyBookmarkLounges.template';
+import MyBookmarkArticleTemplate from '@/components/templates/mypage/MyBookmarkPosts.template';
+import MyActivityComments from '@/components/templates/mypage/MyActivityComments.template';
+import MyActivityHouses from '@/components/templates/mypage/MyActivityHouses.template';
 
-type RouteType = RouteObject & {
+type RouteType = Omit<RouteObject, 'children'> & {
   shouldProtected?: boolean;
   element: ReactElement;
   children?: RouteType[];
@@ -150,7 +155,7 @@ const routes: RouteType[] = [
       },
       {
         path: routePaths.signUpProfile,
-        // shouldProtected: true,
+        shouldProtected: true,
         element: <SignUpProfile />,
       },
       {
@@ -167,12 +172,42 @@ const routes: RouteType[] = [
         shouldProtected: true,
         element: <MyPageLayoutTemplate />,
         children: [
-          { path: routePaths.myActivity, element: <MyActivity /> },
-          { path: routePaths.myBookmark, element: <MyBookmark /> },
+          {
+            path: routePaths.myActivity,
+            element: <MyActivity />,
+            children: [
+              {
+                path: routePaths.myActivityHouses,
+                element: <MyActivityHouses />,
+              },
+              {
+                path: routePaths.myActivityComments,
+                element: <MyActivityComments />,
+              },
+            ],
+          },
+          {
+            path: routePaths.myBookmark,
+            element: <MyBookmark />,
+            children: [
+              {
+                path: routePaths.myBookmarkHouses,
+                element: <MyBookmarkHouseTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkLounges,
+                element: <MyBookmarkLoungeTemplate />,
+              },
+              {
+                path: routePaths.myBookmarkPosts,
+                element: <MyBookmarkArticleTemplate />,
+              },
+            ],
+          },
           { path: routePaths.myAccount, element: <MyAccount /> },
-          { path: routePaths.myMate, element: <h1>준비중...</h1> },
-          { path: routePaths.myAlarm, element: <h1>준비중...</h1> },
-          { path: routePaths.myTheme, element: <h1>준비중...</h1> },
+          { path: routePaths.myMate, element: <CommingSoon /> },
+          { path: routePaths.myAlarm, element: <CommingSoon /> },
+          { path: routePaths.myTheme, element: <CommingSoon /> },
         ],
       },
       {
@@ -202,7 +237,7 @@ const createRoutes = (routeInfo: RouteType[]): RouteObject[] =>
     // ! delete useless property of RouterObject from react-router-dom
     const { shouldProtected: _, ...parsedToRouterObject } = routeObject;
 
-    return parsedToRouterObject;
+    return parsedToRouterObject as RouteObject;
   });
 
 const router = createBrowserRouter(createRoutes(routes));

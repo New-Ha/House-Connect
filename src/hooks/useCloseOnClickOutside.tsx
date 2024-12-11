@@ -11,9 +11,9 @@ const useCloseOnClickOutside = (
       }
     };
 
-    document.addEventListener('mousedown', onClickOutsideClose);
+    document.addEventListener('click', onClickOutsideClose);
 
-    return () => document.removeEventListener('mousedown', onClickOutsideClose);
+    return () => document.removeEventListener('click', onClickOutsideClose);
   }, [ref, callback]);
 };
 
