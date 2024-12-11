@@ -3,9 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
 
-import HouseDetailTemplate, {
-  HouseData,
-} from '@/components/templates/house/house-detail/HouseDetailTemplate';
 import {
   houseBookmarkQuery,
   houseDetailQuery,
@@ -21,6 +18,9 @@ import { routePaths } from '@/constants/route';
 import Container from '@/components/atoms/Container';
 import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import IconButton from '@/components/molecules/IconButton';
+import HouseDetailTemplate, {
+  HouseData,
+} from '@/components/templates/house/house-detail/HouseDetail.template';
 
 function HouseDetailPageComponent() {
   const { houseId } = useParams();
