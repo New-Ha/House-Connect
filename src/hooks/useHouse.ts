@@ -1,9 +1,9 @@
 import {
   QueryFunctionContext,
+  queryOptions,
   useInfiniteQuery,
   useMutation,
   useQueries,
-  useQuery,
   UseQueryResult,
 } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -26,61 +26,51 @@ import {
 import USER_KEYS from '@/constants/queryKeys/user';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 import { Keys } from '@/types/common.type';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
-// fetch functions
-export const fetchTemporaryHouseId = async (
-  userId: string,
-): Promise<{ id: string } | null> => {
-  const TEMPORARY = 0;
-  const { data, error } = await supabase
-    .from('house')
-    .select('id')
-    .match({ user_id: userId, temporary: TEMPORARY });
-
-  if (error)
-    throw new Error(`임시저장된 글 확인에 실패했습니다.: ${error.message}`);
-
-  if (!data || data.length === 0) {
-    return null;
-  }
-  return { id: data[0].id };
-};
-
-const fetchHousePost = async (houseId: string): Promise<HouseFormType> => {
-  const { data, error } = await supabase
-    .from('house')
-    .select('*')
-    .eq('id', houseId)
-    .single();
-
-  if (error) throw new Error(`게시글을 가져올 수 없습니다.: ${error.message}`);
-  if (!data) {
-    throw new Error(`게시글이 존재하지 않습니다.`);
+// fetch House post
+export const housePostQuery = (houseId: string | undefined) => {
+  if (!houseId) {
+    throw new Error('게시글이 존재하지 않습니다.');
   }
 
-  return {
-    bookmark: data.bookmark,
-    deposit_price: data.deposit_price,
-    describe: data.describe,
-    district: data.district,
-    floor: data.floor as 0 | 1 | 2,
-    house_appeal: data.house_appeal,
-    house_img: data.house_img,
-    house_size: data.house_size,
-    house_type: data.house_type as 0 | 1 | 2 | 3,
-    manage_price: data.manage_price,
-    monthly_price: data.monthly_price,
-    post_title: data.post_title,
-    region: data.region,
-    rental_type: data.rental_type as 0 | 1 | 2 | 3,
-    representative_img: data.representative_img,
-    room_num: data.room_num,
-    temporary: data.temporary as 0 | 1,
-    term: data.term as HouseFormType['term'],
-    user_id: data.user_id,
-  };
+  return queryOptions({
+    queryKey: HOUSE_KEYS.HOUSE_POST(houseId),
+    queryFn: async () => {
+      const { data, error, status } = await supabase
+        .from('house')
+        .select('*')
+        .eq('id', houseId)
+        .single();
+
+      if (error) throw new SupabaseCustomError(error, status);
+
+      return {
+        bookmark: data.bookmark,
+        deposit_price: data.deposit_price,
+        describe: data.describe,
+        district: data.district,
+        floor: data.floor as 0 | 1 | 2,
+        house_appeal: data.house_appeal,
+        house_img: data.house_img,
+        house_size: data.house_size,
+        house_type: data.house_type as 0 | 1 | 2 | 3,
+        manage_price: data.manage_price,
+        monthly_price: data.monthly_price,
+        post_title: data.post_title,
+        region: data.region,
+        rental_type: data.rental_type as 0 | 1 | 2 | 3,
+        representative_img: data.representative_img,
+        room_num: data.room_num,
+        temporary: data.temporary as 0 | 1,
+        term: data.term as HouseFormType['term'],
+        user_id: data.user_id,
+      };
+    },
+  });
 };
 
+// fetch user life & mate style
 const fetchUserLifeStyle = async (
   userId: string,
 ): Promise<UserLifeStyleType> => {
@@ -123,7 +113,6 @@ const fetchUserMateStyle = async (
   };
 };
 
-// react-query hooks
 export const useFetchProfileData = (userId: string) => {
   const queryResults = useQueries({
     queries: [
@@ -150,15 +139,6 @@ export const useFetchProfileData = (userId: string) => {
       Error
     >,
   };
-};
-
-export const useFetchHouseData = (isEditMode: boolean, houseId: string) => {
-  const houseQuery = useQuery<HouseFormType>({
-    queryKey: HOUSE_KEYS.HOUSE_POST(houseId),
-    queryFn: () => fetchHousePost(houseId),
-    enabled: isEditMode && !!houseId,
-  });
-  return { houseQuery };
 };
 
 // storage 관련 함수
@@ -373,6 +353,56 @@ export const useDeleteHousePost = () => {
   });
   return { deleteHousePost };
 };
+
+// Check temporary post
+export const fetchTemporaryHouseId = async (
+  userId: string,
+): Promise<{ id: string } | null> => {
+  const TEMPORARY = 0;
+  const { data, error } = await supabase
+    .from('house')
+    .select('id')
+    .match({ user_id: userId, temporary: TEMPORARY });
+
+  if (error)
+    throw new Error(`임시저장된 글 확인에 실패했습니다.: ${error.message}`);
+
+  if (!data || data.length === 0) {
+    return null;
+  }
+  return { id: data[0].id };
+};
+
+// export const useTemporaryHouse = (userId: string) => {
+//   const navigate = useNavigate();
+//   const { setModalState, closeModal } = useModal('Continue');
+//   const { deleteHousePost } = useDeleteHousePost();
+
+//   const checkTemporaryHouse = async () => {
+//     const result = await fetchTemporaryHouseId(userId);
+//     if (result) {
+//       const { id: tempHouseId } = result;
+//       const continuationContext: ContinuationModalState = {
+//         isOpen: true,
+//         type: 'Continue',
+//         onClickCancel:() => {
+//           closeModal();
+//           setTimeout(() => {
+//             deleteHousePost(tempHouseId);
+//           }, 0);
+//         },
+//         onClickContinue: () => {
+//           closeModal();
+//           setTimeout(() => {
+//             navigate(routePaths.houseEdit(tempHouseId));
+//           }, 0);
+//         },
+//       };
+//       setModalState(continuationContext);
+//     }
+//   };
+//   return { checkTemporaryHouse };
+// };
 
 // houseList hooks
 type HouseListQueryKeyType = ReturnType<typeof HOUSE_KEYS.HOUSE_LIST>;

@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
-import { useHousePostData } from '@/hooks/useHouse';
+import { housePostQuery } from '@/hooks/useHouse';
 import HouseRegisterForm, {
   HouseRegistFormProps,
 } from '@/components/templates/house/house-regist/HouseRegisterForm';
@@ -14,7 +15,8 @@ function HouseRegisterEditPageComponent({
   form,
   houseId,
 }: HouseRegisterEditProps) {
-const {data: housePost} = useHousePostData(houseId);
+  const housePostQueryOptions = housePostQuery(houseId);
+  const { data: housePost } = useSuspenseQuery(housePostQueryOptions);
 
   useEffect(() => {
     const fetchHouseData = () => {
