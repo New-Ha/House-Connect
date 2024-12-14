@@ -103,12 +103,8 @@ export const ContinuationModalAtom = atom<ContinuationModalState>({
   default: {
     isOpen: false,
     type: 'Continue',
-    title: '',
-    message: '',
     onClickCancel: () => {},
     onClickContinue: () => {},
-    cancelButtonContent: '',
-    continueButtonContent: '',
   },
 });
 

@@ -76,12 +76,8 @@ export type RoommateApplyState = {
 export type ContinuationModalState = {
   isOpen: boolean;
   type: 'Continue';
-  title: string;
-  message: string;
   onClickCancel: () => void;
   onClickContinue: () => void;
-  cancelButtonContent: string;
-  continueButtonContent: string;
 };
 
 export type ProfileModifyModalState = {
