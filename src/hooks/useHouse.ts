@@ -74,16 +74,14 @@ export const housePostQuery = (houseId: string | undefined) => {
 const fetchUserLifeStyle = async (
   userId: string,
 ): Promise<UserLifeStyleType> => {
-  const { data, error } = await supabase
+  const { data, error, status } = await supabase
     .from('user_lifestyle')
     .select('*')
     .eq('id', userId)
     .single();
 
-  if (error)
-    throw new Error(
-      `사용자 프로필을 불러오는데 실패했습니다.: ${error.message}`,
-    );
+  if (error) throw new SupabaseCustomError(error, status);
+
   return {
     smoking: data.smoking,
     pet: data.pet as 0 | 1 | 2,
@@ -94,16 +92,14 @@ const fetchUserLifeStyle = async (
 const fetchUserMateStyle = async (
   userId: string,
 ): Promise<UserMateStyleType> => {
-  const { data, error } = await supabase
+  const { data, error, status } = await supabase
     .from('user_mate_style')
     .select('*')
     .eq('id', userId)
     .single();
 
-  if (error)
-    throw new Error(
-      `사용자 프로필을 불러오는데 실패했습니다.: ${error.message}`,
-    );
+  if (error) throw new SupabaseCustomError(error, status);
+
   return {
     mate_gender: data.mate_gender as 0 | 1 | 2,
     mate_number: data.mate_number as 0 | 1 | 2 | 3,
