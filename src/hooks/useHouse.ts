@@ -1,5 +1,4 @@
 import {
-  infiniteQueryOptions,
   QueryFunctionContext,
   useInfiniteQuery,
   useMutation,
@@ -27,7 +26,6 @@ import {
 import USER_KEYS from '@/constants/queryKeys/user';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 import { Keys } from '@/types/common.type';
-import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 // fetch functions
 export const fetchTemporaryHouseId = async (
@@ -557,4 +555,3 @@ export const useInfiniteHouseList = (
     getNextPageParam: lastPage =>
       lastPage.hasMore ? lastPage.nextPage : undefined,
   });
-
