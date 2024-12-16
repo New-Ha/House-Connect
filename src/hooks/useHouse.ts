@@ -1,4 +1,5 @@
 import {
+  infiniteQueryOptions,
   QueryFunctionContext,
   useInfiniteQuery,
   useMutation,
@@ -26,6 +27,7 @@ import {
 import USER_KEYS from '@/constants/queryKeys/user';
 import HOUSE_KEYS from '@/constants/queryKeys/house';
 import { Keys } from '@/types/common.type';
+import SupabaseCustomError from '@/libs/supabaseCustomError';
 
 // fetch functions
 export const fetchTemporaryHouseId = async (
@@ -35,7 +37,8 @@ export const fetchTemporaryHouseId = async (
   const { data, error } = await supabase
     .from('house')
     .select('id')
-    .match({ user_id: userId, temporary: TEMPORARY });
+    .eq('user_id', userId)
+    .eq('temporary', TEMPORARY);
 
   if (error)
     throw new Error(`임시저장된 글 확인에 실패했습니다.: ${error.message}`);
@@ -114,6 +117,7 @@ const fetchUserMateStyle = async (
     throw new Error(
       `사용자 프로필을 불러오는데 실패했습니다.: ${error.message}`,
     );
+
   return {
     mate_gender: data.mate_gender as 0 | 1 | 2,
     mate_number: data.mate_number as 0 | 1 | 2 | 3,
@@ -553,3 +557,4 @@ export const useInfiniteHouseList = (
     getNextPageParam: lastPage =>
       lastPage.hasMore ? lastPage.nextPage : undefined,
   });
+
