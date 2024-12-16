@@ -119,7 +119,7 @@ export const commentsQuery = (userId: string | undefined) =>
     },
   });
 
-export const useInfiniteMyHouseList = (userId: string, pageSize: number = 6) =>
+export const myHousePostQuery = (userId: string, pageSize: number = 6) =>
   infiniteQueryOptions({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: HOUSE_KEYS.MY_HOUSE(userId),

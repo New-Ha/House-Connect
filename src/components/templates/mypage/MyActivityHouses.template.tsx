@@ -4,7 +4,7 @@ import { ClipLoader } from 'react-spinners';
 
 import { WithSuspenseAndErrorBoundary } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
-import { useInfiniteMyHouseList } from '@/hooks/useMyActivity';
+import { myHousePostQuery } from '@/hooks/useMyActivity';
 import { UserAtom } from '@/stores/auth.store';
 import Typography from '@/components/atoms/Typography';
 import CustomIntersectionObserver from '@/components/organisms/CustomIntersectionObserver';
@@ -16,7 +16,7 @@ function MyActivityHousesTemplate() {
   const user = useRecoilValue(UserAtom);
   const [isOverSTabletBreakPoint] = useIsOverSTabletBreakpoint();
   const { data, isFetching, fetchNextPage } = useSuspenseInfiniteQuery(
-    useInfiniteMyHouseList(user?.id as string),
+    myHousePostQuery(user?.id as string),
   );
 
   const myHousePosts = data.pages.flatMap(page => page);
