@@ -2,7 +2,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 
 import Container from '@/components/atoms/Container';
-import { commentsQuery } from '@/hooks/useCommentReply';
+import { commentsQuery } from '@/hooks/useMyActivity';
 import { UserAtom } from '@/stores/auth.store';
 import { WithSuspense } from '@/components/organisms/withAsyncErrorHandling';
 import Loading from '@/components/pages/maintenance/Loading';
